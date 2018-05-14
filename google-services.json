@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "154020628759",
+    "firebase_url": "https://sleepcare-35cb1.firebaseio.com",
+    "project_id": "sleepcare-35cb1",
+    "storage_bucket": "sleepcare-35cb1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:154020628759:android:c439e6c1360b472e",
+        "android_client_info": {
+          "package_name": "com.example.dell.sleepcare"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "154020628759-fogi2v0ql1ulbp5nippgnrm8r6cujg7o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.dell.sleepcare",
+            "certificate_hash": "f2e8476a91817fc29bb6965e4be90eaa071d205f"
+          }
+        },
+        {
+          "client_id": "154020628759-3bnilac74b3vrfsfq2ql2s9csadco265.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBx8p96WtfaiwnFOVrPa7mstCxnaiN1zDs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "154020628759-3bnilac74b3vrfsfq2ql2s9csadco265.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
