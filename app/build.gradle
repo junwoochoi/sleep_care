@@ -1,0 +1,55 @@
+apply plugin: 'com.android.application'
+
+apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion 27
+    defaultConfig {
+        applicationId "com.example.dell.sleepcare"
+        minSdkVersion 21
+        targetSdkVersion 27
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    packagingOptions {
+        exclude 'README.md'
+
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+
+    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+    implementation 'com.jakewharton:butterknife:8.4.0'  //버터나이프
+    implementation 'com.android.support:support-v4:27.1.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
+    implementation 'com.android.support:appcompat-v7:27.1.0'
+    implementation 'com.android.support:cardview-v7:27.1.0'
+    implementation 'com.android.support:customtabs:27.1.0'
+
+    implementation files('libs/naveridlogin_android_sdk_4.2.0.aar') //네이버 로그인
+    implementation 'com.facebook.android:facebook-login:[4,5)'      //페이스북 로그인
+    implementation 'com.google.firebase:firebase-core:12.0.1'       //구글 로그인
+    implementation 'com.google.firebase:firebase-auth:12.0.1'
+    implementation 'com.google.android.gms:play-services-auth:12.0.1'
+
+    implementation 'com.mxn.soul:flowingdrawer-core:2.0.0'
+    implementation 'com.nineoldandroids:library:2.4.0'
+    implementation 'com.airbnb.android:lottie:2.5.1'
+    implementation 'com.squareup.retrofit2:retrofit:2.4.0'  //레트로핏2
+    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
+
+    implementation 'com.wdullaer:materialdatetimepicker:3.6.0'
+}
+apply plugin: 'com.google.gms.google-services'

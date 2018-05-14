@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#7C50DB</color>
+    <color name="colorPrimaryDark">#352065</color>
+    <color name="colorAccent">#F00A6B</color>
+    <color name="black_overlay">#66000000</color>
+    <color name="main_sky">#34B2C0</color>
+    <color name="main_green">#00B390</color>
+    <color name="main_yellow">#FEBF3E</color>
+    <color name="main_pink">#ED7274</color>
+    <color name="main_navy">#7876DB</color>
+    <color name="main_purple">#9669C4</color>
+</resources>

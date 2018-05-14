@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.mxn.soul.flowingdrawer_core.FlowingDrawer xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawerlayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    app:edMenuBackground="#dddddd"
+    app:edMenuSize="260dp"
+    app:edPosition="1">
+
+    <!--content-->
+    <RelativeLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/main_btn_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/bluetooth_card"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/psqi_test_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="2dp" >
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/main_top_corner_sky">
+                        <ImageView
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
+                            android:layout_centerInParent="true"
+                            android:src="@drawable/icons8_pass_fail_96" />
+                    </RelativeLayout>
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/test_result_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="32dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="2dp" >
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/main_top_corner_pink">
+                        <ImageView
+                            android:src="@drawable/icons8_scoreboard_96"
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
+                            android:layout_centerInParent="true"/>
+                    </RelativeLayout>
+                </android.support.v7.widget.CardView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/psqi_graph_test"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginLeft="32dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="2dp" >
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/main_top_corner_green">
+                        <ImageView
+                            android:src="@drawable/icons8_area_chart_100"
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
+                            android:layout_centerInParent="true"/>
+                    </RelativeLayout>
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/main_setting_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="32dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="2dp">
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/main_top_corner_yellow">
+                        <ImageView
+                            android:src="@drawable/icons8_automatic_96"
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
+                            android:layout_centerInParent="true"/>
+                    </RelativeLayout>
+                </android.support.v7.widget.CardView>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/my_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="@color/colorPrimary"
+            android:elevation="4dp"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:titleTextColor="@android:color/white">
+
+            <TextView
+                android:id="@+id/toolbar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:paddingTop="12dp"
+                android:text="수면 케어"
+                android:textSize="20dp"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                android:textColor="#fff" />
+        </android.support.v7.widget.Toolbar>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/bluetooth_btn"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:layout_alignParentTop="false"
+            android:layout_alignTop="@+id/bluetooth_card"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="-36dp"
+            android:foreground="?android:selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            app:cardBackgroundColor="@color/colorAccent"
+            app:cardCornerRadius="36dp"
+            app:cardElevation="6dp">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_bluetooth_white_48dp" />
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/bluetooth_card"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="32dp"
+            android:layout_marginRight="32dp"
+            android:layout_marginTop="100dp"
+            android:clickable="false"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="4dp" >
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/blutooth_needed_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="56dp"
+                    android:text="@string/bluetooth_needed"
+                    android:textColor="@color/browser_actions_title_color"
+                    android:textSize="18sp" />
+                <Button
+                    android:id="@+id/bluetooth_control_btn"
+                    android:layout_width="150dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="32dp"
+                    android:padding="8dp"
+                    android:text="연결하기"
+                    android:textSize="18sp"
+                    android:textColor="#fff"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:background="@drawable/rounded_button_bg"/>
+
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
+
+
+    </RelativeLayout>
+
+    <!--menu-->
+    <com.mxn.soul.flowingdrawer_core.FlowingMenuLayout
+        android:id="@+id/menu_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="-10dp">
+
+        <FrameLayout
+            android:id="@+id/id_container_menu"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </FrameLayout>
+
+    </com.mxn.soul.flowingdrawer_core.FlowingMenuLayout>
+
+</com.mxn.soul.flowingdrawer_core.FlowingDrawer>

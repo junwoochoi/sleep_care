@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="320dp"
+    android:layout_height="500dp"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="10dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="120dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    android:gravity="center_vertical|start"
+                    android:text="이름 :" />
+
+                <EditText
+                    android:id="@+id/edittext_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:inputType="text"
+                    android:textAlignment="center" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    android:gravity="center_vertical|start"
+                    android:text="생년월일 :" />
+
+                <EditText
+                    android:id="@+id/date_select"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:inputType="date"
+                    android:textAlignment="center" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="32dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    android:gravity="center_vertical|start"
+                    android:text="직업 :" />
+
+                <Spinner
+                    android:id="@+id/job_select"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:dropDownWidth="match_parent"
+                    android:focusable="true"
+                    android:gravity="center" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="32dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    android:gravity="center_vertical|start"
+                    android:text="거주지 :" />
+
+                <Spinner
+                    android:id="@+id/addr_select"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:dropDownWidth="match_parent"
+                    android:gravity="center"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/title_dialog"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="32dp"
+            android:text="회원정보등록"
+            android:textAlignment="center"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/button_confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="24dp"
+            android:layout_marginEnd="32dp"
+            android:background="?android:selectableItemBackground"
+            android:clickable="true"
+            android:padding="8dp"
+            android:text="확인"
+            android:textColor="@color/colorPrimary"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/button_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="24dp"
+            android:layout_marginStart="32dp"
+            android:background="?android:selectableItemBackground"
+            android:clickable="true"
+            android:padding="8dp"
+            android:text="취소"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="13sp" />
+    </RelativeLayout>
+</android.support.v7.widget.CardView>

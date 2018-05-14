@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">SleepCare</string>
+    <string name="naver_client_id">YzvnGn3BFQswtRux5ooh</string>
+    <string name="naver_secret">mULEB67iha</string>
+    <string name="client_name">SleepCare</string>
+    <string name="facebook_app_id">1386594921477837</string>
+    <string name="fb_login_protocol_scheme">fb1386594921477837</string>
+    <string name="google_client_id">154020628759-3bnilac74b3vrfsfq2ql2s9csadco265.apps.googleusercontent.com</string>
+    <string name="welcome">시작하기</string>
+    <string name="intro">수면관리, 스마트 매트리스와 함께 시작해보세요</string>
+    <string name="title_activity_splash">SplashActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="bluetooth_needed">블루투스를 연결해주세요</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
