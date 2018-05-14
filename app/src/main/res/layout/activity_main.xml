@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.mxn.soul.flowingdrawer_core.FlowingDrawer xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawerlayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -35,23 +34,43 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="8dp"
-                    android:layout_marginStart="32dp"
                     android:layout_marginEnd="8dp"
+                    android:layout_marginStart="32dp"
                     android:layout_marginTop="16dp"
                     android:layout_weight="1"
                     android:clickable="true"
                     android:focusable="true"
                     app:cardCornerRadius="5dp"
-                    app:cardElevation="2dp" >
+                    app:cardElevation="2dp">
+
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/main_top_corner_sky">
-                        <ImageView
-                            android:layout_width="64dp"
-                            android:layout_height="64dp"
+                        android:layout_height="match_parent">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
-                            android:src="@drawable/icons8_pass_fail_96" />
+                            android:orientation="vertical">
+                            //android:background="@drawable/main_top_corner_sky">
+
+                            <ImageView
+                                android:layout_width="64dp"
+                                android:layout_height="64dp"
+                                android:layout_gravity="center_vertical|center_horizontal"
+                                android:cropToPadding="false"
+                                android:src="@drawable/icons8_pass_fail_96" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical|center_horizontal"
+                                android:layout_margin="8dp"
+                                android:text="PSQI 설문"
+                                android:textColor="#555"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
                     </RelativeLayout>
                 </android.support.v7.widget.CardView>
 
@@ -60,22 +79,41 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="32dp"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginStart="8dp"
                     android:layout_marginTop="16dp"
                     android:layout_weight="1"
                     android:clickable="true"
                     app:cardCornerRadius="5dp"
-                    app:cardElevation="2dp" >
+                    app:cardElevation="2dp">
+
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/main_top_corner_pink">
-                        <ImageView
-                            android:src="@drawable/icons8_scoreboard_96"
-                            android:layout_width="64dp"
-                            android:layout_height="64dp"
-                            android:layout_centerInParent="true"/>
+                        android:layout_height="match_parent">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:orientation="vertical">
+                            //android:background="@drawable/main_top_corner_pink">
+
+                            <ImageView
+                                android:layout_width="64dp"
+                                android:layout_height="64dp"
+                                android:layout_gravity="center_vertical|center_horizontal"
+                                android:src="@drawable/icons8_scoreboard_96" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical|center_horizontal"
+                                android:layout_margin="8dp"
+                                android:text="PSQI 점수 조회"
+                                android:textColor="#555"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
                     </RelativeLayout>
                 </android.support.v7.widget.CardView>
             </LinearLayout>
@@ -90,22 +128,41 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="16dp"
-                    android:layout_marginLeft="32dp"
-                    android:layout_marginRight="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="32dp"
                     android:layout_marginTop="8dp"
                     android:layout_weight="1"
                     android:clickable="true"
                     app:cardCornerRadius="5dp"
-                    app:cardElevation="2dp" >
+                    app:cardElevation="2dp">
+
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/main_top_corner_green">
-                        <ImageView
-                            android:src="@drawable/icons8_area_chart_100"
-                            android:layout_width="64dp"
-                            android:layout_height="64dp"
-                            android:layout_centerInParent="true"/>
+                        android:layout_height="match_parent">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:orientation="vertical">
+                            //android:background="@drawable/main_top_corner_green">
+
+                            <ImageView
+                                android:layout_width="64dp"
+                                android:layout_height="64dp"
+                                android:layout_gravity="center_vertical|center_horizontal"
+                                android:src="@drawable/icons8_area_chart_100" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical|center_horizontal"
+                                android:layout_margin="8dp"
+                                android:text="수면 통계 조회"
+                                android:textColor="#555"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
                     </RelativeLayout>
                 </android.support.v7.widget.CardView>
 
@@ -114,22 +171,41 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="16dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="32dp"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_weight="1"
                     android:clickable="true"
                     app:cardCornerRadius="5dp"
                     app:cardElevation="2dp">
+
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/main_top_corner_yellow">
-                        <ImageView
-                            android:src="@drawable/icons8_automatic_96"
-                            android:layout_width="64dp"
-                            android:layout_height="64dp"
-                            android:layout_centerInParent="true"/>
+                        android:layout_height="match_parent">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:orientation="vertical">
+                            //android:background="@drawable/main_top_corner_yellow">
+
+                            <ImageView
+                                android:layout_width="64dp"
+                                android:layout_height="64dp"
+                                android:layout_gravity="center_vertical|center_horizontal"
+                                android:src="@drawable/icons8_automatic_96" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical|center_horizontal"
+                                android:layout_margin="8dp"
+                                android:text="환경설정"
+                                android:textColor="#555"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
                     </RelativeLayout>
                 </android.support.v7.widget.CardView>
             </LinearLayout>
@@ -153,9 +229,9 @@
                 android:layout_gravity="center_horizontal"
                 android:paddingTop="12dp"
                 android:text="수면 케어"
-                android:textSize="20dp"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                android:textColor="#fff" />
+                android:textColor="#fff"
+                android:textSize="20dp" />
         </android.support.v7.widget.Toolbar>
 
         <android.support.v7.widget.CardView
@@ -166,12 +242,13 @@
             android:layout_alignTop="@+id/bluetooth_card"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="-36dp"
-            android:foreground="?android:selectableItemBackground"
             android:clickable="true"
             android:focusable="true"
+            android:foreground="?android:selectableItemBackground"
             app:cardBackgroundColor="@color/colorAccent"
             app:cardCornerRadius="36dp"
             app:cardElevation="6dp">
+
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -184,12 +261,13 @@
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:layout_alignParentTop="true"
-            android:layout_marginLeft="32dp"
-            android:layout_marginRight="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginStart="32dp"
             android:layout_marginTop="100dp"
             android:clickable="false"
             app:cardCornerRadius="5dp"
-            app:cardElevation="4dp" >
+            app:cardElevation="4dp">
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -204,6 +282,7 @@
                     android:text="@string/bluetooth_needed"
                     android:textColor="@color/browser_actions_title_color"
                     android:textSize="18sp" />
+
                 <Button
                     android:id="@+id/bluetooth_control_btn"
                     android:layout_width="150dp"
@@ -211,14 +290,14 @@
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
                     android:layout_marginBottom="32dp"
-                    android:padding="8dp"
-                    android:text="연결하기"
-                    android:textSize="18sp"
-                    android:textColor="#fff"
+                    android:background="@drawable/rounded_button_bg"
                     android:clickable="true"
                     android:focusable="true"
                     android:foreground="?android:attr/selectableItemBackground"
-                    android:background="@drawable/rounded_button_bg"/>
+                    android:padding="8dp"
+                    android:text="연결하기"
+                    android:textColor="#fff"
+                    android:textSize="18sp" />
 
             </RelativeLayout>
         </android.support.v7.widget.CardView>
@@ -236,8 +315,7 @@
         <FrameLayout
             android:id="@+id/id_container_menu"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        </FrameLayout>
+            android:layout_height="match_parent"></FrameLayout>
 
     </com.mxn.soul.flowingdrawer_core.FlowingMenuLayout>
 
