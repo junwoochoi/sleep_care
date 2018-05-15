@@ -41,7 +41,7 @@
                     android:clickable="true"
                     android:focusable="true"
                     android:inputType="text"
-                    android:textAlignment="center" />
+                    android:textAlignment="center" />\
             </LinearLayout>
 
             <LinearLayout
@@ -121,9 +121,9 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:clickable="true"
-                    android:focusable="true"
                     android:dropDownWidth="match_parent"
-                    android:gravity="center"/>
+                    android:focusable="true"
+                    android:gravity="center" />
             </LinearLayout>
         </LinearLayout>
 

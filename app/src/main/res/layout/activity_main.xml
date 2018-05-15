@@ -29,8 +29,9 @@
                 android:layout_weight="1"
                 android:orientation="horizontal">
 
-                <android.support.v7.widget.CardView
+                <android.support.design.card.MaterialCardView
                     android:id="@+id/psqi_test_btn"
+                    style="@style/Widget.SleepCare.Button.Accent"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="8dp"
@@ -40,8 +41,11 @@
                     android:layout_weight="1"
                     android:clickable="true"
                     android:focusable="true"
+                    android:foreground="?android:selectableItemBackground"
+                    android:stateListAnimator="@animator/lift_on_touch"
+
                     app:cardCornerRadius="5dp"
-                    app:cardElevation="2dp">
+                    app:cardElevation="4dp">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -72,9 +76,9 @@
                                 android:textStyle="bold" />
                         </LinearLayout>
                     </RelativeLayout>
-                </android.support.v7.widget.CardView>
+                </android.support.design.card.MaterialCardView>
 
-                <android.support.v7.widget.CardView
+                <android.support.design.card.MaterialCardView
                     android:id="@+id/test_result_btn"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -84,8 +88,11 @@
                     android:layout_marginTop="16dp"
                     android:layout_weight="1"
                     android:clickable="true"
+                    android:foreground="?android:selectableItemBackground"
+                    android:stateListAnimator="@animator/lift_on_touch"
+
                     app:cardCornerRadius="5dp"
-                    app:cardElevation="2dp">
+                    app:cardElevation="4dp">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -115,7 +122,7 @@
                                 android:textStyle="bold" />
                         </LinearLayout>
                     </RelativeLayout>
-                </android.support.v7.widget.CardView>
+                </android.support.design.card.MaterialCardView>
             </LinearLayout>
 
             <LinearLayout
@@ -123,7 +130,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1">
 
-                <android.support.v7.widget.CardView
+                <android.support.design.card.MaterialCardView
                     android:id="@+id/psqi_graph_test"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -133,8 +140,11 @@
                     android:layout_marginTop="8dp"
                     android:layout_weight="1"
                     android:clickable="true"
+                    android:foreground="?android:selectableItemBackground"
+
+                    android:stateListAnimator="@animator/lift_on_touch"
                     app:cardCornerRadius="5dp"
-                    app:cardElevation="2dp">
+                    app:cardElevation="4dp">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -164,9 +174,9 @@
                                 android:textStyle="bold" />
                         </LinearLayout>
                     </RelativeLayout>
-                </android.support.v7.widget.CardView>
+                </android.support.design.card.MaterialCardView>
 
-                <android.support.v7.widget.CardView
+                <android.support.design.card.MaterialCardView
                     android:id="@+id/main_setting_btn"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -176,8 +186,11 @@
                     android:layout_marginTop="8dp"
                     android:layout_weight="1"
                     android:clickable="true"
+                    android:focusable="auto"
+                    android:foreground="?android:selectableItemBackground"
+                    android:stateListAnimator="@animator/lift_on_touch"
                     app:cardCornerRadius="5dp"
-                    app:cardElevation="2dp">
+                    app:cardElevation="4dp">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -207,19 +220,19 @@
                                 android:textStyle="bold" />
                         </LinearLayout>
                     </RelativeLayout>
-                </android.support.v7.widget.CardView>
+                </android.support.design.card.MaterialCardView>
             </LinearLayout>
 
         </LinearLayout>
 
-        <android.support.v7.widget.Toolbar
+        <android.support.design.v7.widget.Toolbar
             android:id="@+id/my_toolbar"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:background="@color/colorPrimary"
-            android:elevation="4dp"
-            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            android:elevation="5dp"
+            android:theme="@style/ThemeOverlay.MaterialComponents.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.MaterialComponents.Light"
             app:titleTextColor="@android:color/white">
 
             <TextView
@@ -232,9 +245,9 @@
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                 android:textColor="#fff"
                 android:textSize="20dp" />
-        </android.support.v7.widget.Toolbar>
+        </android.support.design.v7.widget.Toolbar>
 
-        <android.support.v7.widget.CardView
+        <android.support.design.card.MaterialCardView
             android:id="@+id/bluetooth_btn"
             android:layout_width="72dp"
             android:layout_height="72dp"
@@ -245,18 +258,19 @@
             android:clickable="true"
             android:focusable="true"
             android:foreground="?android:selectableItemBackground"
+            android:stateListAnimator="@animator/lift_on_touch"
             app:cardBackgroundColor="@color/colorAccent"
             app:cardCornerRadius="36dp"
-            app:cardElevation="6dp">
+            app:cardElevation="8dp">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_bluetooth_white_48dp" />
-        </android.support.v7.widget.CardView>
+                android:src="@drawable/ic_bluetooth_black_36dp" />
+        </android.support.design.card.MaterialCardView>
 
-        <android.support.v7.widget.CardView
+        <android.support.design.card.MaterialCardView
             android:id="@+id/bluetooth_card"
             android:layout_width="match_parent"
             android:layout_height="200dp"
@@ -264,9 +278,8 @@
             android:layout_marginEnd="32dp"
             android:layout_marginStart="32dp"
             android:layout_marginTop="100dp"
-            android:clickable="false"
             app:cardCornerRadius="5dp"
-            app:cardElevation="4dp">
+            app:cardElevation="5dp">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -283,24 +296,23 @@
                     android:textColor="@color/browser_actions_title_color"
                     android:textSize="18sp" />
 
-                <Button
-                    android:id="@+id/bluetooth_control_btn"
-                    android:layout_width="150dp"
-                    android:layout_height="40dp"
+                <android.support.design.design.button.MaterialButton
+                    android:id="@+id/button_bluetooth_on_off"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
                     android:layout_marginBottom="32dp"
-                    android:background="@drawable/rounded_button_bg"
                     android:clickable="true"
+                    android:elevation="2dp"
                     android:focusable="true"
-                    android:foreground="?android:attr/selectableItemBackground"
-                    android:padding="8dp"
                     android:text="연결하기"
-                    android:textColor="#fff"
-                    android:textSize="18sp" />
+                    android:textColor="@color/textColorSecondary"
+                    app:backgroundTint="@color/colorAccent"
+                    app:cornerRadius="10dp" />
 
             </RelativeLayout>
-        </android.support.v7.widget.CardView>
+        </android.support.design.card.MaterialCardView>
 
 
     </RelativeLayout>
@@ -310,12 +322,12 @@
         android:id="@+id/menu_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="-10dp">
+        >
 
         <FrameLayout
             android:id="@+id/id_container_menu"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"></FrameLayout>
+            android:layout_height="match_parent" />
 
     </com.mxn.soul.flowingdrawer_core.FlowingMenuLayout>
 
