@@ -26,15 +26,17 @@ import com.mxn.soul.flowingdrawer_core.ElasticDrawer;
 import com.mxn.soul.flowingdrawer_core.FlowingDrawer;
 import com.nhn.android.naverlogin.OAuthLogin;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
+    @BindView(R.id.my_toolbar)
     Toolbar myToolbar;
     SharedPreferences sp;
     SharedPreferences.Editor editor;
     OAuthLogin mOAuthLoginModule = OAuthLogin.getInstance();
     GoogleApiClient mGoogleApiClient;
-    FlowingDrawer mDrawer;
+    @BindView(R.id.drawerlayout) FlowingDrawer mDrawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         //툴바 초기화
-        myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+
         setSupportActionBar(myToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -60,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
 
         // FlowingDrawer 초기화
         setupMenu();
-        mDrawer = (FlowingDrawer) findViewById(R.id.drawerlayout);
         mDrawer.setTouchMode(ElasticDrawer.TOUCH_MODE_BEZEL);
         mDrawer.setOnDrawerStateChangeListener(new ElasticDrawer.OnDrawerStateChangeListener() {
             @Override

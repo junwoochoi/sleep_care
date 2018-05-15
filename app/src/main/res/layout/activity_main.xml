@@ -66,14 +66,12 @@
                                 android:src="@drawable/icons8_pass_fail_96" />
 
                             <TextView
+                                style="@style/TextAppearance.MaterialComponents.Subtitle1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical|center_horizontal"
                                 android:layout_margin="8dp"
-                                android:text="PSQI 설문"
-                                android:textColor="#555"
-                                android:textSize="15sp"
-                                android:textStyle="bold" />
+                                android:text="PSQI 설문" />
                         </LinearLayout>
                     </RelativeLayout>
                 </android.support.design.card.MaterialCardView>
@@ -112,14 +110,12 @@
                                 android:src="@drawable/icons8_scoreboard_96" />
 
                             <TextView
+                                style="@style/TextAppearance.MaterialComponents.Subtitle1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical|center_horizontal"
                                 android:layout_margin="8dp"
-                                android:text="PSQI 점수 조회"
-                                android:textColor="#555"
-                                android:textSize="15sp"
-                                android:textStyle="bold" />
+                                android:text="PSQI 점수 조회" />
                         </LinearLayout>
                     </RelativeLayout>
                 </android.support.design.card.MaterialCardView>
@@ -164,14 +160,12 @@
                                 android:src="@drawable/icons8_area_chart_100" />
 
                             <TextView
+                                style="@style/TextAppearance.MaterialComponents.Subtitle1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical|center_horizontal"
                                 android:layout_margin="8dp"
-                                android:text="수면 통계 조회"
-                                android:textColor="#555"
-                                android:textSize="15sp"
-                                android:textStyle="bold" />
+                                android:text="수면 통계 조회" />
                         </LinearLayout>
                     </RelativeLayout>
                 </android.support.design.card.MaterialCardView>
@@ -210,14 +204,12 @@
                                 android:src="@drawable/icons8_automatic_96" />
 
                             <TextView
+                                style="@style/TextAppearance.MaterialComponents.Subtitle1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical|center_horizontal"
                                 android:layout_margin="8dp"
-                                android:text="환경설정"
-                                android:textColor="#555"
-                                android:textSize="15sp"
-                                android:textStyle="bold" />
+                                android:text="환경설정" />
                         </LinearLayout>
                     </RelativeLayout>
                 </android.support.design.card.MaterialCardView>
@@ -225,7 +217,7 @@
 
         </LinearLayout>
 
-        <android.support.design.v7.widget.Toolbar
+        <android.support.v7.widget.Toolbar
             android:id="@+id/my_toolbar"
             android:layout_width="match_parent"
             android:layout_height="200dp"
@@ -245,7 +237,7 @@
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                 android:textColor="#fff"
                 android:textSize="20dp" />
-        </android.support.design.v7.widget.Toolbar>
+        </android.support.v7.widget.Toolbar>
 
         <android.support.design.card.MaterialCardView
             android:id="@+id/bluetooth_btn"
@@ -296,7 +288,7 @@
                     android:textColor="@color/browser_actions_title_color"
                     android:textSize="18sp" />
 
-                <android.support.design.design.button.MaterialButton
+                <android.support.design.button.MaterialButton
                     android:id="@+id/button_bluetooth_on_off"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -321,8 +313,7 @@
     <com.mxn.soul.flowingdrawer_core.FlowingMenuLayout
         android:id="@+id/menu_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="match_parent">
 
         <FrameLayout
             android:id="@+id/id_container_menu"
