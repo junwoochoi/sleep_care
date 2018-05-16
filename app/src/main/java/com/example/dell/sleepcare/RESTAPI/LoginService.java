@@ -11,7 +11,7 @@ import retrofit2.http.Path;
 
 public interface LoginService {
 
-    static final String API_URL = "http://210.102.181.158:62006/mobile/";  //"http://192.9.20.62:62006/mobile"
+    static final String API_URL = "http://192.9.20.62:62006/mobile/"; //"http://210.102.181.158:62006/mobile/";
 
     @GET(API_URL+"login/{user_email}")
     Call<LoginResult> login(@Path("user_email") String email);

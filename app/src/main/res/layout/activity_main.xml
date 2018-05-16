@@ -10,304 +10,318 @@
     app:edMenuSize="260dp"
     app:edPosition="1">
 
+
+
     <!--content-->
     <RelativeLayout
         android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
-            android:id="@+id/main_btn_layout"
+        <FrameLayout
+            android:id="@+id/main_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/bluetooth_card"
-            android:orientation="vertical">
+            />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="horizontal">
-
-                <android.support.design.card.MaterialCardView
-                    android:id="@+id/psqi_test_btn"
-                    style="@style/Widget.SleepCare.Button.Accent"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_weight="1"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:foreground="?android:selectableItemBackground"
-                    android:stateListAnimator="@animator/lift_on_touch"
-
-                    app:cardCornerRadius="5dp"
-                    app:cardElevation="4dp">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:orientation="vertical">
-                            //android:background="@drawable/main_top_corner_sky">
-
-                            <ImageView
-                                android:layout_width="64dp"
-                                android:layout_height="64dp"
-                                android:layout_gravity="center_vertical|center_horizontal"
-                                android:cropToPadding="false"
-                                android:src="@drawable/icons8_pass_fail_96" />
-
-                            <TextView
-                                style="@style/TextAppearance.MaterialComponents.Subtitle1"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical|center_horizontal"
-                                android:layout_margin="8dp"
-                                android:text="PSQI 설문" />
-                        </LinearLayout>
-                    </RelativeLayout>
-                </android.support.design.card.MaterialCardView>
-
-                <android.support.design.card.MaterialCardView
-                    android:id="@+id/test_result_btn"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginEnd="32dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_weight="1"
-                    android:clickable="true"
-                    android:foreground="?android:selectableItemBackground"
-                    android:stateListAnimator="@animator/lift_on_touch"
-
-                    app:cardCornerRadius="5dp"
-                    app:cardElevation="4dp">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:orientation="vertical">
-                            //android:background="@drawable/main_top_corner_pink">
-
-                            <ImageView
-                                android:layout_width="64dp"
-                                android:layout_height="64dp"
-                                android:layout_gravity="center_vertical|center_horizontal"
-                                android:src="@drawable/icons8_scoreboard_96" />
-
-                            <TextView
-                                style="@style/TextAppearance.MaterialComponents.Subtitle1"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical|center_horizontal"
-                                android:layout_margin="8dp"
-                                android:text="PSQI 점수 조회" />
-                        </LinearLayout>
-                    </RelativeLayout>
-                </android.support.design.card.MaterialCardView>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
-
-                <android.support.design.card.MaterialCardView
-                    android:id="@+id/psqi_graph_test"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="16dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_weight="1"
-                    android:clickable="true"
-                    android:foreground="?android:selectableItemBackground"
-
-                    android:stateListAnimator="@animator/lift_on_touch"
-                    app:cardCornerRadius="5dp"
-                    app:cardElevation="4dp">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:orientation="vertical">
-                            //android:background="@drawable/main_top_corner_green">
-
-                            <ImageView
-                                android:layout_width="64dp"
-                                android:layout_height="64dp"
-                                android:layout_gravity="center_vertical|center_horizontal"
-                                android:src="@drawable/icons8_area_chart_100" />
-
-                            <TextView
-                                style="@style/TextAppearance.MaterialComponents.Subtitle1"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical|center_horizontal"
-                                android:layout_margin="8dp"
-                                android:text="수면 통계 조회" />
-                        </LinearLayout>
-                    </RelativeLayout>
-                </android.support.design.card.MaterialCardView>
-
-                <android.support.design.card.MaterialCardView
-                    android:id="@+id/main_setting_btn"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="16dp"
-                    android:layout_marginEnd="32dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_weight="1"
-                    android:clickable="true"
-                    android:focusable="auto"
-                    android:foreground="?android:selectableItemBackground"
-                    android:stateListAnimator="@animator/lift_on_touch"
-                    app:cardCornerRadius="5dp"
-                    app:cardElevation="4dp">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:orientation="vertical">
-                            //android:background="@drawable/main_top_corner_yellow">
-
-                            <ImageView
-                                android:layout_width="64dp"
-                                android:layout_height="64dp"
-                                android:layout_gravity="center_vertical|center_horizontal"
-                                android:src="@drawable/icons8_automatic_96" />
-
-                            <TextView
-                                style="@style/TextAppearance.MaterialComponents.Subtitle1"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical|center_horizontal"
-                                android:layout_margin="8dp"
-                                android:text="환경설정" />
-                        </LinearLayout>
-                    </RelativeLayout>
-                </android.support.design.card.MaterialCardView>
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/my_toolbar"
+        <RelativeLayout
+            android:id="@+id/main_content"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:background="@color/colorPrimary"
-            android:elevation="5dp"
-            android:theme="@style/ThemeOverlay.MaterialComponents.ActionBar"
-            app:popupTheme="@style/ThemeOverlay.MaterialComponents.Light"
-            app:titleTextColor="@android:color/white">
+            android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/toolbar_title"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/main_btn_layout"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="center_horizontal"
-                android:paddingTop="12dp"
-                android:text="수면 케어"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                android:textColor="#fff"
-                android:textSize="20dp" />
-        </android.support.v7.widget.Toolbar>
+                android:layout_below="@+id/bluetooth_card"
+                android:orientation="vertical">
 
-        <android.support.design.card.MaterialCardView
-            android:id="@+id/bluetooth_btn"
-            android:layout_width="72dp"
-            android:layout_height="72dp"
-            android:layout_alignParentTop="false"
-            android:layout_alignTop="@+id/bluetooth_card"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="-36dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:foreground="?android:selectableItemBackground"
-            android:stateListAnimator="@animator/lift_on_touch"
-            app:cardBackgroundColor="@color/colorAccent"
-            app:cardCornerRadius="36dp"
-            app:cardElevation="8dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_bluetooth_black_36dp" />
-        </android.support.design.card.MaterialCardView>
+                    <android.support.design.card.MaterialCardView
+                        android:id="@+id/psqi_test_btn"
+                        style="@style/Widget.SleepCare.Button.Accent"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_weight="1"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?android:selectableItemBackground"
+                        android:stateListAnimator="@animator/lift_on_touch"
 
-        <android.support.design.card.MaterialCardView
-            android:id="@+id/bluetooth_card"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_alignParentTop="true"
-            android:layout_marginEnd="32dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="100dp"
-            app:cardCornerRadius="5dp"
-            app:cardElevation="5dp">
+                        app:cardCornerRadius="5dp"
+                        app:cardElevation="4dp">
 
-            <RelativeLayout
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:orientation="vertical">
+                                //android:background="@drawable/main_top_corner_sky">
+
+                                <ImageView
+                                    android:layout_width="64dp"
+                                    android:layout_height="64dp"
+                                    android:layout_gravity="center_vertical|center_horizontal"
+                                    android:cropToPadding="false"
+                                    android:src="@drawable/icons8_pass_fail_96" />
+
+                                <TextView
+                                    style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical|center_horizontal"
+                                    android:layout_margin="8dp"
+                                    android:text="PSQI 설문" />
+                            </LinearLayout>
+                        </RelativeLayout>
+                    </android.support.design.card.MaterialCardView>
+
+                    <android.support.design.card.MaterialCardView
+                        android:id="@+id/test_result_btn"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginEnd="32dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_weight="1"
+                        android:clickable="true"
+                        android:foreground="?android:selectableItemBackground"
+                        android:stateListAnimator="@animator/lift_on_touch"
+
+                        app:cardCornerRadius="5dp"
+                        app:cardElevation="4dp">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:orientation="vertical">
+                                //android:background="@drawable/main_top_corner_pink">
+
+                                <ImageView
+                                    android:layout_width="64dp"
+                                    android:layout_height="64dp"
+                                    android:layout_gravity="center_vertical|center_horizontal"
+                                    android:src="@drawable/icons8_scoreboard_96" />
+
+                                <TextView
+                                    style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical|center_horizontal"
+                                    android:layout_margin="8dp"
+                                    android:text="PSQI 점수 조회" />
+                            </LinearLayout>
+                        </RelativeLayout>
+                    </android.support.design.card.MaterialCardView>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <android.support.design.card.MaterialCardView
+                        android:id="@+id/psqi_graph_test"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="16dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_weight="1"
+                        android:clickable="true"
+                        android:foreground="?android:selectableItemBackground"
+
+                        android:stateListAnimator="@animator/lift_on_touch"
+                        app:cardCornerRadius="5dp"
+                        app:cardElevation="4dp">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:orientation="vertical">
+                                //android:background="@drawable/main_top_corner_green">
+
+                                <ImageView
+                                    android:layout_width="64dp"
+                                    android:layout_height="64dp"
+                                    android:layout_gravity="center_vertical|center_horizontal"
+                                    android:src="@drawable/icons8_area_chart_100" />
+
+                                <TextView
+                                    style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical|center_horizontal"
+                                    android:layout_margin="8dp"
+                                    android:text="수면 통계 조회" />
+                            </LinearLayout>
+                        </RelativeLayout>
+                    </android.support.design.card.MaterialCardView>
+
+                    <android.support.design.card.MaterialCardView
+                        android:id="@+id/main_setting_btn"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="16dp"
+                        android:layout_marginEnd="32dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_weight="1"
+                        android:clickable="true"
+                        android:focusable="auto"
+                        android:foreground="?android:selectableItemBackground"
+                        android:stateListAnimator="@animator/lift_on_touch"
+                        app:cardCornerRadius="5dp"
+                        app:cardElevation="4dp">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:orientation="vertical">
+                                //android:background="@drawable/main_top_corner_yellow">
+
+                                <ImageView
+                                    android:layout_width="64dp"
+                                    android:layout_height="64dp"
+                                    android:layout_gravity="center_vertical|center_horizontal"
+                                    android:src="@drawable/icons8_automatic_96" />
+
+                                <TextView
+                                    style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical|center_horizontal"
+                                    android:layout_margin="8dp"
+                                    android:text="환경설정" />
+                            </LinearLayout>
+                        </RelativeLayout>
+                    </android.support.design.card.MaterialCardView>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/my_toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="200dp"
+                android:background="@color/colorPrimary"
+                android:elevation="5dp"
+                android:theme="@style/ThemeOverlay.MaterialComponents.ActionBar"
+                app:popupTheme="@style/ThemeOverlay.MaterialComponents.Light"
+                app:titleTextColor="@android:color/white">
 
                 <TextView
-                    android:id="@+id/blutooth_needed_text"
+                    android:id="@+id/toolbar_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_horizontal"
+                    android:paddingTop="12dp"
+                    android:text="수면 케어"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                    android:textColor="#fff"
+                    android:textSize="20dp" />
+            </android.support.v7.widget.Toolbar>
+
+            <android.support.design.card.MaterialCardView
+                android:id="@+id/bluetooth_btn"
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:layout_alignParentTop="false"
+                android:layout_alignTop="@+id/bluetooth_card"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="-36dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:selectableItemBackground"
+                android:stateListAnimator="@animator/lift_on_touch"
+                app:cardBackgroundColor="@color/colorAccent"
+                app:cardCornerRadius="36dp"
+                app:cardElevation="8dp">
+
+                <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="56dp"
-                    android:text="@string/bluetooth_needed"
-                    android:textColor="@color/browser_actions_title_color"
-                    android:textSize="18sp" />
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_bluetooth_black_36dp" />
+            </android.support.design.card.MaterialCardView>
 
-                <android.support.design.button.MaterialButton
-                    android:id="@+id/button_bluetooth_on_off"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginBottom="32dp"
-                    android:clickable="true"
-                    android:elevation="2dp"
-                    android:focusable="true"
-                    android:text="연결하기"
-                    android:textColor="@color/textColorSecondary"
-                    app:backgroundTint="@color/colorAccent"
-                    app:cornerRadius="10dp" />
+            <android.support.design.card.MaterialCardView
+                android:id="@+id/bluetooth_card"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_alignParentTop="true"
+                android:layout_marginEnd="32dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="100dp"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="5dp">
 
-            </RelativeLayout>
-        </android.support.design.card.MaterialCardView>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
+                    <TextView
+                        android:id="@+id/blutooth_needed_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="56dp"
+                        android:text="@string/bluetooth_needed"
+                        android:textColor="@color/browser_actions_title_color"
+                        android:textSize="18sp" />
 
+                    <android.support.design.button.MaterialButton
+                        android:id="@+id/button_bluetooth_on_off"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginBottom="32dp"
+                        android:clickable="true"
+                        android:elevation="2dp"
+                        android:focusable="true"
+                        android:text="연결하기"
+                        android:textColor="@color/textColorSecondary"
+                        app:backgroundTint="@color/colorAccent"
+                        app:cornerRadius="10dp" />
+
+                </RelativeLayout>
+            </android.support.design.card.MaterialCardView>
+
+        </RelativeLayout>
     </RelativeLayout>
+
 
     <!--menu-->
     <com.mxn.soul.flowingdrawer_core.FlowingMenuLayout
@@ -316,7 +330,7 @@
         android:layout_height="match_parent">
 
         <FrameLayout
-            android:id="@+id/id_container_menu"
+            android:id="@+id/container_menu"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 

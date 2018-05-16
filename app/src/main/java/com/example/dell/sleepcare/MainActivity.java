@@ -1,19 +1,30 @@
 package com.example.dell.sleepcare;
 
+import android.Manifest;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothManager;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.button.MaterialButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.example.dell.sleepcare.Bluetooth.BluetoothDialog;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -30,13 +41,26 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static final int REQUEST_ENABLE_BT = 1;
+
+    @BindView(R.id.main_content)
+    RelativeLayout mainContentLayout;
     @BindView(R.id.my_toolbar)
     Toolbar myToolbar;
+    @BindView(R.id.drawerlayout) FlowingDrawer mDrawer;
+    @BindView(R.id.button_bluetooth_on_off)
+    MaterialButton btnBluetooth;
+
     SharedPreferences sp;
     SharedPreferences.Editor editor;
     OAuthLogin mOAuthLoginModule = OAuthLogin.getInstance();
     GoogleApiClient mGoogleApiClient;
-    @BindView(R.id.drawerlayout) FlowingDrawer mDrawer;
+    BluetoothDialog bluetoothDialog;
+
+    private BluetoothManager mBluetoothManager;
+    private BluetoothAdapter mBluetoothAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +70,9 @@ public class MainActivity extends AppCompatActivity {
         setLoginSetting();
         sp = this.getSharedPreferences("userData", MODE_PRIVATE);
         editor = sp.edit();
+
+        //권한 요청 ( Location )
+        requestPermission();
 
         //상단바와 하단네비바 색상 지정
         if (Build.VERSION.SDK_INT >= 21) {
@@ -74,6 +101,22 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDrawerSlide(float openRatio, int offsetPixels) {
                 Log.i("MainActivity", "openRatio=" + openRatio + " ,offsetPixels=" + offsetPixels);
+            }
+        });
+
+        //블루투스 켜지도록 요청
+        mBluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
+        mBluetoothAdapter = mBluetoothManager.getAdapter();
+        if(mBluetoothAdapter == null || !mBluetoothAdapter.isEnabled()) {
+            Intent enableBTIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableBTIntent, REQUEST_ENABLE_BT);
+        }
+
+        btnBluetooth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bluetoothDialog = new BluetoothDialog(MainActivity.this, getParent());
+                bluetoothDialog.show();
             }
         });
     }
@@ -132,10 +175,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupMenu() {
         FragmentManager fm = getSupportFragmentManager();
-        MenuListFragment mMenuFragment = (MenuListFragment) fm.findFragmentById(R.id.id_container_menu);
+        MenuListFragment mMenuFragment = (MenuListFragment) fm.findFragmentById(R.id.container_menu);
         if (mMenuFragment == null) {
-            mMenuFragment = new MenuListFragment();
-            fm.beginTransaction().add(R.id.id_container_menu, mMenuFragment).commit();
+            mMenuFragment = MenuListFragment.newInstance();
+            fm.beginTransaction().add(R.id.container_menu, mMenuFragment).commit();
+            Log.d("commit","프래그먼트커밋");
         }
     }
     private void onLogOut() {
@@ -159,6 +203,47 @@ public class MainActivity extends AppCompatActivity {
         finish();
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        bluetoothDialog.dismiss();
+    }
 
-}
+    //REQUEST FOR PERMISSSION
+        public void requestPermission() {
+            if (Build.VERSION.SDK_INT  >= Build.VERSION_CODES.M) {
+                int permissionResult = checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
+                if (permissionResult == PackageManager.PERMISSION_DENIED) {
+                    /*
+                     * 거부한 이력이 한번이라도 있다면, true를 리턴한다.
+                     */
+                    if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_COARSE_LOCATION)) {
+                        AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
+                        dialog.setTitle("권한이 필요합니다.")
+                                .setMessage("이 기능을 사용하기 위해서는 단말기의 \"전화걸기\" 권한이 필요합니다. 계속하시겠습니까?")
+                                .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                            requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1000);
+                                        }
+                                    }
+                                })
+                                .setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Toast.makeText(MainActivity.this, "기능을 취소했습니다. 블루투스 기능을 이용할 수 없습니다.\n 이용을 원하실 시 설정에서 권한을 재설정해주십시오.", Toast.LENGTH_SHORT).show();
+                                    }
+                                })
+                                .create().show();
+                    }
+                    //최초로 권한을 요청할 때
+                    else {
+                        requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1000);
+                    }
+                }
+            }
+        }
+    }
+
 
