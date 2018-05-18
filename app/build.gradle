@@ -24,6 +24,10 @@ android {
         exclude 'README.md'
 
     }
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
+    }
 }
 
 dependencies {
@@ -52,7 +56,7 @@ dependencies {
     implementation 'com.airbnb.android:lottie:2.5.1'
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'  //레트로핏2
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
-
+    implementation "com.polidea.rxandroidble2:rxandroidble:1.5.0"
     implementation 'com.wdullaer:materialdatetimepicker:3.6.0'
 }
 apply plugin: 'com.google.gms.google-services'

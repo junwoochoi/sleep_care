@@ -50,6 +50,11 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static com.example.dell.sleepcare.Utils.Constants.API_URL;
+import static com.example.dell.sleepcare.Utils.Constants.GOOGLE_CLIENT_ID;
+import static com.example.dell.sleepcare.Utils.Constants.NAVER_CLIENT_ID;
+import static com.example.dell.sleepcare.Utils.Constants.NAVER_SECRET;
+
 public class LoginActivity extends AppCompatActivity {
 
     @BindView(R.id.button_naverlogin)
@@ -107,8 +112,8 @@ public class LoginActivity extends AppCompatActivity {
         OAuthLogin oAuthLogin = OAuthLogin.getInstance();
         oAuthLogin.init(
                 this
-                , getString(R.string.naver_client_id)
-                , getString(R.string.naver_secret)
+                , NAVER_CLIENT_ID
+                , NAVER_SECRET
                 , "SleepCare"
         );
 
@@ -181,7 +186,7 @@ public class LoginActivity extends AppCompatActivity {
     private void setGoogleLogin() {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder
                 (GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(this.getString(R.string.google_client_id))
+                .requestIdToken(GOOGLE_CLIENT_ID)
                 .requestEmail()
                 .build();
 
@@ -221,7 +226,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void checkLogin(String email){
-        retrofit = new Retrofit.Builder().baseUrl(LoginService.API_URL).addConverterFactory(GsonConverterFactory.create()).build();
+        retrofit = new Retrofit.Builder().baseUrl(API_URL).addConverterFactory(GsonConverterFactory.create()).build();
         loginService = retrofit.create(LoginService.class);
         final Call<com.example.dell.sleepcare.RESTAPI.LoginResult> res = loginService.login(email);
         res.enqueue(new Callback<com.example.dell.sleepcare.RESTAPI.LoginResult>() {

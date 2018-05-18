@@ -8,10 +8,11 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 
+import static com.example.dell.sleepcare.Utils.Constants.API_URL;
+
 
 public interface LoginService {
 
-    static final String API_URL = "http://192.9.20.62:62006/mobile/"; //"http://210.102.181.158:62006/mobile/";
 
     @GET(API_URL+"login/{user_email}")
     Call<LoginResult> login(@Path("user_email") String email);

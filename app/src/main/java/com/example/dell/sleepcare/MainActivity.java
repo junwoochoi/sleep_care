@@ -40,6 +40,8 @@ import com.nhn.android.naverlogin.OAuthLogin;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.example.dell.sleepcare.Utils.Constants.GOOGLE_CLIENT_ID;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final int REQUEST_ENABLE_BT = 1;
@@ -73,6 +75,10 @@ public class MainActivity extends AppCompatActivity {
 
         //권한 요청 ( Location )
         requestPermission();
+        if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
+            Toast.makeText(this, "Bluetooth를 지원하지 않아 이용할 수 없습니다. 죄송합니다.", Toast.LENGTH_SHORT).show();
+            finish();
+        }
 
         //상단바와 하단네비바 색상 지정
         if (Build.VERSION.SDK_INT >= 21) {
@@ -125,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
         //로그인 세팅 초기화
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder
                 (GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(this.getString(R.string.google_client_id))
+                .requestIdToken(GOOGLE_CLIENT_ID)
                 .requestEmail()
                 .build();
         mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -206,7 +212,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        if(bluetoothDialog!=null){
         bluetoothDialog.dismiss();
+        }
     }
 
     //REQUEST FOR PERMISSSION

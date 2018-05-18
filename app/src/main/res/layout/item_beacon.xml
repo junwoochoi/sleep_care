@@ -3,16 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:stateListAnimator="@animator/lift_on_touch">
-
+>
     <TextView
         android:id="@+id/text_bt_device_name"
         style="@style/TextAppearance.MaterialComponents.Subtitle2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
         android:textAlignment="center" />
 
     <TextView

@@ -32,6 +32,8 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static com.example.dell.sleepcare.Utils.Constants.API_URL;
+
 public class RegisterDialog extends Dialog implements DatePickerDialog.OnDateSetListener {
     private static final int LAYOUT = R.layout.dialog_custom;
 
@@ -144,7 +146,7 @@ public class RegisterDialog extends Dialog implements DatePickerDialog.OnDateSet
 
 
     private void registerDB(){
-        retrofit = new Retrofit.Builder().baseUrl(LoginService.API_URL).addConverterFactory(GsonConverterFactory.create()).build();
+        retrofit = new Retrofit.Builder().baseUrl(API_URL).addConverterFactory(GsonConverterFactory.create()).build();
         loginService = retrofit.create(LoginService.class);
         userName = nameInput.getText().toString();
         final String userJob = jobSelect.getSelectedItem().toString();

@@ -25,6 +25,8 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static com.example.dell.sleepcare.Utils.Constants.API_URL;
+
 public class NaverHandler extends OAuthLoginHandler {
 
     private Context mContext;
@@ -114,7 +116,7 @@ public class NaverHandler extends OAuthLoginHandler {
         }
     }
     public void checkLogin(final String email){
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(LoginService.API_URL).addConverterFactory(GsonConverterFactory.create()).build();
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(API_URL).addConverterFactory(GsonConverterFactory.create()).build();
         LoginService loginService = retrofit.create(LoginService.class);
         final Call<com.example.dell.sleepcare.RESTAPI.LoginResult> res = loginService.login(email);
         res.enqueue(new retrofit2.Callback<LoginResult>() {
