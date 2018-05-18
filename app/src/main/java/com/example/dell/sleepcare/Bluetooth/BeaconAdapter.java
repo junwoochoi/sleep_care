@@ -1,6 +1,5 @@
 package com.example.dell.sleepcare.Bluetooth;
 
-import android.bluetooth.BluetoothDevice;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,17 +7,18 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.dell.sleepcare.R;
+import com.polidea.rxandroidble2.RxBleDevice;
 
 import java.util.ArrayList;
 
 public class BeaconAdapter extends BaseAdapter {
 
 
-    private ArrayList<BluetoothDevice> beacons;
+    private ArrayList<RxBleDevice> beacons;
     private LayoutInflater layoutInflater;
 
 
-    public BeaconAdapter(ArrayList<BluetoothDevice> beacons, LayoutInflater layoutInflater) {
+    public BeaconAdapter(ArrayList<RxBleDevice> beacons, LayoutInflater layoutInflater) {
         this.beacons = beacons;
         this.layoutInflater = layoutInflater;
     }
@@ -41,7 +41,9 @@ public class BeaconAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         BeaconHolder beaconHolder;
+
         if (convertView == null) {
+            notifyDataSetChanged();
             beaconHolder = new BeaconHolder();
             convertView = layoutInflater.inflate(R.layout.item_beacon, parent, false);
             beaconHolder.address = convertView.findViewById(R.id.address);
@@ -52,7 +54,7 @@ public class BeaconAdapter extends BaseAdapter {
         } else {
             beaconHolder = (BeaconHolder)convertView.getTag();
         }
-        beaconHolder.address.setText("MAC Addr :"+beacons.get(position).getAddress());
+        beaconHolder.address.setText("MAC Addr :"+beacons.get(position).getMacAddress());
         String deviceName;
         if(beacons.get(position).getName() == null) {
             deviceName = "디바이스 이름: "+"Unknown";
@@ -66,6 +68,7 @@ public class BeaconAdapter extends BaseAdapter {
     private class BeaconHolder {
         TextView address;
         TextView name;
+
 
 
     }

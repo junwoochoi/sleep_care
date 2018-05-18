@@ -1,45 +1,38 @@
 package com.example.dell.sleepcare.Bluetooth;
 
-import android.app.Activity;
 import android.app.Dialog;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothManager;
-import android.bluetooth.le.BluetoothLeScanner;
-import android.bluetooth.le.ScanCallback;
-import android.bluetooth.le.ScanFilter;
-import android.bluetooth.le.ScanRecord;
-import android.bluetooth.le.ScanResult;
-import android.bluetooth.le.ScanSettings;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.ParcelUuid;
 import android.support.annotation.NonNull;
 import android.support.design.button.MaterialButton;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
-import android.view.View;
 import android.view.Window;
 import android.widget.AbsListView;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.dell.sleepcare.R;
+import com.example.dell.sleepcare.Utils.Constants;
 import com.polidea.rxandroidble2.RxBleClient;
+import com.polidea.rxandroidble2.RxBleConnection;
 import com.polidea.rxandroidble2.RxBleDevice;
+import com.polidea.rxandroidble2.exceptions.BleScanException;
+import com.polidea.rxandroidble2.scan.ScanFilter;
+import com.polidea.rxandroidble2.scan.ScanSettings;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-
-import static com.example.dell.sleepcare.Utils.Constants.UUID_BLE_SERVICE;
 
 public class BluetoothDialog extends Dialog {
 
@@ -52,27 +45,19 @@ public class BluetoothDialog extends Dialog {
     MaterialButton cancelBtn;
     @BindView(R.id.btn_bt_dialog_connect)
     MaterialButton connectBtn;
-    @BindView(R.id.btn_bt_dialog_read)
-    MaterialButton readBtn;
 
-    private BluetoothAdapter mBluetoothAdapter;
-    private boolean mScanning;
-    private Handler mHandler;
+
     private Context context;
-    private Activity activity;
-    private ArrayList<BluetoothDevice> beacon;
+    private ArrayList<RxBleDevice> beacon;
     private BeaconAdapter beaconAdapter;
-    private BluetoothLeScanner bluetoothLeScanner;
     private String macAddr;
-    BluetoothConnector bluetoothConnector;
     RxBleClient rxBleClient;
-    RxBleDevice device;
+    RxBleDevice bleDevice;
+    Disposable scanDisposable, connectionDisposable;
 
 
-
-    public BluetoothDialog(@NonNull Context context, Activity activity) {
+    public BluetoothDialog(@NonNull Context context) {
         super(context);
-        this.activity = activity;
         this.context = context;
     }
 
@@ -88,62 +73,48 @@ public class BluetoothDialog extends Dialog {
         //블루투스 관련 초기화
         beacon = new ArrayList<>();
 
-        final BluetoothManager bluetoothManager =
-                (BluetoothManager) context.getSystemService(Context.BLUETOOTH_SERVICE);
-        assert bluetoothManager != null;
-        mBluetoothAdapter = bluetoothManager.getAdapter();
-        mHandler = new Handler();
-        bluetoothLeScanner = mBluetoothAdapter.getBluetoothLeScanner();
+
         scanLeDevice(true);
+
+
 
         //리스트뷰 초기화
         beaconAdapter = new BeaconAdapter(beacon, getLayoutInflater());
         beaconListView.setAdapter(beaconAdapter);
         beaconListView.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
-        beaconListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                if(macAddr!=null){
-                    macAddr = null;
-                }
-                macAddr = beacon.get(i).getAddress();
-                Toast.makeText(context, macAddr, Toast.LENGTH_LONG).show();
+        beaconListView.setOnItemClickListener((adapterView, view, i, l) -> {
+            if(macAddr!=null){
+                macAddr = null;
             }
+            macAddr = beacon.get(i).getMacAddress();
+            Toast.makeText(context, macAddr, Toast.LENGTH_LONG).show();
         });
 
         //연결버튼 onClick
-        connectBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(macAddr != null) {
-                    Log.e("selectedItem : ", macAddr);
-                    Toast.makeText(context, macAddr+"에 연결합니다....", Toast.LENGTH_LONG).show();
-                    //bluetoothConnector = BluetoothConnector.getInstance(context);
-                    //bluetoothConnector.connectBluetooth(macAddr);
-                    device = rxBleClient.getBleDevice(macAddr);
-                    Log.d("getBLEDEVICE", rxBleClient.getBleDevice(macAddr).getName());
-                    Disposable disposable = device.establishConnection(false) // <-- autoConnect flag
-                            .subscribe(
-                                    rxBleConnection -> {
-                                        // All GATT operations are done through the rxBleConnection.
-                                        Log.d("BLE CONNECTION :", "SUCCESS!!" + device.getName());
-                                    },
-                                    throwable -> {
-                                        // Handle an error here.
-                                        Log.e("BLE CONNECTION: " , "ERROR CANNOT CONNECT TO " + macAddr);
-                                    }
-                            );
-                    disposable.dispose();
+        connectBtn.setOnClickListener(view -> {
+            if(macAddr != null) {
+                disposeScan();
+                Toast.makeText(context, macAddr+"에 연결합니다....", Toast.LENGTH_LONG).show();
+                bleDevice = rxBleClient.getBleDevice(macAddr);
+                Log.d("getBLEDEVICE", rxBleClient.getBleDevice(macAddr).getName());
+                if (isConnected()) {
+                    triggerDisconnect();
+                } else {
+                    connectionDisposable = bleDevice.establishConnection(false)
+                            .flatMapSingle(rxBleConnection -> rxBleConnection.readCharacteristic(Constants.BLE_READ_SAMPLE_UUID))
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .doFinally(this::disposeConnection)
+                            .subscribe(this::onConnectionReceived, this::onConnectionFailure);
                 }
             }
         });
 
-        readBtn.setOnClickListener(view -> {
 
-        });
         //취소버튼 onClick
         cancelBtn.setOnClickListener(view -> {
-            bluetoothLeScanner.stopScan(mLeScanCallback);
+            if(scanDisposable!=null) {
+                scanDisposable.dispose();
+            }
             cancel();
         });
 
@@ -151,83 +122,130 @@ public class BluetoothDialog extends Dialog {
 
     }
 
-    private void scanLeDevice(final boolean enable) {
-        if (enable) {
-            // Stops scanning after a pre-defined scan period.
-            mHandler.postDelayed(() -> {
-                mScanning = false;
-
-                bluetoothLeScanner.stopScan(mLeScanCallback);
-                if(beacon.isEmpty()) {
-                    Snackbar.make(getWindow().getDecorView().getRootView(), "디바이스를 찾을 수 없습니다. \n 디바이스 근처에서 재시도 해주세요", Snackbar.LENGTH_LONG).show();
-                    cancel();
-                }
-            }, SCAN_PERIOD);
-
-            mScanning = true;
-            ScanSettings settings = new ScanSettings.Builder().setScanMode(ScanSettings.SCAN_MODE_BALANCED).build();
-            bluetoothLeScanner.startScan(scanFilters(UUID_BLE_SERVICE), settings, mLeScanCallback);
-        } else {
-            mScanning = false;
-            bluetoothLeScanner.stopScan(mLeScanCallback);
+    private void disposeConnection() {
+        if(connectionDisposable!=null) {
+            connectionDisposable = null;
         }
     }
-    private ScanCallback mLeScanCallback = new ScanCallback() {
-        @Override
-        public void onScanResult(int callbackType, ScanResult result) {
-            super.onScanResult(callbackType, result);
-            Log.e("BT log : ", "블루투스 스캔 성공..."+result.toString());
-            try {
-                final ScanRecord scanRecord = result.getScanRecord();
 
-                Log.d("getTxPowerLevel()",scanRecord.getTxPowerLevel()+"");
-                Log.d("onScanResult()", result.getDevice().getAddress() + "\n" + result.getRssi() + "\n" + result.getDevice().getName()
-                        + "\n" + result.getDevice().getBondState() + "\n" + result.getDevice().getType());
+    private void onConnectionFailure(Throwable throwable) {
+        Snackbar.make(findViewById(android.R.id.content), "Connection error: " + throwable, Snackbar.LENGTH_SHORT).show();
+        throwable.printStackTrace();
+    }
 
-                final ScanResult scanResult = result;
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if(activity == null)
-                            activity = (Activity) context;
-                        activity.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                if(!beacon.contains(scanResult.getDevice())) {
-                                    beacon.add(scanResult.getDevice());
-                                }
-                                beaconAdapter.notifyDataSetChanged();
-                            }
-                        });
-                    }
-                }).start();
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-
+    private void onConnectionReceived(byte[] bytes) {
+        try {
+            Snackbar.make(findViewById(android.R.id.content), new String(bytes, "UTF-8"), Snackbar.LENGTH_LONG).show();
+            Log.d("onConnectionReceived", "Connection Received!!  : " + new String(bytes, "UTF-8") );
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
         }
 
-        @Override
-        public void onBatchScanResults(List<ScanResult> results) {
-            super.onBatchScanResults(results);
+    }
+
+    private void triggerDisconnect() {
+        if (connectionDisposable != null) {
+            connectionDisposable.dispose();
+        }
+    }
+
+    private boolean isConnected() {
+        return bleDevice.getConnectionState() == RxBleConnection.RxBleConnectionState.CONNECTED;
+    }
+
+    private void disposeScan() {
+        if(scanDisposable!=null) {
+            scanDisposable = null;
+        }
+        beacon.clear();
+    }
+
+
+    private void scanLeDevice(final boolean enable) {
+        if (isScanning()) {
+            scanDisposable.dispose();
+        } else {
+            scanDisposable = rxBleClient.scanBleDevices(
+                    new ScanSettings.Builder()
+                            .setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
+                            .setCallbackType(ScanSettings.CALLBACK_TYPE_ALL_MATCHES)
+                            .build(),
+                    new ScanFilter.Builder()
+                            .setServiceUuid(Constants.UUID_BLE_SERVICE)
+                            .build()
+            )
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doFinally(this::disposeScan)
+                    .subscribe(scanResult -> {
+                        if(!beacon.contains(scanResult.getBleDevice())){
+                            beacon.add(scanResult.getBleDevice());
+                        }
+                            beaconAdapter.notifyDataSetChanged();
+                    }, this::onScanFailure);
         }
 
-        @Override
-        public void onScanFailed(int errorCode) {
-            super.onScanFailed(errorCode);
-            Log.e("BT log : ", "블루투스 스캔 실패..." + String.valueOf(errorCode));
+    }
+
+    private void onScanFailure(Throwable throwable) {
+        if (throwable instanceof BleScanException) {
+            handleBleScanException((BleScanException) throwable);
         }
-    };
+    }
 
-    private List<ScanFilter> scanFilters(ParcelUuid serviceUUIDs) {
-        List<ScanFilter> list = new ArrayList<>();
+    private void handleBleScanException(BleScanException bleScanException) {
+        final String text;
 
-            ScanFilter filter = new ScanFilter.Builder().setServiceUuid(serviceUUIDs).build();
-            list.add(filter);
+        switch (bleScanException.getReason()) {
+            case BleScanException.BLUETOOTH_NOT_AVAILABLE:
+                text = "Bluetooth is not available";
+                break;
+            case BleScanException.BLUETOOTH_DISABLED:
+                text = "Enable bluetooth and try again";
+                break;
+            case BleScanException.LOCATION_PERMISSION_MISSING:
+                text = "On Android 6.0 location permission is required. Implement Runtime Permissions";
+                break;
+            case BleScanException.LOCATION_SERVICES_DISABLED:
+                text = "Location services needs to be enabled on Android 6.0";
+                break;
+            case BleScanException.SCAN_FAILED_ALREADY_STARTED:
+                text = "Scan with the same filters is already started";
+                break;
+            case BleScanException.SCAN_FAILED_APPLICATION_REGISTRATION_FAILED:
+                text = "Failed to register application for bluetooth scan";
+                break;
+            case BleScanException.SCAN_FAILED_FEATURE_UNSUPPORTED:
+                text = "Scan with specified parameters is not supported";
+                break;
+            case BleScanException.SCAN_FAILED_INTERNAL_ERROR:
+                text = "Scan failed due to internal error";
+                break;
+            case BleScanException.SCAN_FAILED_OUT_OF_HARDWARE_RESOURCES:
+                text = "Scan cannot start due to limited hardware resources";
+                break;
+            case BleScanException.UNDOCUMENTED_SCAN_THROTTLE:
+                text = String.format(
+                        Locale.getDefault(),
+                        "Android 7+ does not allow more scans. Try in %d seconds",
+                        secondsTill(bleScanException.getRetryDateSuggestion())
+                );
+                break;
+            case BleScanException.UNKNOWN_ERROR_CODE:
+            case BleScanException.BLUETOOTH_CANNOT_START:
+            default:
+                text = "Unable to start scanning";
+                break;
+        }
+        Log.w("EXCEPTION", text, bleScanException);
+        Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
+    }
 
-        return list;
+    private Object secondsTill(Date retryDateSuggestion) {
+        return TimeUnit.MILLISECONDS.toSeconds(retryDateSuggestion.getTime() - System.currentTimeMillis());
+    }
+
+    private boolean isScanning() {
+        return scanDisposable != null;
     }
 
 

@@ -58,18 +58,6 @@
             app:backgroundTint="@color/colorPrimary"
             android:textColor="@color/textColorPrimary"
             android:text="연결" />
-        <android.support.design.button.MaterialButton
-            android:id="@+id/btn_bt_dialog_read"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/beaconListView"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginLeft="8dp"
-            android:stateListAnimator="@animator/lift_on_touch"
-            app:backgroundTint="@color/colorPrimary"
-            android:textColor="@color/textColorPrimary"
-            android:text="읽기" />
+
     </RelativeLayout>
 </android.support.design.card.MaterialCardView>

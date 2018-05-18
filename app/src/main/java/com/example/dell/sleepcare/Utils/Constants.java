@@ -15,7 +15,7 @@ public class Constants {
     public static final String FB_LOGIN_PROTOCOL_SCHEME = "fb1386594921477837";
     public static final String GOOGLE_CLIENT_ID = "154020628759-3bnilac74b3vrfsfq2ql2s9csadco265.apps.googleusercontent.com";
 
-    public final static UUID BLE_SERVICE_UUID_UUID = UUID.fromString("ffffffff-ffff-ffff-ffff-fffffffffff0");
+    public final static UUID BLE_READ_SAMPLE_UUID = UUID.fromString("ffffffff-ffff-ffff-ffff-fffffffffff2");
     public final static ParcelUuid UUID_BLE_SERVICE =
             ParcelUuid.fromString("FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFF0");
 }

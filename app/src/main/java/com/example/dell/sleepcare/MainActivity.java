@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
         btnBluetooth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                bluetoothDialog = new BluetoothDialog(MainActivity.this, getParent());
+                bluetoothDialog = new BluetoothDialog(MainActivity.this);
                 bluetoothDialog.show();
             }
         });
