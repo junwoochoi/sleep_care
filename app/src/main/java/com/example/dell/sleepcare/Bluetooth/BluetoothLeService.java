@@ -1,117 +1,119 @@
 package com.example.dell.sleepcare.Bluetooth;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothGatt;
-import android.bluetooth.BluetoothGattCallback;
-import android.bluetooth.BluetoothGattCharacteristic;
-import android.bluetooth.BluetoothManager;
-import android.bluetooth.BluetoothProfile;
 import android.content.Intent;
+import android.os.Binder;
+import android.os.Build;
 import android.os.IBinder;
-import android.support.annotation.Nullable;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import static com.example.dell.sleepcare.Utils.Constants.UUID_BLE_SERVICE;
+import com.example.dell.sleepcare.MainActivity;
+import com.example.dell.sleepcare.R;
+import com.example.dell.sleepcare.Utils.Constants;
+import com.polidea.rxandroidble2.RxBleClient;
+import com.polidea.rxandroidble2.RxBleDevice;
+
+import java.io.UnsupportedEncodingException;
+import java.util.Objects;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 
 public class BluetoothLeService extends Service {
-    private final static String TAG = BluetoothLeService.class.getSimpleName();
 
-    private BluetoothManager mBluetoothManager;
-    private BluetoothAdapter mBluetoothAdapter;
-    private String mBluetoothDeviceAddress;
-    private BluetoothGatt mBluetoothGatt;
-    private int mConnectionState = STATE_DISCONNECTED;
+    RxBleClient  rxBleClient;
+    String macAddr;
+    RxBleDevice bleDevice;
+    Disposable connectionDisposable;
+    public BluetoothLeService() {
+    }
 
-    private static final int STATE_DISCONNECTED = 0;
-    private static final int STATE_CONNECTING = 1;
-    private static final int STATE_CONNECTED = 2;
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        onStartForegroundService();
+        rxBleClient = RxBleClient.create(this);
+        macAddr = Objects.requireNonNull(intent.getExtras()).getString("macAddr");
+        Log.i("bluetooth 서비스 실행", "macAddr : "+macAddr+"로 연결 시도중...");
+        subscribeNotification();
+        return START_STICKY;
+    }
 
-    public final static String ACTION_GATT_CONNECTED =
-            "com.example.bluetooth.le.ACTION_GATT_CONNECTED";
-    public final static String ACTION_GATT_DISCONNECTED =
-            "com.example.bluetooth.le.ACTION_GATT_DISCONNECTED";
-    public final static String ACTION_GATT_SERVICES_DISCOVERED =
-            "com.example.bluetooth.le.ACTION_GATT_SERVICES_DISCOVERED";
-    public final static String ACTION_DATA_AVAILABLE =
-            "com.example.bluetooth.le.ACTION_DATA_AVAILABLE";
-    public final static String EXTRA_DATA =
-            "com.example.bluetooth.le.EXTRA_DATA";
+    private void onStartForegroundService() {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(BluetoothLeService.this, "default");
+        builder
+                .setContentTitle("수면 케어")
+                .setContentText("수면 매트와 연결 중...")
+                .setSmallIcon(R.mipmap.ic_launcher);
+        Intent notificationIntent = new Intent(this, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+        builder.setContentIntent(pendingIntent);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            manager.createNotificationChannel( new NotificationChannel("default", "기본채널", NotificationManager.IMPORTANCE_DEFAULT));
+        }
+        startForeground(1, builder.build());
+    }
 
 
+    public void subscribeNotification(){
+        if(macAddr != null) {
+            bleDevice = rxBleClient.getBleDevice(macAddr);
+            Log.d("getBLEDEVICE", rxBleClient.getBleDevice(macAddr).getName());
+            if (isConnected()) {
+                connectionDisposable = null;
+            }
+            connectionDisposable = bleDevice.establishConnection(false)
+                    .flatMap(rxBleConnection -> rxBleConnection.setupNotification(Constants.BLE_NOTIFY_SAMPLE_UUID))
+                    .flatMap(notificationObservable -> notificationObservable)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(this::onNotificationReceived, Throwable::printStackTrace);
+        }
+    }
 
-    // Various callback methods defined by the BLE API.
-    private final BluetoothGattCallback mGattCallback =
-            new BluetoothGattCallback() {
-                @Override
-                public void onConnectionStateChange(BluetoothGatt gatt, int status,
-                                                    int newState) {
-                    String intentAction;
-                    if (newState == BluetoothProfile.STATE_CONNECTED) {
-                        intentAction = ACTION_GATT_CONNECTED;
-                        mConnectionState = STATE_CONNECTED;
-                        broadcastUpdate(intentAction);
-                        Log.i(TAG, "Connected to GATT server.");
-                        Log.i(TAG, "Attempting to start service discovery:" +
-                                mBluetoothGatt.discoverServices());
+    private void onNotificationReceived(byte[] bytes) {
+        try {
+            Log.d("notificationReceived: ", new String(bytes, "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+    }
 
-                    } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
-                        intentAction = ACTION_GATT_DISCONNECTED;
-                        mConnectionState = STATE_DISCONNECTED;
-                        Log.i(TAG, "Disconnected from GATT server.");
-                        broadcastUpdate(intentAction);
-                    }
-                }
+    private boolean isConnected() {
+        if(connectionDisposable != null){
+            return true;
+        } else {
+            return false;
+        }
+    }
 
-                @Override
-                // New services discovered
-                public void onServicesDiscovered(BluetoothGatt gatt, int status) {
-                    if (status == BluetoothGatt.GATT_SUCCESS) {
-                        broadcastUpdate(ACTION_GATT_SERVICES_DISCOVERED);
-                    } else {
-                        Log.w(TAG, "onServicesDiscovered received: " + status);
-                    }
-                }
-
-                @Override
-                // Result of a characteristic read operation
-                public void onCharacteristicRead(BluetoothGatt gatt,
-                                                 BluetoothGattCharacteristic characteristic,
-                                                 int status) {
-                    if (status == BluetoothGatt.GATT_SUCCESS) {
-                        broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
-                    }
-                }
-            };
-
-    @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        return null;
-    }
-    private void broadcastUpdate(final String action) {
-        final Intent intent = new Intent(action);
-        sendBroadcast(intent);
+        return mBinder;
     }
 
-    private void broadcastUpdate(final String action,
-                                 final BluetoothGattCharacteristic characteristic) {
-        final Intent intent = new Intent(action);
+    @Override
+    public boolean onUnbind(Intent intent) {
+        close();
+        return super.onUnbind(intent);
+    }
 
-        // This is special handling for the Heart Rate Measurement profile. Data
-        // parsing is carried out as per profile specifications.
-        if (UUID_BLE_SERVICE.equals(characteristic.getUuid())) {
-
-            // For all other profiles, writes the data formatted in HEX.
-            final byte[] data = characteristic.getValue();
-            if (data != null && data.length > 0) {
-                final StringBuilder stringBuilder = new StringBuilder(data.length);
-                for(byte byteChar : data)
-                    stringBuilder.append(String.format("%02X ", byteChar));
-                intent.putExtra(EXTRA_DATA, new String(data) + "\n" +
-                        stringBuilder.toString());
-            }
+    public void close() {
+        if (rxBleClient == null) {
+            return;
         }
-        sendBroadcast(intent);
+        rxBleClient = null;
+    }
+
+    private final IBinder mBinder = new LocalBinder();
+
+    public class LocalBinder extends Binder {
+        BluetoothLeService getService() {
+            return BluetoothLeService.this;
+        }
     }
 }

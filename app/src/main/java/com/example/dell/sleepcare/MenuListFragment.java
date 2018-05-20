@@ -41,7 +41,7 @@ public class MenuListFragment extends Fragment {
         String userName = sp.getString("name","");
 
 
-        vNavigation = (NavigationView) view.findViewById(R.id.vNavigation);
+        vNavigation = view.findViewById(R.id.vNavigation);
         vNavigation.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {

@@ -2,11 +2,12 @@ package com.example.dell.sleepcare.Bluetooth;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.button.MaterialButton;
-import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.Window;
 import android.widget.AbsListView;
@@ -16,13 +17,11 @@ import android.widget.Toast;
 import com.example.dell.sleepcare.R;
 import com.example.dell.sleepcare.Utils.Constants;
 import com.polidea.rxandroidble2.RxBleClient;
-import com.polidea.rxandroidble2.RxBleConnection;
 import com.polidea.rxandroidble2.RxBleDevice;
 import com.polidea.rxandroidble2.exceptions.BleScanException;
 import com.polidea.rxandroidble2.scan.ScanFilter;
 import com.polidea.rxandroidble2.scan.ScanSettings;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
@@ -31,6 +30,7 @@ import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 
@@ -77,80 +77,38 @@ public class BluetoothDialog extends Dialog {
         scanLeDevice(true);
 
 
-
         //리스트뷰 초기화
         beaconAdapter = new BeaconAdapter(beacon, getLayoutInflater());
         beaconListView.setAdapter(beaconAdapter);
         beaconListView.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
         beaconListView.setOnItemClickListener((adapterView, view, i, l) -> {
-            if(macAddr!=null){
+            if (macAddr != null) {
                 macAddr = null;
             }
             macAddr = beacon.get(i).getMacAddress();
             Toast.makeText(context, macAddr, Toast.LENGTH_LONG).show();
         });
 
-        //연결버튼 onClick
-        connectBtn.setOnClickListener(view -> {
-            if(macAddr != null) {
-                disposeScan();
-                Toast.makeText(context, macAddr+"에 연결합니다....", Toast.LENGTH_LONG).show();
-                bleDevice = rxBleClient.getBleDevice(macAddr);
-                Log.d("getBLEDEVICE", rxBleClient.getBleDevice(macAddr).getName());
-                if (isConnected()) {
-                    triggerDisconnect();
-                } else {
-                    connectionDisposable = bleDevice.establishConnection(false)
-                            .flatMapSingle(rxBleConnection -> rxBleConnection.readCharacteristic(Constants.BLE_READ_SAMPLE_UUID))
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .doFinally(this::disposeConnection)
-                            .subscribe(this::onConnectionReceived, this::onConnectionFailure);
-                }
-            }
-        });
-
-
-        //취소버튼 onClick
-        cancelBtn.setOnClickListener(view -> {
-            if(scanDisposable!=null) {
-                scanDisposable.dispose();
-            }
-            cancel();
-        });
-
-
-
     }
-
-    private void disposeConnection() {
-        if(connectionDisposable!=null) {
-            connectionDisposable = null;
+    @OnClick(R.id.btn_bt_dialog_connect)
+    void onConnect(){
+        scanLeDevice(false);
+        Intent intent = new Intent(context.getApplicationContext(), BluetoothLeService.class);
+        intent.putExtra("macAddr", macAddr);
+        Log.e("click:", "onClick");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            context.startForegroundService(intent);
         }
+        context.startService(intent);
+        dismiss();
     }
 
-    private void onConnectionFailure(Throwable throwable) {
-        Snackbar.make(findViewById(android.R.id.content), "Connection error: " + throwable, Snackbar.LENGTH_SHORT).show();
-        throwable.printStackTrace();
-    }
-
-    private void onConnectionReceived(byte[] bytes) {
-        try {
-            Snackbar.make(findViewById(android.R.id.content), new String(bytes, "UTF-8"), Snackbar.LENGTH_LONG).show();
-            Log.d("onConnectionReceived", "Connection Received!!  : " + new String(bytes, "UTF-8") );
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+    @OnClick(R.id.btn_bt_dialog_cancel)
+    void onCancel(){
+        if(scanDisposable!=null) {
+            scanDisposable.dispose();
         }
-
-    }
-
-    private void triggerDisconnect() {
-        if (connectionDisposable != null) {
-            connectionDisposable.dispose();
-        }
-    }
-
-    private boolean isConnected() {
-        return bleDevice.getConnectionState() == RxBleConnection.RxBleConnectionState.CONNECTED;
+        cancel();
     }
 
     private void disposeScan() {
@@ -162,6 +120,7 @@ public class BluetoothDialog extends Dialog {
 
 
     private void scanLeDevice(final boolean enable) {
+        if(enable){
         if (isScanning()) {
             scanDisposable.dispose();
         } else {
@@ -171,7 +130,7 @@ public class BluetoothDialog extends Dialog {
                             .setCallbackType(ScanSettings.CALLBACK_TYPE_ALL_MATCHES)
                             .build(),
                     new ScanFilter.Builder()
-                            .setServiceUuid(Constants.UUID_BLE_SERVICE)
+                            .setServiceUuid(Constants.PARCEL_UUID_BLE_SERVICE)
                             .build()
             )
                     .observeOn(AndroidSchedulers.mainThread())
@@ -182,6 +141,9 @@ public class BluetoothDialog extends Dialog {
                         }
                             beaconAdapter.notifyDataSetChanged();
                     }, this::onScanFailure);
+        }}
+        else {
+            disposeScan();
         }
 
     }

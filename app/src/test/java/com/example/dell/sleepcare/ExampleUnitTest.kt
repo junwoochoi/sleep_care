@@ -1,7 +1,5 @@
 package com.example.dell.sleepcare
 
-import org.junit.Test
-
 import org.junit.Assert.*
 
 /**
