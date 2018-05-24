@@ -15,10 +15,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".LoginActivity"
+            android:name=".Activitity.LoginActivity"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
         <activity
-            android:name=".MainActivity"
+            android:name=".Activitity.MainActivity"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
 
         <meta-data
@@ -42,7 +42,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SplashActivity"
+            android:name=".Activitity.SplashActivity"
             android:theme="@style/SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,4 +1,4 @@
-package com.example.dell.sleepcare;
+package com.example.dell.sleepcare.Activitity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -17,7 +17,10 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.example.dell.sleepcare.NaverHandler;
+import com.example.dell.sleepcare.R;
 import com.example.dell.sleepcare.RESTAPI.LoginService;
+import com.example.dell.sleepcare.RegisterDialog;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;

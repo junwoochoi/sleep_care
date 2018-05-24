@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.button.MaterialButton;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.Window;
 import android.widget.AbsListView;
@@ -100,6 +101,9 @@ public class BluetoothDialog extends Dialog {
             context.startForegroundService(intent);
         }
         context.startService(intent);
+        Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content),  "수면 매트에 연결되었습니다. ", Snackbar.LENGTH_LONG);
+        snackbar.getView().setBackgroundColor(context.getResources().getColor(R.color.colorSecondary));
+        snackbar.show();
         dismiss();
     }
 

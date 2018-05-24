@@ -1,4 +1,4 @@
-package com.example.dell.sleepcare;
+package com.example.dell.sleepcare.Fragment;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -12,6 +12,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
+import com.example.dell.sleepcare.R;
 
 
 public class MenuListFragment extends Fragment {

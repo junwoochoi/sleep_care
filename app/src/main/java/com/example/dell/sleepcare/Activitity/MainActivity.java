@@ -1,6 +1,8 @@
-package com.example.dell.sleepcare;
+package com.example.dell.sleepcare.Activitity;
 
 import android.Manifest;
+import android.app.ActivityManager;
+import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
@@ -25,6 +27,10 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.dell.sleepcare.Bluetooth.BluetoothDialog;
+import com.example.dell.sleepcare.Bluetooth.BluetoothLeService;
+import com.example.dell.sleepcare.Fragment.MenuListFragment;
+import com.example.dell.sleepcare.R;
+import com.example.dell.sleepcare.Fragment.TestFragment;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -39,6 +45,7 @@ import com.nhn.android.naverlogin.OAuthLogin;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 import static com.example.dell.sleepcare.Utils.Constants.GOOGLE_CLIENT_ID;
 
@@ -50,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
     RelativeLayout mainContentLayout;
     @BindView(R.id.my_toolbar)
     Toolbar myToolbar;
-    @BindView(R.id.drawerlayout) FlowingDrawer mDrawer;
+    @BindView(R.id.drawerlayout) public FlowingDrawer mDrawer;
     @BindView(R.id.button_bluetooth_on_off)
     MaterialButton btnBluetooth;
 
@@ -72,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
         setLoginSetting();
         sp = this.getSharedPreferences("userData", MODE_PRIVATE);
         editor = sp.edit();
+
 
         //권한 요청 ( Location )
         requestPermission();
@@ -127,6 +135,8 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+
+
     public void setLoginSetting() {
         //로그인 세팅 초기화
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder
@@ -145,6 +155,13 @@ public class MainActivity extends AppCompatActivity {
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
+    }
+    @OnClick(R.id.psqi_test_btn)
+    void onTestClicked(){
+        FragmentManager fm = getSupportFragmentManager();
+        TestFragment testFragment = new TestFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_container, testFragment).commit();
+        mainContentLayout.setVisibility(View.GONE);
     }
 
     //뒤로가기 동작 제어
@@ -185,9 +202,9 @@ public class MainActivity extends AppCompatActivity {
         if (mMenuFragment == null) {
             mMenuFragment = MenuListFragment.newInstance();
             fm.beginTransaction().add(R.id.container_menu, mMenuFragment).commit();
-            Log.d("commit","프래그먼트커밋");
         }
     }
+
     private void onLogOut() {
         mOAuthLoginModule.logout(getApplicationContext());
         LoginManager.getInstance().logOut();
@@ -210,11 +227,27 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        updateUI();
+        super.onResume();
+    }
+
+    @Override
     protected void onPause() {
+        updateUI();
         super.onPause();
         if(bluetoothDialog!=null){
         bluetoothDialog.dismiss();
         }
+    }
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     //REQUEST FOR PERMISSSION
@@ -250,6 +283,32 @@ public class MainActivity extends AppCompatActivity {
                         requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1000);
                     }
                 }
+            }
+        }
+        private void updateUI(){
+            Log.e("isServiceRunning?", String.valueOf(isMyServiceRunning(BluetoothLeService.class)));
+            if (isMyServiceRunning(BluetoothLeService.class)) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                btnBluetooth.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        Intent stopIntent = new Intent(MainActivity.this, Service.class);
+                                        stopService(stopIntent);
+                                    }
+                                });
+                                btnBluetooth.setText("연결취소");
+                            }
+                        });
+                    }
+                }).start();
+            } else {
+                btnBluetooth.setClickable(true);
+                btnBluetooth.setText("연결하기");
             }
         }
     }

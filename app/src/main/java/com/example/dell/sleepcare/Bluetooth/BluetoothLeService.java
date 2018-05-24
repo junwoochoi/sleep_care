@@ -10,8 +10,9 @@ import android.os.Build;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import android.widget.Toast;
 
-import com.example.dell.sleepcare.MainActivity;
+import com.example.dell.sleepcare.Activitity.MainActivity;
 import com.example.dell.sleepcare.R;
 import com.example.dell.sleepcare.Utils.Constants;
 import com.polidea.rxandroidble2.RxBleClient;
@@ -19,6 +20,7 @@ import com.polidea.rxandroidble2.RxBleDevice;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Objects;
+import java.util.StringTokenizer;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -68,7 +70,7 @@ public class BluetoothLeService extends Service {
                 connectionDisposable = null;
             }
             connectionDisposable = bleDevice.establishConnection(false)
-                    .flatMap(rxBleConnection -> rxBleConnection.setupNotification(Constants.BLE_NOTIFY_SAMPLE_UUID))
+                    .flatMap(rxBleConnection -> rxBleConnection.setupNotification(Constants.BLE_NOTIFY_6_UUID))
                     .flatMap(notificationObservable -> notificationObservable)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(this::onNotificationReceived, Throwable::printStackTrace);
@@ -77,9 +79,17 @@ public class BluetoothLeService extends Service {
 
     private void onNotificationReceived(byte[] bytes) {
         try {
-            Log.d("notificationReceived: ", new String(bytes, "UTF-8"));
+            String result = new String(bytes, "UTF-8");
+            StringTokenizer tokenizer = new StringTokenizer(result,",");
+
+            Log.d("notificationReceived: ", "온도: "+tokenizer.nextToken()+" 습도: "+tokenizer.nextToken()+" 빛: "+tokenizer.nextToken()+" 소음: "+tokenizer.nextToken());
         } catch (UnsupportedEncodingException e) {
+            Log.e("getCause값: ", e.getCause().toString());
+            Toast.makeText(this, "블루투스 연결이 끊겼습니다.", Toast.LENGTH_LONG).show();
+            stopForeground(true);
+            stopSelf();
             e.printStackTrace();
+
         }
     }
 

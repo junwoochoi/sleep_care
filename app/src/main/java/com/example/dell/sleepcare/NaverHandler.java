@@ -8,6 +8,8 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.dell.sleepcare.Activitity.LoginActivity;
+import com.example.dell.sleepcare.Activitity.MainActivity;
 import com.example.dell.sleepcare.RESTAPI.LoginResult;
 import com.example.dell.sleepcare.RESTAPI.LoginService;
 import com.nhn.android.naverlogin.OAuthLogin;
@@ -35,7 +37,7 @@ public class NaverHandler extends OAuthLoginHandler {
     SharedPreferences sp;
 
 
-    NaverHandler(Context mContext, OAuthLogin mOAuthLoginModule, LoginActivity activity) {
+    public NaverHandler(Context mContext, OAuthLogin mOAuthLoginModule, LoginActivity activity) {
         this.mContext = mContext;
         this.mOAuthLoginModule = mOAuthLoginModule;
         this.activity = activity;

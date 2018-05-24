@@ -41,4 +41,8 @@
         <item name="windowActionBar">false</item>
         <item name="android:windowBackground">@color/colorPrimaryDark</item>
     </style>
+
+
+
+   
 </resources>

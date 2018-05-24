@@ -1,14 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TestFragment">
+    tools:context=".Fragment.TestFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/fragment_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="@dimen/mtrl_bottomappbar_height"
+        android:background="@color/colorPrimary"
+        android:theme="@style/ThemeOverlay.MaterialComponents.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.MaterialComponents.Light"
+        app:titleTextColor="@android:color/white">
 
-</FrameLayout>
+        <ImageView
+            android:id="@+id/test_fragment_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/ic_menu_white_24dp" />
+
+        <TextView
+            android:id="@+id/toolbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:paddingTop="12dp"
+            android:text="수면장애척도 측정"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+            android:textColor="#fff"
+            android:textSize="20dp" />
+    </android.support.v7.widget.Toolbar>
+
+    <TextView
+        android:id="@+id/text_test_inst"
+        style="@style/TextAppearance.MaterialComponents.Subtitle2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/fragment_toolbar"
+        android:padding="8dp"
+        android:text="@string/test_basic_text"
+        android:textAlignment="center"
+        android:textColor="@color/md_grey_600" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="600dp"
+        android:layout_below="@id/text_test_inst"
+        android:layout_gravity="bottom"
+        android:clipToPadding="false"
+        android:overScrollMode="never"
+        android:paddingBottom="30dp"
+        android:paddingEnd="@dimen/card_padding"
+        android:paddingLeft="@dimen/card_padding"
+        android:paddingRight="@dimen/card_padding"
+        android:paddingStart="@dimen/card_padding" />
+
+    <android.support.design.button.MaterialButton
+        android:id="@+id/button_next_test"
+        style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="24dp"
+        android:stateListAnimator="@animator/lift_on_touch"
+        android:text="다음"
+        android:textSize="16sp"
+        app:backgroundTint="@color/primaryDarkColor"
+        app:cornerRadius="15dp" />
+
+    <android.support.design.button.MaterialButton
+        android:id="@+id/button_prev_test"
+        style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_margin="24dp"
+        android:stateListAnimator="@animator/lift_on_touch"
+        android:text="이전"
+        android:textColor="@color/md_blue_grey_700"
+        android:textSize="16sp"
+        app:backgroundTint="@color/md_grey_100"
+        app:cornerRadius="15dp" />
+
+</RelativeLayout>

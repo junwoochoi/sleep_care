@@ -9,7 +9,41 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="bluetooth_needed">블루투스를 연결해주세요</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="test_basic_text">다음 각 문항을 잘 읽고, 지난 한 달 이내의 평소 수면에 관한 가장 정확한 대답을 해 주십시오. 모든 질문에 대답하여 주십시오.
+    </string>
+    <string name="test_question_1">1. 지난 한달 동안, 보통 밤 몇시에 취침하셨습니까?</string>
+    <string name="test_question_2">2. 지난 한달 동안, 각 밤마다 누워서 잠이 들 때까지 얼마만큼의 시간이 걸렸습니까?</string>
+    <string name="test_question_3">3. 지난 한달 동안, 보통 아침 언제쯤 일어나셨습니까?</string>
+    <string name="test_question_4">4. 지난 한달 동안, 밤에 실제로 몇 시간을 주무셨습니까?</string>
+    <string name="test_question_6">6. 지난 한 달간, 여러분의 수면의 질을 전반적으로 평가하자면 어떻게 매기겠습니까? </string>
+    <string name="test_question_7">7. 지난 한 달간, 잠이 들기 위해 얼마나 자주 약을 복용하셨습니까? </string>
+    <string name="test_question_8">8. 지난 한 달간, 운전 중이나 식사를 할 때, 사회적 활동에 참여할 때 얼마나 자주 깨어있는 상태로 있는데 문제가 있었습니까? </string>
+    <string name="test_question_9">9. 지난 한 달간, 일을 해내는 데 충분한 의욕을 지니는 데 있어 얼마나 큰 문제를 가졌습니까? </string>
+    <string name="test_question_10">10. 동거자나 한 방에서 같이 자는 사람이 있습니까? </string>
+    <string name="test_question_a">(a) 지난 한 달 동안, 다음과 같은 이유로 얼마나 자주 잠이 드는데 문제가 있으셨습니까?\n30분 이내 잠이 들지 못한다. </string>
+    <string name="test_question_b">(b) 한 밤 중이나 아침 일찍 깨게 된다. </string>
+    <string name="test_question_c">(c) 화장실에 가려고 일어나야 한다. </string>
+    <string name="test_question_d">(d) 숨을 편히 쉬지 못한다. </string>
+    <string name="test_question_e">(e) 크게 코를 골거나 기침을 한다. </string>
+    <string name="test_question_f">(f) 오한기운을 심하게 느낀다. </string>
+    <string name="test_question_g">(g) 열을 심하게 느낀다. </string>
+    <string name="test_question_h">(h) 악몽을 꾼다. </string>
+    <string name="test_question_i">(i) 통증이 있다. </string>
+    <string name="test_question_j">(j) 위의 이유 때문에 얼마나 자주 잠이 드는데 문제가 있었습니까? </string>
+    <string name="test_answer_a_1">지난 한 달간 없었다 </string>
+    <string name="test_answer_a_2">주당 한번 이하</string>
+    <string name="test_answer_a_3">주당 한 두번</string>
+    <string name="test_answer_a_4">주당 세번 혹은 그 이상</string>
+    <string name="test_answer_b_1">아주 좋다</string>
+    <string name="test_answer_b_2">대체로 좋다</string>
+    <string name="test_answer_b_3">대체로 나쁘다</string>
+    <string name="test_answer_b_4">아주 나쁘다</string>
+    <string name="test_answer_c_1">아무 문제 없었다</string>
+    <string name="test_answer_c_2">단지 작은 문제만 있었다</string>
+    <string name="test_answer_c_3">어느 정도 문제가 있었다</string>
+    <string name="test_answer_c_4">아주 큰 문제가 있었다</string>
+    <string name="test_answer_d_1">아무도 없다</string>
+    <string name="test_answer_d_2">다른 방에 있다</string>
+    <string name="test_answer_d_3">같은 방에 있으나 다른 침대를 쓴다</string>
+    <string name="test_answer_d_4">같은 침대를 쓴다</string>
 </resources>
