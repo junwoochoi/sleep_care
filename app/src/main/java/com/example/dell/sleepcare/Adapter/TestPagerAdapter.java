@@ -24,6 +24,14 @@ public class TestPagerAdapter extends PagerAdapter implements CardAdapter {
     private List<CardView> mViews;
     private List<CardItem> mData;
     private float mBaseElevation;
+    public int checked;
+
+
+
+    private static final int RB1_ID = 1000;//first radio button id
+    private static final int RB2_ID = 1001;//second radio button id
+    private static final int RB3_ID = 1002;//third radio button id
+    private static final int RB4_ID = 1004;
 
     public TestPagerAdapter() {
         mData = new ArrayList<>();
@@ -84,7 +92,9 @@ public class TestPagerAdapter extends PagerAdapter implements CardAdapter {
     }
 
     private void bind(CardItem item, View view, int position) {
+
         TextView titleTextView = (TextView) view.findViewById(R.id.titleTextView);
+        TextView questionNumber = view.findViewById(R.id.text_number_question);
         LinearLayout inputLayout = view.findViewById(R.id.date_input_layout_test);
         EditText editText = view.findViewById(R.id.edit_text_test);
         RadioGroup radioGroup = view.findViewById(R.id.radiogroup);
@@ -92,9 +102,23 @@ public class TestPagerAdapter extends PagerAdapter implements CardAdapter {
         RadioButton radioButton2 = view.findViewById(R.id.radiobutton_2);
         RadioButton radioButton3 = view.findViewById(R.id.radiobutton_3);
         RadioButton radioButton4 = view.findViewById(R.id.radiobutton_4);
-        radioGroup.setTag("rg"+ position);
+        radioButton1.setId(RB1_ID);
+        radioButton2.setId(RB2_ID);
+        radioButton3.setId(RB3_ID);
+        radioButton4.setId(RB4_ID);
+
+
 
         titleTextView.setText(item.getQuestion());
+        String question = view.getResources().getString(item.getQuestion()).substring(0,1);
+        if(question.equals("(")){
+            question = view.getResources().getString(item.getQuestion()).substring(1,2);
+        } else if(position==18){
+            question="10";
+        }
+        questionNumber.setText(question);
+
+
         if(position<4){
             editText.setTag("et"+position);
             radioGroup.setVisibility(View.GONE);
@@ -129,6 +153,36 @@ public class TestPagerAdapter extends PagerAdapter implements CardAdapter {
             radioButton3.setText(item.getmHashMap().get("d-3"));
             radioButton4.setText(item.getmHashMap().get("d-4"));
         }
-    }
 
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                checked=i;
+            }
+        });
+        radioButton1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                radioButton1.setChecked(true);
+            }
+        });
+        radioButton2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                radioButton2.setChecked(true);
+            }
+        });
+        radioButton3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                radioButton3.setChecked(true);
+            }
+        });
+        radioButton4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                radioButton4.setChecked(true);
+            }
+        });
+    }
 }

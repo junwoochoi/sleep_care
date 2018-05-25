@@ -2,12 +2,17 @@ package com.example.dell.sleepcare.Fragment;
 
 
 import android.os.Bundle;
+import android.support.design.button.MaterialButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.example.dell.sleepcare.Activitity.MainActivity;
 import com.example.dell.sleepcare.Adapter.TestPagerAdapter;
@@ -15,6 +20,7 @@ import com.example.dell.sleepcare.Model.CardItem;
 import com.example.dell.sleepcare.R;
 import com.example.dell.sleepcare.ShadowTransformer;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -31,10 +37,14 @@ public class TestFragment extends Fragment {
     ImageView testFragmentMenu;
     @BindView(R.id.viewPager)
     ViewPager viewPager;
+    @BindView(R.id.button_next_test)
+    MaterialButton buttonNextTest;
 
     private ShadowTransformer mCardShadowTransformer;
     private TestPagerAdapter mCardAdapter;
     HashMap hashMap;
+    private EditText editText;
+    private ArrayList<String> answerResults = new ArrayList<>();
 
     public TestFragment() {
         // Required empty public constructor
@@ -60,6 +70,8 @@ public class TestFragment extends Fragment {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_test, container, false);
 
         unbinder = ButterKnife.bind(this, rootView);
+
+        buttonNextTest.setTag("nextBtn");
         hashMap = new HashMap<String, String>();
 
         mCardAdapter = new TestPagerAdapter();
@@ -69,7 +81,28 @@ public class TestFragment extends Fragment {
 
         viewPager.setAdapter(mCardAdapter);
         viewPager.setPageTransformer(false, mCardShadowTransformer);
+        viewPager.setOffscreenPageLimit(18);
 
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if(position==18){
+                    buttonNextTest.setText("제출");
+                } else {
+                    buttonNextTest.setText("다음");
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
         return rootView;
     }
 
@@ -129,11 +162,48 @@ public class TestFragment extends Fragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.button_next_test:
-                viewPager.setCurrentItem(viewPager.getCurrentItem()+1);
+                viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
+                if(buttonNextTest.getText().equals("제출")){
+                    if(onGetResult()!=null){
+                        answerResults = onGetResult();
+                        Log.e("받은 문항 대답:", onGetResult().toString());
+                    } else {
+                        Toast.makeText(getContext(), "답하지 않은 답변이 존재합니다. 다시 시도해주십시오", Toast.LENGTH_LONG).show();
+                    }
+                }
+
                 break;
             case R.id.button_prev_test:
-                viewPager.setCurrentItem(viewPager.getCurrentItem()-1);
+                viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
+
                 break;
         }
+    }
+
+    ArrayList<String> onGetResult(){
+        View view;
+        EditText editText;
+        ArrayList<String> answers = new ArrayList<>();
+        RadioGroup radioGroup;
+        for(int i=0; i<19; i++){
+            if(i<4){
+                view = viewPager.getChildAt(i);
+                editText = view.findViewById(R.id.edit_text_test);
+                if(editText.getText()==null || editText.getText().toString().equals("")){
+                    Log.e("null들어온 부분: ", String.valueOf(i));
+                    return null;
+                } else {
+                answers.add(editText.getText().toString());
+            } }else if(i>4){
+                view = viewPager.getChildAt(i);
+                radioGroup = view.findViewById(R.id.radiogroup);
+                if(radioGroup.getCheckedRadioButtonId()==-1) {
+                    Log.e("null들어온 부분", String.valueOf(i));
+                } else {
+                    answers.add(String.valueOf(radioGroup.getCheckedRadioButtonId()));
+                }
+                 }
+        }
+        return answers;
     }
 }
