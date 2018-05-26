@@ -1,10 +1,13 @@
 package com.example.dell.sleepcare.Fragment;
 
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.button.MaterialButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +20,7 @@ import android.widget.Toast;
 import com.example.dell.sleepcare.Activitity.MainActivity;
 import com.example.dell.sleepcare.Adapter.TestPagerAdapter;
 import com.example.dell.sleepcare.Model.CardItem;
+import com.example.dell.sleepcare.Model.PSQIScore;
 import com.example.dell.sleepcare.R;
 import com.example.dell.sleepcare.ShadowTransformer;
 
@@ -43,6 +47,7 @@ public class TestFragment extends Fragment {
     private ShadowTransformer mCardShadowTransformer;
     private TestPagerAdapter mCardAdapter;
     HashMap hashMap;
+
     private EditText editText;
     private ArrayList<String> answerResults = new ArrayList<>();
 
@@ -166,7 +171,27 @@ public class TestFragment extends Fragment {
                 if(buttonNextTest.getText().equals("제출")){
                     if(onGetResult()!=null){
                         answerResults = onGetResult();
+                        PSQIScore psqiScore = new PSQIScore(answerResults);
+
+                        AlertDialog.Builder dialog = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+                        dialog.setTitle("PSQI 결과 확인")
+                                .setMessage("체크하신 문항의 결과를 확인하시겠습니까?")
+                                .setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        dialogInterface.dismiss();
+                                    }
+                                })
+                                .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        FragmentManager fm = getFragmentManager();
+                                        TestResultFragment fragment = TestResultFragment.newInstance(psqiScore);
+                                        fragment.show(fm, "TestResult");
+                                    }
+                                }).create().show();
                         Log.e("받은 문항 대답:", onGetResult().toString());
+
                     } else {
                         Toast.makeText(getContext(), "답하지 않은 답변이 존재합니다. 다시 시도해주십시오", Toast.LENGTH_LONG).show();
                     }

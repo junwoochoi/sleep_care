@@ -1,12 +1,9 @@
 package com.example.dell.sleepcare.Activitity;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -21,7 +18,6 @@ import com.example.dell.sleepcare.NaverHandler;
 import com.example.dell.sleepcare.R;
 import com.example.dell.sleepcare.RESTAPI.LoginService;
 import com.example.dell.sleepcare.RegisterDialog;
-import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -42,8 +38,6 @@ import com.nhn.android.naverlogin.OAuthLogin;
 import com.nhn.android.naverlogin.ui.view.OAuthLoginButton;
 
 import org.json.JSONObject;
-
-import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -121,11 +115,6 @@ public class LoginActivity extends AppCompatActivity {
         );
 
 
-        if ((oAuthLogin.getAccessToken(this) != null) || (AccessToken.getCurrentAccessToken() != null) || (account != null)) {
-            startActivity(new Intent(this, MainActivity.class));
-            finish();
-        } else {
-
             //네이버 로그인 세팅
             buttonOAuthLoginImg.setOAuthLoginHandler(new NaverHandler(this, oAuthLogin, this));
 
@@ -183,7 +172,6 @@ public class LoginActivity extends AppCompatActivity {
             });
         }
 
-    }
 
     //구글 로그인 세팅
     private void setGoogleLogin() {
@@ -254,45 +242,11 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<com.example.dell.sleepcare.RESTAPI.LoginResult> call, Throwable t) {
                 Log.e("Network Call failed", "데이터 받아오기 실패");
-                Toast.makeText(getApplicationContext(),"데이터 받아오기 실패", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),"데이터 받아오기 실패! 서버가 응답하지 않습니다.", Toast.LENGTH_LONG).show();
             }
         });
     }
 
-
-     @SuppressLint("HandlerLeak")
-     Handler dialogHandler = new Handler(){
-        public void handleMessage(Message msg){
-            dialog.show();
-            Log.e("dialogHandler : ", "핸들러실행!");
-            final Call<com.example.dell.sleepcare.RESTAPI.LoginResult> regRes = loginService.register("sss","sssss","2013-01-01","123","ㄴㄴㄴ");
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        com.example.dell.sleepcare.RESTAPI.LoginResult register = regRes.execute().body();
-
-                        assert register != null;
-                        String registerRes = register.getLoginResult();
-                        int stampRes = register.getNumOfStamp();
-
-                        Log.i("REGISTER_TEST", "stamp 값 : " + stampRes);
-
-                        // test log
-                        if (registerRes.equals("200")) {
-                            Log.i("REGISTER", "REGISTER  ...... " + "loginRes값 : " + registerRes);
-
-                        } else {
-                            Log.i("TEST", "등록 실패 ");
-                        }
-                    } catch (IOException ie) {
-                        ie.printStackTrace();
-                    }
-                }
-            }).start();
-
-        }
-    };
 
 }
 

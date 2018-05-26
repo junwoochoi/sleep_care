@@ -28,9 +28,9 @@ public class TestPagerAdapter extends PagerAdapter implements CardAdapter {
 
 
 
-    private static final int RB1_ID = 1000;//first radio button id
-    private static final int RB2_ID = 1001;//second radio button id
-    private static final int RB3_ID = 1002;//third radio button id
+    private static final int RB1_ID = 1001;//first radio button id
+    private static final int RB2_ID = 1002;//second radio button id
+    private static final int RB3_ID = 1003;//third radio button id
     private static final int RB4_ID = 1004;
 
     public TestPagerAdapter() {

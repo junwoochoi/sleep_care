@@ -23,6 +23,7 @@ public interface LoginService {
                                @Field("user_email") String email,
                                @Field("user_birth") String birth,
                                @Field("user_job") String job,
-                               @Field("user_addr") String addr
+                               @Field("user_addr") String addr,
+                               @Field("user_gender")String gender
     );
 }

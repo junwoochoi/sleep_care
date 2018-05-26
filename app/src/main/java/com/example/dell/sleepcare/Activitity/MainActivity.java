@@ -29,8 +29,10 @@ import android.widget.Toast;
 import com.example.dell.sleepcare.Bluetooth.BluetoothDialog;
 import com.example.dell.sleepcare.Bluetooth.BluetoothLeService;
 import com.example.dell.sleepcare.Fragment.MenuListFragment;
-import com.example.dell.sleepcare.R;
 import com.example.dell.sleepcare.Fragment.TestFragment;
+import com.example.dell.sleepcare.R;
+import com.example.dell.sleepcare.RESTAPI.LoginResult;
+import com.example.dell.sleepcare.RESTAPI.LoginService;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -46,7 +48,13 @@ import com.nhn.android.naverlogin.OAuthLogin;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
+import static com.example.dell.sleepcare.Utils.Constants.API_URL;
 import static com.example.dell.sleepcare.Utils.Constants.GOOGLE_CLIENT_ID;
 
 public class MainActivity extends AppCompatActivity {
@@ -69,6 +77,8 @@ public class MainActivity extends AppCompatActivity {
 
     private BluetoothManager mBluetoothManager;
     private BluetoothAdapter mBluetoothAdapter;
+    Retrofit retrofit;
+    LoginService loginService;
 
 
     @Override
@@ -80,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
         sp = this.getSharedPreferences("userData", MODE_PRIVATE);
         editor = sp.edit();
 
+        checkLogin();
 
         //권한 요청 ( Location )
         requestPermission();
@@ -135,6 +146,37 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void checkLogin() {
+        retrofit = new Retrofit.Builder().baseUrl(API_URL).addConverterFactory(GsonConverterFactory.create()).build();
+        loginService = retrofit.create(LoginService.class);
+        Call<LoginResult> rs = loginService.login(sp.getString("email", ""));
+        rs.enqueue(new Callback<LoginResult>() {
+            @Override
+            public void onResponse(Call<LoginResult> call, Response<LoginResult> response) {
+                if (response.isSuccessful()) {
+                    LoginResult res = response.body();
+                    if (res != null) {
+                        if (!res.getLoginResult().equals("200")) {
+                            Toast.makeText(getApplicationContext(), "데이터 불러오기 실패!", Toast.LENGTH_LONG).show();
+                            editor.clear();
+                            editor.apply();
+                            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                            finish();
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<LoginResult> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), "데이터 불러오기 실패!", Toast.LENGTH_LONG).show();
+                editor.clear();
+                editor.apply();
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                finish();
+            }
+        });
+    }
 
 
     public void setLoginSetting() {
