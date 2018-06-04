@@ -28,7 +28,7 @@ public class PSQIScore {
     }
 
     public int getComponent2(){
-        int answer2 = Integer.parseInt(answers.get(1));
+        float answer2 = Float.parseFloat(answers.get(1));
         int answer5a = Integer.parseInt(answers.get(4));
         int score=-1;
         if(answer2<16){
@@ -135,16 +135,16 @@ public class PSQIScore {
         int answer9 = Integer.parseInt(answers.get(17));
         int score=-1;
         switch (answer8){
-            case 1001: score= 0;
-            case 1002: score= 1;
-            case 1003: score= 2;
-            case 1004: score= 3;
+            case 1001: score= 0; break;
+            case 1002: score= 1; break;
+            case 1003: score= 2; break;
+            case 1004: score= 3; break;
         }
         switch (answer9){
-            case 1001: score+= 0;
-            case 1002: score+= 1;
-            case 1003: score+= 2;
-            case 1004: score+= 3;
+            case 1001: score+= 0; break;
+            case 1002: score+= 1; break;
+            case 1003: score+= 2; break;
+            case 1004: score+= 3; break;
         }
 
         if(score==0){

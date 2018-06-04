@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.NumberPicker;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
@@ -207,19 +208,24 @@ public class TestFragment extends Fragment {
 
     ArrayList<String> onGetResult(){
         View view;
-        EditText editText;
+        NumberPicker hourPicker, minPicker;
         ArrayList<String> answers = new ArrayList<>();
         RadioGroup radioGroup;
         for(int i=0; i<19; i++){
             if(i<4){
                 view = viewPager.getChildAt(i);
-                editText = view.findViewById(R.id.edit_text_test);
-                if(editText.getText()==null || editText.getText().toString().equals("")){
-                    Log.e("null들어온 부분: ", String.valueOf(i));
-                    return null;
+                hourPicker = view.findViewById(R.id.hour_picker);
+                minPicker = view.findViewById(R.id.min_picker);
+                float hour = hourPicker.getValue();
+                float min = minPicker.getValue();
+                if(i==1){
+                     float answer = hour*60 + min;
+                     answers.add(String.valueOf(answer));
                 } else {
-                answers.add(editText.getText().toString());
-            } }else if(i>4){
+                    float answer = hour + (min / 60);
+                    answers.add(String.valueOf(answer));
+                }
+             }else if(i>4){
                 view = viewPager.getChildAt(i);
                 radioGroup = view.findViewById(R.id.radiogroup);
                 if(radioGroup.getCheckedRadioButtonId()==-1) {

@@ -7,8 +7,8 @@ import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.NumberPicker;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -68,7 +68,7 @@ public class TestPagerAdapter extends PagerAdapter implements CardAdapter {
                 .inflate(R.layout.item_test_cardview, container, false);
         container.addView(view);
         bind(mData.get(position), view, position);
-        CardView cardView = (CardView) view.findViewById(R.id.cardView);
+        CardView cardView = view.findViewById(R.id.cardView);
 
         if (mBaseElevation == 0) {
             mBaseElevation = cardView.getCardElevation();
@@ -93,10 +93,11 @@ public class TestPagerAdapter extends PagerAdapter implements CardAdapter {
 
     private void bind(CardItem item, View view, int position) {
 
-        TextView titleTextView = (TextView) view.findViewById(R.id.titleTextView);
+        TextView titleTextView = view.findViewById(R.id.titleTextView);
         TextView questionNumber = view.findViewById(R.id.text_number_question);
         LinearLayout inputLayout = view.findViewById(R.id.date_input_layout_test);
-        EditText editText = view.findViewById(R.id.edit_text_test);
+        NumberPicker hourPicker = view.findViewById(R.id.hour_picker);
+        NumberPicker minPicker = view.findViewById(R.id.min_picker);
         RadioGroup radioGroup = view.findViewById(R.id.radiogroup);
         RadioButton radioButton1 = view.findViewById(R.id.radiobutton_1);
         RadioButton radioButton2 = view.findViewById(R.id.radiobutton_2);
@@ -120,7 +121,23 @@ public class TestPagerAdapter extends PagerAdapter implements CardAdapter {
 
 
         if(position<4){
-            editText.setTag("et"+position);
+
+            hourPicker.setMaxValue(23);
+            hourPicker.setMinValue(0);
+            minPicker.setMinValue(0);
+            minPicker.setMaxValue(59);
+            hourPicker.setFormatter(new NumberPicker.Formatter() {
+                @Override
+                public String format(int i) {
+                    return i+"시";
+                }
+            });
+            minPicker.setFormatter(new NumberPicker.Formatter() {
+                @Override
+                public String format(int i) {
+                    return i+"분";
+                }
+            });
             radioGroup.setVisibility(View.GONE);
             inputLayout.setVisibility(View.VISIBLE);
         }

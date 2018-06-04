@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <android.support.design.card.MaterialCardView
+        android:id="@+id/cardView_result_item"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="8dp"
+        android:elevation="3dp"
+        android:padding="@dimen/card_padding"
+        app:cardCornerRadius="5dp"
+        app:cardPreventCornerOverlap="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.design.chip.Chip
+                android:id="@+id/chip_componenet_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_margin="16dp"
+                android:backgroundTint="@color/secondaryColor"
+                android:padding="4dp"
+                android:text="Component 1" />
+
+            <TextView
+                android:id="@+id/text_psqi_score"
+                style="@style/TextAppearance.MaterialComponents.Headline2"
+                android:textColor="@color/md_blue_grey_800"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/chip_componenet_number"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="@dimen/mdtp_minimum_margin_top_bottom"
+                android:text="3"
+                android:textAlignment="center"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+    </android.support.design.card.MaterialCardView>
+</LinearLayout>

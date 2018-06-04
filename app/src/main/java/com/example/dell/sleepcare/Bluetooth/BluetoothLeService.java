@@ -94,11 +94,7 @@ public class BluetoothLeService extends Service {
     }
 
     private boolean isConnected() {
-        if(connectionDisposable != null){
-            return true;
-        } else {
-            return false;
-        }
+        return connectionDisposable != null;
     }
 
     @Override

@@ -27,7 +27,7 @@ public class SplashActivity extends AppCompatActivity {
             public void run() {
                 SharedPreferences sp = getSharedPreferences("userData", MODE_PRIVATE);
                 SharedPreferences.Editor edit = sp.edit();
-                if(sp.getString("email","").length()>0 && sp.getString("job", "").length()>0){
+                if(sp.getString("email","").length()>0){
                     startActivity(new Intent(getApplicationContext(), MainActivity.class));
                     finish();
                 } else {

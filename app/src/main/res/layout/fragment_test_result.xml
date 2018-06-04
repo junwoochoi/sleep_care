@@ -1,21 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/mdtp_white"
     tools:context=".Fragment.TestResultFragment">
 
     <ImageView
         android:id="@+id/button_cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_margin="16dp"
         android:clickable="true"
         android:focusable="true"
         android:foreground="?android:attr/selectableItemBackground"
-        android:src="@drawable/ic_cancel_black_48dp" />
+        android:src="@android:drawable/ic_menu_close_clear_cancel" />
 
+    <TextView
+        android:id="@+id/text_result_base"
+        style="@style/TextAppearance.MaterialComponents.Body1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/button_cancel"
+        android:layout_margin="16dp"
+        android:text="@string/test_result_base"
+        android:textColor="@color/md_blue_grey_700" />
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerview_result"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/text_result_base"
+        app:layoutManager="android.support.v7.widget.GridLayoutManager"
+        app:spanCount="2" />
 </RelativeLayout>
