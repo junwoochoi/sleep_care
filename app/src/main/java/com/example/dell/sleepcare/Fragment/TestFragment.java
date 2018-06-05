@@ -52,6 +52,8 @@ public class TestFragment extends Fragment {
     private EditText editText;
     private ArrayList<String> answerResults = new ArrayList<>();
 
+
+
     public TestFragment() {
         // Required empty public constructor
     }

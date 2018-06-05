@@ -47,7 +47,7 @@
     <string name="test_answer_d_3">같은 방에 있으나 다른 침대를 쓴다</string>
     <string name="test_answer_d_4">같은 침대를 쓴다</string>
 
-<string name="test_result_base">평가 사항은 7가지 component 점수를 이루기 위해 조합되며, 각각 0~3점 범위를 가진다. ‘0’점은 아무런 어려움이 없다는 것을 나타내며, ‘3’점은 심각한 어려움을 나타낸다. 7가지 component의 총합은, 0~21의 점수 범위를 가진다. 0점은 아무런 어려움이 없다는 것을 나타내며, 21점은 전 방면에 걸쳐 심각한 어려움을 가지는 것으로 나타난다.</string>
+    <string name="test_result_base">평가 사항은 7가지 component 점수를 이루기 위해 조합되며, 각각 0~3점 범위를 가진다. ‘0’점은 아무런 어려움이 없다는 것을 나타내며, ‘3’점은 심각한 어려움을 나타낸다. 7가지 component의 총합은, 0~21의 점수 범위를 가진다. 0점은 아무런 어려움이 없다는 것을 나타내며, 21점은 전 방면에 걸쳐 심각한 어려움을 가지는 것으로 나타난다.</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

@@ -2,6 +2,8 @@ package com.example.dell.sleepcare.RESTAPI;
 
 import com.example.dell.sleepcare.Model.PSQIResult;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -13,7 +15,7 @@ import static com.example.dell.sleepcare.Utils.Constants.API_URL;
 
 public interface PSQIService {
     @GET(API_URL+"psqi/{user_email}")
-    Call<PSQIResult> getPSQIList(@Path("user_email") String email);
+    Call<List<PSQIResult>> getPSQIList(@Path("user_email") String email);
 
     @FormUrlEncoded
     @POST(API_URL+"psqiresult/")
