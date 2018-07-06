@@ -13,10 +13,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.dell.sleepcare.Activitity.MainActivity;
 import com.example.dell.sleepcare.R;
 
 
-public class MenuListFragment extends Fragment {
+public class MenuListFragment extends Fragment implements MainActivity.OnBackPressedListener{
 
        public MenuListFragment() {
         // Required empty public constructor
@@ -59,6 +60,8 @@ public class MenuListFragment extends Fragment {
     public void onAttach(Context context) {
         Log.d("onAttach", "fragment attched"+context.toString());
         super.onAttach(context);
+        ((MainActivity)context).setOnBackPressedListener(this);
+
     }
 
     @Override
@@ -67,5 +70,19 @@ public class MenuListFragment extends Fragment {
         super.onDetach();
     }
 
+    @Override
+    public void onBack() {
+        Log.e("Other", "onBack()");
+        // 리스너를 설정하기 위해 Activity 를 받아옵니다.
+        MainActivity activity = (MainActivity)getActivity();
+        // 한번 뒤로가기 버튼을 눌렀다면 Listener 를 null 로 해제해줍니다.
+        activity.setOnBackPressedListener(null);
+
+        ((MainActivity) getActivity()).mainContentLayout.setVisibility(View.VISIBLE);
+        ((MainActivity)getActivity()).mainFragmentContainer.setVisibility(View.GONE);
+
+        // Activity 에서도 뭔가 처리하고 싶은 내용이 있다면 하단 문장처럼 호출해주면 됩니다.
+        // activity.onBackPressed();
+    }
 }
 

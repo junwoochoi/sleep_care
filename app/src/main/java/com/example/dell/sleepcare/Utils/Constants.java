@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public class Constants {
 
-    public static final String API_URL = /*"http://210.102.181.158:62006/mobile/";*/  "http://192.9.20.62:62006/mobile/";
+    public static final String API_URL = "http://210.102.181.158:62006/mobile/"; /* "http://192.9.20.62:62006/mobile/";*/
     public static final String NAVER_CLIENT_ID = "YzvnGn3BFQswtRux5ooh";
     public static final String NAVER_SECRET = "mULEB67iha";
     public static final String FACEBOOK_APP_ID = "1386594921477837";

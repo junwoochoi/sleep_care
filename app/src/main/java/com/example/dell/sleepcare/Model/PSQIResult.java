@@ -16,7 +16,7 @@ public class PSQIResult {
      */
 
     private String USER_EMAIL;
-    private String TEST_DATE;
+    private String PSQI_DATE;
     private int COMP1;
     private int COMP2;
     private int COMP3;
@@ -34,12 +34,12 @@ public class PSQIResult {
         this.USER_EMAIL = USER_EMAIL;
     }
 
-    public String getTEST_DATE() {
-        return TEST_DATE;
+    public String getPSQI_DATE() {
+        return PSQI_DATE;
     }
 
-    public void setTEST_DATE(String TEST_DATE) {
-        this.TEST_DATE = TEST_DATE;
+    public void setPSQI_DATE(String PSQI_DATE) {
+        this.PSQI_DATE = PSQI_DATE;
     }
 
     public int getCOMP1() {

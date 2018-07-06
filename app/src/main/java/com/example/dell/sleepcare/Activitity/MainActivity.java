@@ -24,6 +24,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -65,6 +66,8 @@ public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.main_content)
     public RelativeLayout mainContentLayout;
+    @BindView(R.id.main_container)
+    public FrameLayout mainFragmentContainer;
     @BindView(R.id.my_toolbar)
     Toolbar myToolbar;
     @BindView(R.id.drawerlayout) public FlowingDrawer mDrawer;
@@ -206,6 +209,7 @@ public class MainActivity extends AppCompatActivity {
         TestFragment testFragment = new TestFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.main_container, testFragment).commit();
         mainContentLayout.setVisibility(View.GONE);
+        mainFragmentContainer.setVisibility(View.VISIBLE);
     }
 
     @OnClick(R.id.test_result_btn)
@@ -214,6 +218,8 @@ public class MainActivity extends AppCompatActivity {
         android.support.v4.app.Fragment psqiChartFragment = new PSQIChartFragment();
         fm.beginTransaction().replace(R.id.main_container, psqiChartFragment).commit();
         mainContentLayout.setVisibility(View.GONE);
+        mainFragmentContainer.setVisibility(View.VISIBLE);
+
     }
 
     @Override

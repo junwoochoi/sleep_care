@@ -1,6 +1,7 @@
 package com.example.dell.sleepcare.Fragment;
 
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.button.MaterialButton;
@@ -35,7 +36,7 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 
 
-public class TestFragment extends Fragment {
+public class TestFragment extends Fragment implements MainActivity.OnBackPressedListener {
 
     Unbinder unbinder;
     @BindView(R.id.test_fragment_menu)
@@ -61,6 +62,7 @@ public class TestFragment extends Fragment {
 
     public static TestFragment newInstance() {
         TestFragment fragment = new TestFragment();
+
         return fragment;
     }
 
@@ -78,15 +80,14 @@ public class TestFragment extends Fragment {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_test, container, false);
 
         unbinder = ButterKnife.bind(this, rootView);
-
-        buttonNextTest.setTag("nextBtn");
         hashMap = new HashMap<String, String>();
+        buttonNextTest.setTag("nextBtn");
 
         mCardAdapter = new TestPagerAdapter();
-        setQuestion();
 
         mCardShadowTransformer = new ShadowTransformer(viewPager, mCardAdapter);
 
+        setQuestion();
         viewPager.setAdapter(mCardAdapter);
         viewPager.setPageTransformer(false, mCardShadowTransformer);
         viewPager.setOffscreenPageLimit(18);
@@ -170,8 +171,7 @@ public class TestFragment extends Fragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.button_next_test:
-                viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
-                if(buttonNextTest.getText().equals("제출")){
+                if(viewPager.getCurrentItem()==18){
                     if(onGetResult()!=null){
                         answerResults = onGetResult();
                         PSQIScore psqiScore = new PSQIScore(answerResults);
@@ -199,6 +199,7 @@ public class TestFragment extends Fragment {
                         Toast.makeText(getContext(), "답하지 않은 답변이 존재합니다. 다시 시도해주십시오", Toast.LENGTH_LONG).show();
                     }
                 }
+                viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
 
                 break;
             case R.id.button_prev_test:
@@ -238,5 +239,25 @@ public class TestFragment extends Fragment {
                  }
         }
         return answers;
+    }
+
+    @Override
+    public void onBack() {
+        Log.e("Other", "onBack()");
+        // 리스너를 설정하기 위해 Activity 를 받아옵니다.
+        MainActivity activity = (MainActivity)getActivity();
+        // 한번 뒤로가기 버튼을 눌렀다면 Listener 를 null 로 해제해줍니다.
+        activity.setOnBackPressedListener(null);
+
+        ((MainActivity) getActivity()).mainContentLayout.setVisibility(View.VISIBLE);
+        ((MainActivity)getActivity()).mainFragmentContainer.setVisibility(View.GONE);
+        // Activity 에서도 뭔가 처리하고 싶은 내용이 있다면 하단 문장처럼 호출해주면 됩니다.
+        // activity.onBackPressed();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        ((MainActivity)context).setOnBackPressedListener(this);
     }
 }
