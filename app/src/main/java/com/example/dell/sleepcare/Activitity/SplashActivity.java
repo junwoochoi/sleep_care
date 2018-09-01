@@ -9,6 +9,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 
 import com.example.dell.sleepcare.R;
+import com.example.dell.sleepcare.Utils.SharedPrefUtils;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -25,7 +26,7 @@ public class SplashActivity extends AppCompatActivity {
         hd.postDelayed(new Runnable() {
             @Override
             public void run() {
-                SharedPreferences sp = getSharedPreferences("userData", MODE_PRIVATE);
+                SharedPreferences sp = SharedPrefUtils.getInstance(getApplicationContext()).getPrefs();
                 SharedPreferences.Editor edit = sp.edit();
                 if(sp.getString("email","").length()>0){
                     startActivity(new Intent(getApplicationContext(), MainActivity.class));

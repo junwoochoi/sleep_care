@@ -24,7 +24,11 @@ import com.example.dell.sleepcare.Adapter.TestPagerAdapter;
 import com.example.dell.sleepcare.Model.CardItem;
 import com.example.dell.sleepcare.Model.PSQIScore;
 import com.example.dell.sleepcare.R;
+import com.example.dell.sleepcare.RESTAPI.PSQIService;
+import com.example.dell.sleepcare.RESTAPI.RetrofitClient;
 import com.example.dell.sleepcare.ShadowTransformer;
+import com.example.dell.sleepcare.Utils.Constants;
+import com.example.dell.sleepcare.Utils.SharedPrefUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,6 +38,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import retrofit2.Retrofit;
 
 
 public class TestFragment extends Fragment implements MainActivity.OnBackPressedListener {
@@ -190,6 +195,10 @@ public class TestFragment extends Fragment implements MainActivity.OnBackPressed
                                     public void onClick(DialogInterface dialogInterface, int i) {
                                         FragmentManager fm = getFragmentManager();
                                         TestResultFragment fragment = TestResultFragment.newInstance(psqiScore);
+                                        Retrofit retrofit = RetrofitClient.getClient(Constants.API_URL);
+                                        PSQIService psqiService = retrofit.create(PSQIService.class);
+                                        psqiService.sendPSQI(psqiScore.getScores(), SharedPrefUtils.getInstance(getContext()).getStringExtra("email"));
+
                                         fragment.show(fm, "TestResult");
                                     }
                                 }).create().show();

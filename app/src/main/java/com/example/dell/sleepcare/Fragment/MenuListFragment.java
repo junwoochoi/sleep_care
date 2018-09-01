@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.example.dell.sleepcare.Activitity.MainActivity;
 import com.example.dell.sleepcare.R;
+import com.example.dell.sleepcare.Utils.SharedPrefUtils;
 
 
 public class MenuListFragment extends Fragment implements MainActivity.OnBackPressedListener{
@@ -40,7 +41,7 @@ public class MenuListFragment extends Fragment implements MainActivity.OnBackPre
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_menu_list, container,
                 false);
-        SharedPreferences sp = view.getContext().getSharedPreferences("userData", Context.MODE_PRIVATE);
+        SharedPreferences sp = SharedPrefUtils.getInstance(view.getContext()).getPrefs();
         String userName = sp.getString("name","");
 
 

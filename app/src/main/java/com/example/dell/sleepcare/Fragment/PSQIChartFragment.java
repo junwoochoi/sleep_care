@@ -16,7 +16,8 @@ import com.example.dell.sleepcare.Activitity.MainActivity;
 import com.example.dell.sleepcare.Model.PSQIResult;
 import com.example.dell.sleepcare.R;
 import com.example.dell.sleepcare.RESTAPI.PSQIService;
-import com.example.dell.sleepcare.Utils.Constants;
+import com.example.dell.sleepcare.RESTAPI.RetrofitClient;
+import com.example.dell.sleepcare.Utils.SharedPrefUtils;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
@@ -32,6 +33,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -43,7 +45,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+
+import static com.example.dell.sleepcare.Utils.Constants.API_URL;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -54,7 +57,8 @@ public class PSQIChartFragment extends android.support.v4.app.Fragment implement
     Call<List<PSQIResult>> psqiCall;
     List<PSQIResult> psqiList;
     SharedPreferences sp;
-    ArrayList<Integer> monthList;
+    HashMap<Integer, Integer> monthList;
+    List<BarEntry> entries;
     Unbinder unbinder;
     @BindView(R.id.chart)
     BarChart chart;
@@ -75,14 +79,8 @@ public class PSQIChartFragment extends android.support.v4.app.Fragment implement
         //PSQI데이터를 서버에서 읽어온다.
         getPSQIDataSet();
 
-        List<BarEntry> entries = new ArrayList<BarEntry>();
+        entries = new ArrayList<BarEntry>();
 
-        entries.add(new BarEntry(1, 1));
-        entries.add(new BarEntry(2, 3));
-        entries.add(new BarEntry(3, 6));
-        entries.add(new BarEntry(4, 1));
-
-        initializeChart(entries);
 
 
 
@@ -91,9 +89,9 @@ public class PSQIChartFragment extends android.support.v4.app.Fragment implement
 
     //PSQI데이터를 서버에서 읽어온다.
     private void getPSQIDataSet() {
-        retrofit = new Retrofit.Builder().baseUrl(Constants.API_URL).addConverterFactory(GsonConverterFactory.create()).build();
+        retrofit = RetrofitClient.getClient(API_URL);
         apiService = retrofit.create(PSQIService.class);
-        sp = getActivity().getSharedPreferences("userData", Context.MODE_PRIVATE);
+        sp = SharedPrefUtils.getInstance(getActivity().getApplicationContext()).getPrefs();
 
         // ProgressDialog 초기화
         final ProgressDialog progressDialog;
@@ -107,7 +105,7 @@ public class PSQIChartFragment extends android.support.v4.app.Fragment implement
 
         psqiCall = apiService.getPSQIList(sp.getString("email", ""));
 
-        monthList = new ArrayList<>();
+        monthList = new HashMap<>();
         psqiCall.enqueue(new Callback<List<PSQIResult>>() {
             @Override
             public void onResponse(Call<List<PSQIResult>> call, Response<List<PSQIResult>> response) {
@@ -119,12 +117,13 @@ public class PSQIChartFragment extends android.support.v4.app.Fragment implement
                 for (PSQIResult s : psqiList) {
                     try {
                         cal.setTime(df.parse(s.getPSQI_DATE()));// all done
-                        monthList.add(cal.get(Calendar.MONTH) + 1);
+                        monthList.put(cal.get(Calendar.MONTH)+1, s.getCOMP_SUM());
+                        entries.add(new BarEntry(cal.get(Calendar.MONTH)+1, s.getCOMP_SUM()));
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
                 }
-                Toast.makeText(getContext(), monthList.toString(), Toast.LENGTH_LONG).show();
+                initializeChart(entries);
             }
 
             @Override

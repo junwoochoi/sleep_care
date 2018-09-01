@@ -17,7 +17,9 @@ import android.widget.Toast;
 import com.example.dell.sleepcare.NaverHandler;
 import com.example.dell.sleepcare.R;
 import com.example.dell.sleepcare.RESTAPI.LoginService;
+import com.example.dell.sleepcare.RESTAPI.RetrofitClient;
 import com.example.dell.sleepcare.RegisterDialog;
+import com.example.dell.sleepcare.Utils.SharedPrefUtils;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -45,13 +47,16 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 import static com.example.dell.sleepcare.Utils.Constants.API_URL;
 import static com.example.dell.sleepcare.Utils.Constants.GOOGLE_CLIENT_ID;
 import static com.example.dell.sleepcare.Utils.Constants.NAVER_CLIENT_ID;
 import static com.example.dell.sleepcare.Utils.Constants.NAVER_SECRET;
 
+/**
+ * 로그인 액티비티
+ * 스플래시 액티비티가 나타난 이후에 로그인이 필요할 경우 나타나는 액티비티
+ */
 public class LoginActivity extends AppCompatActivity {
 
     @BindView(R.id.button_naverlogin)
@@ -100,7 +105,7 @@ public class LoginActivity extends AppCompatActivity {
             getWindow().setNavigationBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark)); // Navigation bar the soft bottom of some phones like nexus and some Samsung note series
             getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark)); //status bar or the time bar at the top
         }
-        sp = getSharedPreferences("userData", MODE_PRIVATE);
+        sp = SharedPrefUtils.getInstance(getApplicationContext()).getPrefs();
         editor = sp.edit();
 
         mAuth = FirebaseAuth.getInstance();
@@ -173,7 +178,9 @@ public class LoginActivity extends AppCompatActivity {
         }
 
 
-    //구글 로그인 세팅
+    /**
+     * 구글 로그인을 위한 세팅
+     */
     private void setGoogleLogin() {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder
                 (GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -193,6 +200,10 @@ public class LoginActivity extends AppCompatActivity {
                 .build();
     }
 
+    /**
+     * 구글로그인 API로 부터 받아온 로그인 정보를 처리하는 곳
+     * @param result    구글 API에서 보내준 로그인 결과값
+     */
     private void handleSignInResult(GoogleSignInResult result) {
         Log.d("googlelgoin", "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
@@ -208,6 +219,10 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * 로그인버튼에 사용되는 onClick 메소드
+     * @param v 클릭한 뷰
+     */
     public void onClick(View v) {
         if (v == naverBtn) {
             buttonOAuthLoginImg.performClick();
@@ -216,8 +231,12 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * 로그인한 적이 있는지, 회원가입이 필요한지 체크하는 메소드
+     * @param email 회원의 이메일
+     */
     public void checkLogin(String email){
-        retrofit = new Retrofit.Builder().baseUrl(API_URL).addConverterFactory(GsonConverterFactory.create()).build();
+        retrofit = RetrofitClient.getClient(API_URL);
         loginService = retrofit.create(LoginService.class);
         final Call<com.example.dell.sleepcare.RESTAPI.LoginResult> res = loginService.login(email);
         res.enqueue(new Callback<com.example.dell.sleepcare.RESTAPI.LoginResult>() {

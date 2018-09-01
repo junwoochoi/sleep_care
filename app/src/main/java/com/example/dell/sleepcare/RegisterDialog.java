@@ -22,6 +22,8 @@ import android.widget.Toast;
 import com.example.dell.sleepcare.Activitity.MainActivity;
 import com.example.dell.sleepcare.RESTAPI.LoginResult;
 import com.example.dell.sleepcare.RESTAPI.LoginService;
+import com.example.dell.sleepcare.RESTAPI.RetrofitClient;
+import com.example.dell.sleepcare.Utils.SharedPrefUtils;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import java.util.Calendar;
@@ -33,7 +35,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 import static com.example.dell.sleepcare.Utils.Constants.API_URL;
 
@@ -83,7 +84,7 @@ public class RegisterDialog extends Dialog implements DatePickerDialog.OnDateSet
         ButterKnife.bind(this);
 
         //SharedPreferences 초기화
-        sp = context.getSharedPreferences("userData", Context.MODE_PRIVATE);
+        sp = SharedPrefUtils.getInstance(context).getPrefs();
         edit = sp.edit();
         //이름 초기화
         nameInput.setText(userName);
@@ -157,7 +158,7 @@ public class RegisterDialog extends Dialog implements DatePickerDialog.OnDateSet
 
 
     private void registerDB() {
-        retrofit = new Retrofit.Builder().baseUrl(API_URL).addConverterFactory(GsonConverterFactory.create()).build();
+        retrofit = RetrofitClient.getClient(API_URL);
         loginService = retrofit.create(LoginService.class);
         userName = nameInput.getText().toString();
         final String userJob = jobSelect.getSelectedItem().toString();

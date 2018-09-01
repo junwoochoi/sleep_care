@@ -36,6 +36,8 @@ import com.example.dell.sleepcare.Fragment.TestFragment;
 import com.example.dell.sleepcare.R;
 import com.example.dell.sleepcare.RESTAPI.LoginResult;
 import com.example.dell.sleepcare.RESTAPI.LoginService;
+import com.example.dell.sleepcare.RESTAPI.RetrofitClient;
+import com.example.dell.sleepcare.Utils.SharedPrefUtils;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -55,7 +57,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 import static com.example.dell.sleepcare.Utils.Constants.API_URL;
 import static com.example.dell.sleepcare.Utils.Constants.GOOGLE_CLIENT_ID;
@@ -92,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         setLoginSetting();
-        sp = this.getSharedPreferences("userData", MODE_PRIVATE);
+        sp = SharedPrefUtils.getInstance(this).getPrefs();
         editor = sp.edit();
 
         checkLogin();
@@ -152,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void checkLogin() {
-        retrofit = new Retrofit.Builder().baseUrl(API_URL).addConverterFactory(GsonConverterFactory.create()).build();
+        retrofit = RetrofitClient.getClient(API_URL);
         loginService = retrofit.create(LoginService.class);
         Call<LoginResult> rs = loginService.login(sp.getString("email", ""));
         rs.enqueue(new Callback<LoginResult>() {

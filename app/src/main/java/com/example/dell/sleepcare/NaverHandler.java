@@ -12,6 +12,8 @@ import com.example.dell.sleepcare.Activitity.LoginActivity;
 import com.example.dell.sleepcare.Activitity.MainActivity;
 import com.example.dell.sleepcare.RESTAPI.LoginResult;
 import com.example.dell.sleepcare.RESTAPI.LoginService;
+import com.example.dell.sleepcare.RESTAPI.RetrofitClient;
+import com.example.dell.sleepcare.Utils.SharedPrefUtils;
 import com.nhn.android.naverlogin.OAuthLogin;
 import com.nhn.android.naverlogin.OAuthLoginHandler;
 
@@ -25,7 +27,6 @@ import java.net.URL;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 import static com.example.dell.sleepcare.Utils.Constants.API_URL;
 
@@ -104,7 +105,7 @@ public class NaverHandler extends OAuthLoginHandler {
                 if(object.getString("resultcode").equals("00")) {
                     JSONObject jsonObject = new JSONObject(object.getString("response"));
                     Log.d("jsonObject", jsonObject.toString());
-                    sp = activity.getSharedPreferences("userData",Context.MODE_PRIVATE);
+                    sp = SharedPrefUtils.getInstance(activity).getPrefs();
                     SharedPreferences.Editor editor = sp.edit();
                     editor.putString("email", jsonObject.getString("email"));
                     editor.putString("name", jsonObject.getString("name"));
@@ -118,7 +119,7 @@ public class NaverHandler extends OAuthLoginHandler {
         }
     }
     public void checkLogin(final String email){
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(API_URL).addConverterFactory(GsonConverterFactory.create()).build();
+        Retrofit retrofit = RetrofitClient.getClient(API_URL);
         LoginService loginService = retrofit.create(LoginService.class);
         final Call<com.example.dell.sleepcare.RESTAPI.LoginResult> res = loginService.login(email);
         res.enqueue(new retrofit2.Callback<LoginResult>() {

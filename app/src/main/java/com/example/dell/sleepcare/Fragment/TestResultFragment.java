@@ -17,6 +17,7 @@ import com.example.dell.sleepcare.Model.PSQIScore;
 import com.example.dell.sleepcare.R;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -64,16 +65,17 @@ public class TestResultFragment extends DialogFragment {
 
         mGridLayoutManager = new GridLayoutManager(getContext(), 2);
         recyclerviewResult.setLayoutManager(mGridLayoutManager);
-
+        Map<String, Integer> psqiScores = psqiScore.getScores();
         list = new ArrayList<Integer>();
-        list.add(psqiScore.getComponent1());
-        list.add(psqiScore.getComponent2());
-        list.add(psqiScore.getComponent3());
-        list.add(psqiScore.getComponent4());
-        list.add(psqiScore.getComponent5());
-        list.add(psqiScore.getComponent6());
-        list.add(psqiScore.getComponent7());
-        list.add(psqiScore.getComponent());
+        list.add(psqiScores.get("comp1"));
+        list.add(psqiScores.get("comp2"));
+        list.add(psqiScores.get("comp3"));
+        list.add(psqiScores.get("comp4"));
+        list.add(psqiScores.get("comp5"));
+        list.add(psqiScores.get("comp6"));
+        list.add(psqiScores.get("comp7"));
+        list.add(psqiScores.get("comp"));
+
 
         adapter = new TestResultAdapter(getContext(), list);
         recyclerviewResult.setAdapter(adapter);

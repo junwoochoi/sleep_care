@@ -2,7 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#888"
+    android:background="@color/md_grey_50"
     android:clickable="true">
     <LinearLayout
         android:id="@+id/vGlobalMenuHeader"
@@ -13,7 +13,8 @@
             android:id="@+id/ivMenuUserProfilePhoto"
             android:layout_width="64dp"
             android:layout_height="64dp"
-            android:layout_margin="12dp" />
+            android:layout_margin="12dp"
+            android:src="@drawable/ic_person_white_24dp"/>
 
         <TextView
             android:id="@+id/textview_navigation_username"

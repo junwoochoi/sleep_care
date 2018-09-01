@@ -13,6 +13,7 @@ public class Constants {
     public static final String NAVER_SECRET = "mULEB67iha";
     public static final String FACEBOOK_APP_ID = "1386594921477837";
     public static final String FB_LOGIN_PROTOCOL_SCHEME = "fb1386594921477837";
+    public static final String PREF_USERDATA = "userData";
     public static final String GOOGLE_CLIENT_ID = "154020628759-3bnilac74b3vrfsfq2ql2s9csadco265.apps.googleusercontent.com";
 
     public final static UUID BLE_NOTIFY_1_UUID = UUID.fromString("ffffffff-ffff-ffff-ffff-fffffffffff1");
