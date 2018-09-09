@@ -6,6 +6,9 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.dell.sleepcare.Activitity.MainActivity;
+import com.example.dell.sleepcare.Adapter.PSQIResultAdapter;
 import com.example.dell.sleepcare.Model.PSQIResult;
 import com.example.dell.sleepcare.R;
 import com.example.dell.sleepcare.RESTAPI.PSQIService;
@@ -58,10 +62,14 @@ public class PSQIChartFragment extends android.support.v4.app.Fragment implement
     List<PSQIResult> psqiList;
     SharedPreferences sp;
     HashMap<Integer, Integer> monthList;
-    List<BarEntry> entries;
+    List<BarEntry> entries = new ArrayList<>();
     Unbinder unbinder;
+    LinearLayoutManager mLayoutManager;
+    PSQIResultAdapter adapter;
     @BindView(R.id.chart)
     BarChart chart;
+    @BindView(R.id.recyclerview_psqi_result)
+    RecyclerView psqiResultRecyclerView;
 
 
     public PSQIChartFragment() {
@@ -75,11 +83,11 @@ public class PSQIChartFragment extends android.support.v4.app.Fragment implement
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_psqichart, container, false);
         unbinder = ButterKnife.bind(this, view);
+        mLayoutManager = new LinearLayoutManager(getContext());
 
         //PSQI데이터를 서버에서 읽어온다.
         getPSQIDataSet();
 
-        entries = new ArrayList<BarEntry>();
 
 
 
@@ -123,6 +131,9 @@ public class PSQIChartFragment extends android.support.v4.app.Fragment implement
                         e.printStackTrace();
                     }
                 }
+                adapter = new PSQIResultAdapter(getContext(), psqiList);
+                psqiResultRecyclerView.setAdapter(adapter);
+                psqiResultRecyclerView.setItemAnimator(new DefaultItemAnimator());
                 initializeChart(entries);
             }
 
@@ -168,7 +179,6 @@ public class PSQIChartFragment extends android.support.v4.app.Fragment implement
         chart.getAxisLeft().setDrawGridLines(false);
         chart.getAxisRight().setDrawGridLines(false);
         chart.setData(barData);
-        chart.setDrawBarShadow(true);
         chart.setFitBars(true);
         chart.animateY(750);
         chart.invalidate();

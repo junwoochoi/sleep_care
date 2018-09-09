@@ -36,11 +36,14 @@
     </android.support.v7.widget.Toolbar>
 
     <android.support.design.card.MaterialCardView
+        android:id="@+id/barCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/fragment_toolbar"
         android:layout_margin="8dp"
+        app:cardCornerRadius="8dp"
         app:cardElevation="8dp">
+
 
         <com.github.mikephil.charting.charts.BarChart
             android:id="@+id/chart"
@@ -49,4 +52,16 @@
             android:layout_margin="16dp" />
 
     </android.support.design.card.MaterialCardView>
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerview_psqi_result"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/barCard"
+        app:stackFromEnd="true"
+        app:reverseLayout="true"
+        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+        />
+
 </RelativeLayout>

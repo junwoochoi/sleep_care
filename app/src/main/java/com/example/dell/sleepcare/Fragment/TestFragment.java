@@ -25,6 +25,7 @@ import com.example.dell.sleepcare.Model.CardItem;
 import com.example.dell.sleepcare.Model.PSQIScore;
 import com.example.dell.sleepcare.R;
 import com.example.dell.sleepcare.RESTAPI.PSQIService;
+import com.example.dell.sleepcare.RESTAPI.RESTResponse;
 import com.example.dell.sleepcare.RESTAPI.RetrofitClient;
 import com.example.dell.sleepcare.ShadowTransformer;
 import com.example.dell.sleepcare.Utils.Constants;
@@ -38,6 +39,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 
 
@@ -193,11 +197,24 @@ public class TestFragment extends Fragment implements MainActivity.OnBackPressed
                                 .setPositiveButton("확인", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
+                                        Retrofit retrofit = RetrofitClient.getClient(   Constants.API_URL);
+                                        PSQIService psqiService = retrofit.create(PSQIService.class);
+                                        Call<RESTResponse> call = psqiService.sendPSQI(psqiScore.getScores(), SharedPrefUtils.getInstance(getContext()).getStringExtra("email"));
+                                        call.enqueue(new Callback<RESTResponse>() {
+                                            @Override
+                                            public void onResponse(Call<RESTResponse> call, Response<RESTResponse> response) {
+                                                if(response.body().getStampResponse() == 201){
+                                                    Toast.makeText(getContext(),"이번달의 PSQI가 저장되었습니다", Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onFailure(Call<RESTResponse> call, Throwable t) {
+
+                                            }
+                                        });
                                         FragmentManager fm = getFragmentManager();
                                         TestResultFragment fragment = TestResultFragment.newInstance(psqiScore);
-                                        Retrofit retrofit = RetrofitClient.getClient(Constants.API_URL);
-                                        PSQIService psqiService = retrofit.create(PSQIService.class);
-                                        psqiService.sendPSQI(psqiScore.getScores(), SharedPrefUtils.getInstance(getContext()).getStringExtra("email"));
 
                                         fragment.show(fm, "TestResult");
                                     }

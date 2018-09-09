@@ -21,6 +21,6 @@ public interface PSQIService {
 
     @FormUrlEncoded
     @POST(API_URL + "psqiresult/")
-    Call<LoginResult> sendPSQI(@FieldMap HashMap<String, Integer> psqiResults,
+    Call<RESTResponse> sendPSQI(@FieldMap HashMap<String, Integer> psqiResults,
                                @Field("user_email") String userEmail);
 }
