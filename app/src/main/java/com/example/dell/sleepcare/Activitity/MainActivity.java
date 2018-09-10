@@ -231,8 +231,8 @@ public class MainActivity extends AppCompatActivity {
                 break;
             }
             case R.id.action_bt1: {
-                Toast.makeText(getApplicationContext(), "설정버튼 클릭!", Toast.LENGTH_LONG).show();
-                onLogOut();
+                Intent intent = new Intent(getApplicationContext(),SettingsActivity.class);
+                startActivity(intent);
                 break;
             }
         }

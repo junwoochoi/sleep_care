@@ -1,5 +1,6 @@
 package com.example.dell.sleepcare.Adapter;
 
+import android.os.Build;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
@@ -7,11 +8,10 @@ import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.NumberPicker;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.example.dell.sleepcare.Model.CardItem;
 import com.example.dell.sleepcare.R;
@@ -25,7 +25,6 @@ public class TestPagerAdapter extends PagerAdapter implements CardAdapter {
     private List<CardItem> mData;
     private float mBaseElevation;
     public int checked;
-
 
 
     private static final int RB1_ID = 1001;//first radio button id
@@ -95,9 +94,7 @@ public class TestPagerAdapter extends PagerAdapter implements CardAdapter {
 
         TextView titleTextView = view.findViewById(R.id.titleTextView);
         TextView questionNumber = view.findViewById(R.id.text_number_question);
-        LinearLayout inputLayout = view.findViewById(R.id.date_input_layout_test);
-        NumberPicker hourPicker = view.findViewById(R.id.hour_picker);
-        NumberPicker minPicker = view.findViewById(R.id.min_picker);
+        TimePicker timePicker = view.findViewById(R.id.timepicker_test);
         RadioGroup radioGroup = view.findViewById(R.id.radiogroup);
         RadioButton radioButton1 = view.findViewById(R.id.radiobutton_1);
         RadioButton radioButton2 = view.findViewById(R.id.radiobutton_2);
@@ -109,61 +106,50 @@ public class TestPagerAdapter extends PagerAdapter implements CardAdapter {
         radioButton4.setId(RB4_ID);
 
 
-
         titleTextView.setText(item.getQuestion());
-        String question = view.getResources().getString(item.getQuestion()).substring(0,1);
-        if(question.equals("(")){
-            question = view.getResources().getString(item.getQuestion()).substring(1,2);
-        } else if(position==18){
-            question="10";
+        String question = view.getResources().getString(item.getQuestion()).substring(0, 1);
+        if (question.equals("(")) {
+            question = view.getResources().getString(item.getQuestion()).substring(1, 2);
+        } else if (position == 18) {
+            question = "10";
         }
         questionNumber.setText(question);
 
 
-        if(position<4){
-
-            hourPicker.setMaxValue(23);
-            hourPicker.setMinValue(0);
-            minPicker.setMinValue(0);
-            minPicker.setMaxValue(59);
-            hourPicker.setFormatter(new NumberPicker.Formatter() {
-                @Override
-                public String format(int i) {
-                    return i+"시";
-                }
-            });
-            minPicker.setFormatter(new NumberPicker.Formatter() {
-                @Override
-                public String format(int i) {
-                    return i+"분";
-                }
-            });
+        if (position < 4) {
+            if (Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                timePicker.setHour(0);
+                timePicker.setMinute(0);
+            }else {
+                timePicker.setCurrentMinute(0);
+                timePicker.setCurrentHour(0);
+            }
+            timePicker.setIs24HourView(true);
             radioGroup.setVisibility(View.GONE);
-            inputLayout.setVisibility(View.VISIBLE);
-        }
-        else if( position > 3 && position <14 || position==15 || position==16) {
-            inputLayout.setVisibility(View.GONE);
+            timePicker.setVisibility(View.VISIBLE);
+        } else if (position > 3 && position < 14 || position == 15 || position == 16) {
+            timePicker.setVisibility(View.GONE);
             radioGroup.setVisibility(View.VISIBLE);
             radioButton1.setText(item.getmHashMap().get("a-1"));
             radioButton2.setText(item.getmHashMap().get("a-2"));
             radioButton3.setText(item.getmHashMap().get("a-3"));
             radioButton4.setText(item.getmHashMap().get("a-4"));
-        } else if( position == 14){
-            inputLayout.setVisibility(View.GONE);
+        } else if (position == 14) {
+            timePicker.setVisibility(View.GONE);
             radioGroup.setVisibility(View.VISIBLE);
             radioButton1.setText(item.getmHashMap().get("b-1"));
             radioButton2.setText(item.getmHashMap().get("b-2"));
             radioButton3.setText(item.getmHashMap().get("b-3"));
             radioButton4.setText(item.getmHashMap().get("b-4"));
-        } else if( position ==17) {
-            inputLayout.setVisibility(View.GONE);
+        } else if (position == 17) {
+            timePicker.setVisibility(View.GONE);
             radioGroup.setVisibility(View.VISIBLE);
             radioButton1.setText(item.getmHashMap().get("c-1"));
             radioButton2.setText(item.getmHashMap().get("c-2"));
             radioButton3.setText(item.getmHashMap().get("c-3"));
             radioButton4.setText(item.getmHashMap().get("c-4"));
         } else {
-            inputLayout.setVisibility(View.GONE);
+            timePicker.setVisibility(View.GONE);
             radioGroup.setVisibility(View.VISIBLE);
             radioButton1.setText(item.getmHashMap().get("d-1"));
             radioButton2.setText(item.getmHashMap().get("d-2"));
@@ -174,7 +160,7 @@ public class TestPagerAdapter extends PagerAdapter implements CardAdapter {
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                checked=i;
+                checked = i;
             }
         });
         radioButton1.setOnClickListener(new View.OnClickListener() {

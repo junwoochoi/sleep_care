@@ -20,7 +20,7 @@
         <activity
             android:name=".Activitity.MainActivity"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustPan" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -53,10 +53,13 @@
         </activity>
 
         <service
-            android:name="com.example.dell.sleepcare.Bluetooth.BluetoothLeService"
+            android:name=".Bluetooth.BluetoothLeService"
             android:enabled="true"
             android:exported="true" />
 
+        <activity
+            android:name=".Activitity.SettingsActivity"
+            android:label="@string/title_activity_settings"></activity>
     </application>
 
 </manifest>

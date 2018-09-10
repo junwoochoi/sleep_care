@@ -3,6 +3,7 @@ package com.example.dell.sleepcare.Fragment;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.button.MaterialButton;
 import android.support.v4.app.Fragment;
@@ -15,8 +16,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.NumberPicker;
 import android.widget.RadioGroup;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.dell.sleepcare.Activitity.MainActivity;
@@ -61,7 +62,6 @@ public class TestFragment extends Fragment implements MainActivity.OnBackPressed
 
     private EditText editText;
     private ArrayList<String> answerResults = new ArrayList<>();
-
 
 
     public TestFragment() {
@@ -109,7 +109,7 @@ public class TestFragment extends Fragment implements MainActivity.OnBackPressed
 
             @Override
             public void onPageSelected(int position) {
-                if(position==18){
+                if (position == 18) {
                     buttonNextTest.setText("제출");
                 } else {
                     buttonNextTest.setText("다음");
@@ -180,8 +180,8 @@ public class TestFragment extends Fragment implements MainActivity.OnBackPressed
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.button_next_test:
-                if(viewPager.getCurrentItem()==18){
-                    if(onGetResult()!=null){
+                if (viewPager.getCurrentItem() == 18) {
+                    if (onGetResult() != null) {
                         answerResults = onGetResult();
                         PSQIScore psqiScore = new PSQIScore(answerResults);
 
@@ -197,14 +197,18 @@ public class TestFragment extends Fragment implements MainActivity.OnBackPressed
                                 .setPositiveButton("확인", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
-                                        Retrofit retrofit = RetrofitClient.getClient(   Constants.API_URL);
+                                        Retrofit retrofit = RetrofitClient.getClient(Constants.API_URL);
                                         PSQIService psqiService = retrofit.create(PSQIService.class);
                                         Call<RESTResponse> call = psqiService.sendPSQI(psqiScore.getScores(), SharedPrefUtils.getInstance(getContext()).getStringExtra("email"));
                                         call.enqueue(new Callback<RESTResponse>() {
                                             @Override
                                             public void onResponse(Call<RESTResponse> call, Response<RESTResponse> response) {
-                                                if(response.body().getStampResponse() == 201){
-                                                    Toast.makeText(getContext(),"이번달의 PSQI가 저장되었습니다", Toast.LENGTH_SHORT).show();
+                                                if (response.body() != null) {
+                                                    if (response.body().getStampResponse() == 201) {
+                                                        Toast.makeText(getContext(), "이번달의 PSQI가 저장되었습니다", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                } else {
+                                                    Toast.makeText(getContext(), "서버의 응답이 없습니다. 관리자에게 문의해주세요", Toast.LENGTH_SHORT).show();
                                                 }
                                             }
 
@@ -235,34 +239,39 @@ public class TestFragment extends Fragment implements MainActivity.OnBackPressed
         }
     }
 
-    ArrayList<String> onGetResult(){
+    ArrayList<String> onGetResult() {
         View view;
-        NumberPicker hourPicker, minPicker;
+        TimePicker timePicker;
         ArrayList<String> answers = new ArrayList<>();
         RadioGroup radioGroup;
-        for(int i=0; i<19; i++){
-            if(i<4){
+        for (int i = 0; i < 19; i++) {
+            if (i < 4) {
                 view = viewPager.getChildAt(i);
-                hourPicker = view.findViewById(R.id.hour_picker);
-                minPicker = view.findViewById(R.id.min_picker);
-                float hour = hourPicker.getValue();
-                float min = minPicker.getValue();
-                if(i==1){
-                     float answer = hour*60 + min;
-                     answers.add(String.valueOf(answer));
+                timePicker = view.findViewById(R.id.timepicker_test);
+                float hour, min;
+                if (Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                    hour = timePicker.getHour();
+                    min = timePicker.getMinute();
+                } else {
+                    hour = timePicker.getCurrentHour();
+                    min = timePicker.getCurrentMinute();
+                }
+                if (i == 1) {
+                    float answer = hour * 60 + min;
+                    answers.add(String.valueOf(answer));
                 } else {
                     float answer = hour + (min / 60);
                     answers.add(String.valueOf(answer));
                 }
-             }else if(i>4){
+            } else if (i > 4) {
                 view = viewPager.getChildAt(i);
                 radioGroup = view.findViewById(R.id.radiogroup);
-                if(radioGroup.getCheckedRadioButtonId()==-1) {
+                if (radioGroup.getCheckedRadioButtonId() == -1) {
                     Log.e("null들어온 부분", String.valueOf(i));
                 } else {
                     answers.add(String.valueOf(radioGroup.getCheckedRadioButtonId()));
                 }
-                 }
+            }
         }
         return answers;
     }
@@ -271,12 +280,12 @@ public class TestFragment extends Fragment implements MainActivity.OnBackPressed
     public void onBack() {
         Log.e("Other", "onBack()");
         // 리스너를 설정하기 위해 Activity 를 받아옵니다.
-        MainActivity activity = (MainActivity)getActivity();
+        MainActivity activity = (MainActivity) getActivity();
         // 한번 뒤로가기 버튼을 눌렀다면 Listener 를 null 로 해제해줍니다.
         activity.setOnBackPressedListener(null);
 
         ((MainActivity) getActivity()).mainContentLayout.setVisibility(View.VISIBLE);
-        ((MainActivity)getActivity()).mainFragmentContainer.setVisibility(View.GONE);
+        ((MainActivity) getActivity()).mainFragmentContainer.setVisibility(View.GONE);
         // Activity 에서도 뭔가 처리하고 싶은 내용이 있다면 하단 문장처럼 호출해주면 됩니다.
         // activity.onBackPressed();
     }
@@ -284,6 +293,6 @@ public class TestFragment extends Fragment implements MainActivity.OnBackPressed
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        ((MainActivity)context).setOnBackPressedListener(this);
+        ((MainActivity) context).setOnBackPressedListener(this);
     }
 }

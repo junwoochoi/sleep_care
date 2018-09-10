@@ -19,10 +19,11 @@ public class PSQIResultAdapter extends Adapter<PSQIResultAdapter.ViewHolder> {
     private Context mContext;
     private List<PSQIResult> scores;
 
-    public PSQIResultAdapter(Context context , List<PSQIResult> scores){
+    public PSQIResultAdapter(Context context, List<PSQIResult> scores) {
         this.mContext = context;
         this.scores = scores;
     }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -35,9 +36,9 @@ public class PSQIResultAdapter extends Adapter<PSQIResultAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.scoreSum.setText(String.valueOf(scores.get(position).getCOMP_SUM()+"점"));
+        holder.scoreSum.setText(String.valueOf(scores.get(position).getCOMP_SUM() + "점"));
         String[] dateArray = String.valueOf(scores.get(position).getPSQI_DATE()).split("-");
-        holder.date.setText(dateArray[0]+"년 " + dateArray[1] +"월");
+        holder.date.setText(dateArray[0] + "년 " + dateArray[1] + "월");
     }
 
     @Override
@@ -45,7 +46,7 @@ public class PSQIResultAdapter extends Adapter<PSQIResultAdapter.ViewHolder> {
         return scores.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView date;
         public TextView scoreSum;
 
