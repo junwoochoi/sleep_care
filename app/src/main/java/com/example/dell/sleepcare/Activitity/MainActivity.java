@@ -2,7 +2,6 @@ package com.example.dell.sleepcare.Activitity;
 
 import android.Manifest;
 import android.app.ActivityManager;
-import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
@@ -28,8 +27,8 @@ import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.example.dell.sleepcare.Bluetooth.BluetoothDialog;
 import com.example.dell.sleepcare.Bluetooth.BluetoothLeService;
+import com.example.dell.sleepcare.Dialog.BluetoothDialog;
 import com.example.dell.sleepcare.Fragment.MenuListFragment;
 import com.example.dell.sleepcare.Fragment.PSQIChartFragment;
 import com.example.dell.sleepcare.Fragment.TestFragment;
@@ -37,6 +36,7 @@ import com.example.dell.sleepcare.R;
 import com.example.dell.sleepcare.RESTAPI.LoginResult;
 import com.example.dell.sleepcare.RESTAPI.LoginService;
 import com.example.dell.sleepcare.RESTAPI.RetrofitClient;
+import com.example.dell.sleepcare.Utils.Constants;
 import com.example.dell.sleepcare.Utils.SharedPrefUtils;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.Auth;
@@ -334,7 +334,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
-        private void updateUI(){
+        public void updateUI(){
             Log.e("isServiceRunning?", String.valueOf(isMyServiceRunning(BluetoothLeService.class)));
             if (isMyServiceRunning(BluetoothLeService.class)) {
                 new Thread(new Runnable() {
@@ -346,8 +346,11 @@ public class MainActivity extends AppCompatActivity {
                                 btnBluetooth.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
-                                        Intent stopIntent = new Intent(MainActivity.this, Service.class);
-                                        stopService(stopIntent);
+                                        Intent stopIntent = new Intent(MainActivity.this, BluetoothLeService.class);
+                                        stopIntent.setAction(Constants.STOP_FOREGROUND_ACTION);
+                                        startService(stopIntent);
+                                        btnBluetooth.setText("연결하기");
+                                        Toast.makeText(getApplicationContext(), "서비스가 종료되었습니다.", Toast.LENGTH_SHORT).show();
                                     }
                                 });
                                 btnBluetooth.setText("연결취소");
