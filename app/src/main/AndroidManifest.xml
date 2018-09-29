@@ -59,7 +59,9 @@
 
         <activity
             android:name=".Activitity.SettingsActivity"
-            android:label="@string/title_activity_settings"></activity>
+            android:label="@string/title_activity_settings" />
+
+
     </application>
 
 </manifest>

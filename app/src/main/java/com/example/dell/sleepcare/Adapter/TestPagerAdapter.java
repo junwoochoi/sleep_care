@@ -182,7 +182,7 @@ public class TestPagerAdapter extends PagerAdapter implements CardAdapter {
             }
         });
         radioButton4.setOnClickListener(new View.OnClickListener() {
-            @Override
+             @Override
             public void onClick(View view) {
                 radioButton4.setChecked(true);
             }

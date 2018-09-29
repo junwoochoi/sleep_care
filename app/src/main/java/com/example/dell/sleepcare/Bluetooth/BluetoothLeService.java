@@ -10,45 +10,88 @@ import android.os.Build;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-import android.widget.Toast;
 
+import com.clj.fastble.BleManager;
+import com.clj.fastble.callback.BleReadCallback;
+import com.clj.fastble.data.BleDevice;
+import com.clj.fastble.exception.BleException;
 import com.example.dell.sleepcare.Activitity.MainActivity;
 import com.example.dell.sleepcare.R;
 import com.example.dell.sleepcare.Utils.Constants;
-import com.polidea.rxandroidble2.RxBleClient;
-import com.polidea.rxandroidble2.RxBleDevice;
-
-import java.io.UnsupportedEncodingException;
-import java.util.Objects;
-import java.util.StringTokenizer;
-
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 
 public class BluetoothLeService extends Service {
 
-    RxBleClient  rxBleClient;
-    String macAddr;
-    RxBleDevice bleDevice;
-    Disposable connectionDisposable;
+    final String BLE_LOG = "BLE_SERVICE_LOG:";
+
+
+    BleDevice bleDevice;
+
     public BluetoothLeService() {
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        onStartForegroundService();
-        rxBleClient = RxBleClient.create(this);
-        macAddr = Objects.requireNonNull(intent.getExtras()).getString("macAddr");
-        Log.i("bluetooth 서비스 실행", "macAddr : "+macAddr+"로 연결 시도중...");
-        subscribeNotification();
+        if(intent!=null){
+        if (intent.getAction().equals(Constants.START_FOREGROUND_ACTION)) {
+            Log.i(BLE_LOG, "Received Start Foreground Intent ");
+            onStartForegroundService();
+
+            bleDevice= BleManager.getInstance().getAllConnectedDevice().get(0);
+            Log.i(BLE_LOG, "macAddr : " + bleDevice.getName() + "로 연결 시도중...");
+            if(bleDevice!=null) {
+                connectBle(bleDevice);
+
+            }
+        } else if (intent.getAction().equals(Constants.STOP_FOREGROUND_ACTION)) {
+            Log.i(BLE_LOG, "Received Stop Foreground Intent");
+            //your end servce code
+            Log.i(BLE_LOG, "서비스가 중지되었습니다.");
+
+            stopForeground(true);
+            stopSelf();
+        }}else {
+            Log.e(BLE_LOG, "intent.getAction()이 NULL입니다.");
+        }
         return START_STICKY;
     }
 
+    private void connectBle(BleDevice bleDevice) {
+
+        BleManager.getInstance().read(
+                bleDevice,
+                Constants.BLE_USER_SERVICEID3.toString(),
+                Constants.BLE_GET_USER_SLEEP_DATA.toString(),
+                new BleReadCallback() {
+                    @Override
+                    public void onReadSuccess(byte[] data) {
+                        Log.i("data불러와짐.:", new String(data));
+                    }
+
+                    @Override
+                    public void onReadFailure(BleException exception) {
+                        Log.i("BleException.:", exception.getDescription());
+
+                    }
+                });
+    }
+
     private void onStartForegroundService() {
+        Intent stopIntent = new Intent(this, BluetoothLeService.class);
+        stopIntent.setAction(Constants.STOP_FOREGROUND_ACTION);
+        PendingIntent stopPendingIntent = PendingIntent.getService(this, 0, stopIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+
         NotificationCompat.Builder builder = new NotificationCompat.Builder(BluetoothLeService.this, "default");
+        NotificationCompat.Action action =
+                new NotificationCompat.Action.Builder(
+
+                        0, "종료", stopPendingIntent
+                ).build();
         builder
+                .addAction(action)
                 .setContentTitle("수면 케어")
-                .setContentText("수면 매트와 연결 중...")
+                .setContentText("수면 매트와 통신 중...")
+
                 .setSmallIcon(R.mipmap.ic_launcher);
         Intent notificationIntent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
@@ -56,46 +99,12 @@ public class BluetoothLeService extends Service {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-            manager.createNotificationChannel( new NotificationChannel("default", "기본채널", NotificationManager.IMPORTANCE_DEFAULT));
+            manager.createNotificationChannel(new NotificationChannel("default", "기본채널", NotificationManager.IMPORTANCE_DEFAULT));
         }
         startForeground(1, builder.build());
     }
 
 
-    public void subscribeNotification(){
-        if(macAddr != null) {
-            bleDevice = rxBleClient.getBleDevice(macAddr);
-            Log.d("getBLEDEVICE", rxBleClient.getBleDevice(macAddr).getName());
-            if (isConnected()) {
-                connectionDisposable = null;
-            }
-            connectionDisposable = bleDevice.establishConnection(false)
-                    .flatMap(rxBleConnection -> rxBleConnection.setupNotification(Constants.BLE_NOTIFY_6_UUID))
-                    .flatMap(notificationObservable -> notificationObservable)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(this::onNotificationReceived, Throwable::printStackTrace);
-        }
-    }
-
-    private void onNotificationReceived(byte[] bytes) {
-        try {
-            String result = new String(bytes, "UTF-8");
-            StringTokenizer tokenizer = new StringTokenizer(result,",");
-
-            Log.d("notificationReceived: ", "온도: "+tokenizer.nextToken()+" 습도: "+tokenizer.nextToken()+" 빛: "+tokenizer.nextToken()+" 소음: "+tokenizer.nextToken());
-        } catch (UnsupportedEncodingException e) {
-            Log.e("getCause값: ", e.getCause().toString());
-            Toast.makeText(this, "블루투스 연결이 끊겼습니다.", Toast.LENGTH_LONG).show();
-            stopForeground(true);
-            stopSelf();
-            e.printStackTrace();
-
-        }
-    }
-
-    private boolean isConnected() {
-        return connectionDisposable != null;
-    }
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -103,16 +112,9 @@ public class BluetoothLeService extends Service {
     }
 
     @Override
-    public boolean onUnbind(Intent intent) {
-        close();
-        return super.onUnbind(intent);
-    }
-
-    public void close() {
-        if (rxBleClient == null) {
-            return;
-        }
-        rxBleClient = null;
+    public void onDestroy() {
+        BleManager.getInstance().disconnectAllDevice();
+        super.onDestroy();
     }
 
     private final IBinder mBinder = new LocalBinder();

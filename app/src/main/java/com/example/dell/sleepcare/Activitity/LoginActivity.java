@@ -14,11 +14,11 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.example.dell.sleepcare.NaverHandler;
+import com.example.dell.sleepcare.Adapter.NaverHandler;
 import com.example.dell.sleepcare.R;
 import com.example.dell.sleepcare.RESTAPI.LoginService;
 import com.example.dell.sleepcare.RESTAPI.RetrofitClient;
-import com.example.dell.sleepcare.RegisterDialog;
+import com.example.dell.sleepcare.Dialog.RegisterDialog;
 import com.example.dell.sleepcare.Utils.SharedPrefUtils;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;

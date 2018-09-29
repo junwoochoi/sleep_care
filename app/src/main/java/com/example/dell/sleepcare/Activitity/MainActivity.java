@@ -27,6 +27,7 @@ import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.clj.fastble.BleManager;
 import com.example.dell.sleepcare.Bluetooth.BluetoothLeService;
 import com.example.dell.sleepcare.Dialog.BluetoothDialog;
 import com.example.dell.sleepcare.Fragment.MenuListFragment;
@@ -97,6 +98,13 @@ public class MainActivity extends AppCompatActivity {
         editor = sp.edit();
 
         checkLogin();
+
+        BleManager.getInstance().init(getApplication());
+        BleManager.getInstance()
+                .enableLog(true)
+                .setReConnectCount(1, 5000)
+                .setConnectOverTime(20000)
+                .setOperateTimeout(5000);
 
         //권한 요청 ( Location )
         requestPermission();
@@ -361,8 +369,15 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 btnBluetooth.setClickable(true);
                 btnBluetooth.setText("연결하기");
-            }
-        }
+                btnBluetooth.setOnClickListener(new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View view) {
+
+                                                        bluetoothDialog = new BluetoothDialog(MainActivity.this);
+                                                        bluetoothDialog.show();
+                                                    }
+            });
+        }}
 
     // 뒤로가기 버튼 입력시간이 담길 long 객체
     private long pressedTime = 0;

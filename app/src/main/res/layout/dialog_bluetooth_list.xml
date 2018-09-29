@@ -10,17 +10,18 @@
     app:cardCornerRadius="10dp"
     app:cardPreventCornerOverlap="true">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/headline_bt_dialog"
             style="@style/TextAppearance.MaterialComponents.Headline6"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
             android:layout_margin="16dp"
+            android:layout_weight="1"
             android:text="블루투스 목록"
             android:textAlignment="center" />
 
@@ -28,36 +29,43 @@
             android:id="@+id/beaconListView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/headline_bt_dialog"
             android:layout_marginTop="20dp"
+            android:layout_weight="1"
             android:background="#fff"
             android:headerDividersEnabled="true"
             android:listSelector="@drawable/list_selector" />
 
-        <android.support.design.button.MaterialButton
-            android:id="@+id/btn_bt_dialog_cancel"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toStartOf="@id/btn_bt_dialog_connect"
-            android:layout_below="@+id/beaconListView"
-            android:layout_marginTop="16dp"
-            android:layout_marginRight="4dp"
-            android:text="취소" />
+            android:orientation="horizontal">
 
-        <android.support.design.button.MaterialButton
-            android:id="@+id/btn_bt_dialog_connect"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/beaconListView"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginRight="8dp"
-            android:stateListAnimator="@animator/lift_on_touch"
-            app:backgroundTint="@color/colorPrimary"
-            android:textColor="@color/textColorPrimary"
-            android:text="연결" />
+            <android.support.design.button.MaterialButton
+                android:id="@+id/btn_bt_dialog_cancel"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/beaconListView"
+                android:layout_marginRight="4dp"
+                android:layout_marginTop="16dp"
+                android:layout_toStartOf="@id/btn_bt_dialog_connect"
+                android:layout_weight="1"
+                android:text="취소" />
 
-    </RelativeLayout>
+            <android.support.design.button.MaterialButton
+                android:id="@+id/btn_bt_dialog_connect"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/beaconListView"
+                android:layout_marginBottom="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_weight="1"
+                android:stateListAnimator="@animator/lift_on_touch"
+                android:text="연결"
+                android:textColor="@color/textColorPrimary"
+                app:backgroundTint="@color/colorPrimary" />
+        </LinearLayout>
+    </LinearLayout>
 </android.support.design.card.MaterialCardView>

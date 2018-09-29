@@ -1,4 +1,4 @@
-package com.example.dell.sleepcare;
+package com.example.dell.sleepcare.Adapter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.example.dell.sleepcare.Activitity.LoginActivity;
 import com.example.dell.sleepcare.Activitity.MainActivity;
+import com.example.dell.sleepcare.Dialog.RegisterDialog;
 import com.example.dell.sleepcare.RESTAPI.LoginResult;
 import com.example.dell.sleepcare.RESTAPI.LoginService;
 import com.example.dell.sleepcare.RESTAPI.RetrofitClient;

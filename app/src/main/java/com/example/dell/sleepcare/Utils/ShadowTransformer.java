@@ -1,4 +1,4 @@
-package com.example.dell.sleepcare;
+package com.example.dell.sleepcare.Utils;
 
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.CardView;

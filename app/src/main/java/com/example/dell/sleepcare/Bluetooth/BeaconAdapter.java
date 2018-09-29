@@ -6,19 +6,19 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.clj.fastble.data.BleDevice;
 import com.example.dell.sleepcare.R;
-import com.polidea.rxandroidble2.RxBleDevice;
 
 import java.util.ArrayList;
 
 public class BeaconAdapter extends BaseAdapter {
 
 
-    private ArrayList<RxBleDevice> beacons;
+    private ArrayList<BleDevice> beacons;
     private LayoutInflater layoutInflater;
 
 
-    public BeaconAdapter(ArrayList<RxBleDevice> beacons, LayoutInflater layoutInflater) {
+    public BeaconAdapter(ArrayList<BleDevice> beacons, LayoutInflater layoutInflater) {
         this.beacons = beacons;
         this.layoutInflater = layoutInflater;
     }
@@ -54,7 +54,8 @@ public class BeaconAdapter extends BaseAdapter {
         } else {
             beaconHolder = (BeaconHolder)convertView.getTag();
         }
-        beaconHolder.address.setText("MAC Addr :"+beacons.get(position).getMacAddress());
+        String macAddr = beacons.get(position).getMac();
+        beaconHolder.address.setText("MAC Addr :"+macAddr);
         String deviceName;
         if(beacons.get(position).getName() == null) {
             deviceName = "디바이스 이름: "+"Unknown";

@@ -15,14 +15,21 @@ public class Constants {
     public static final String FB_LOGIN_PROTOCOL_SCHEME = "fb1386594921477837";
     public static final String PREF_USERDATA = "userData";
     public static final String GOOGLE_CLIENT_ID = "154020628759-3bnilac74b3vrfsfq2ql2s9csadco265.apps.googleusercontent.com";
+    public static final String STOP_FOREGROUND_ACTION = "STOP_FOREGROUND_SERVICE";
+    public static final String START_FOREGROUND_ACTION = "START_FOREGROUND_SERVICE";
 
-    public final static UUID BLE_NOTIFY_1_UUID = UUID.fromString("ffffffff-ffff-ffff-ffff-fffffffffff1");
-    public final static UUID BLE_NOTIFY_2_UUID = UUID.fromString("ffffffff-ffff-ffff-ffff-fffffffffff2");
-    public final static UUID BLE_NOTIFY_3_UUID = UUID.fromString("ffffffff-ffff-ffff-ffff-fffffffffff3");
-    public final static UUID BLE_NOTIFY_4_UUID = UUID.fromString("ffffffff-ffff-ffff-ffff-fffffffffff4");
-    public final static UUID BLE_NOTIFY_6_UUID = UUID.fromString("ffffffff-ffff-ffff-ffff-fffffffffff6");
-
-    public final static UUID BLE_SERVICE_SAMPLE_UUID = UUID.fromString("ffffffff-ffff-ffff-ffff-fffffffffff0");
+    public final static UUID BLE_SEND_USER_ID_UUID = UUID.fromString("ffffffff-ffff-ffff-ffff-fffffffffff2");
+    public final static UUID BLE_SEND_INITIALIZE_USER_ID_UUID = UUID.fromString("ffffffff-ffff-ffff-ffff-fffffffffff3");
+    public final static UUID BLE_START_OR_STOP_SIGN_UUID = UUID.fromString("ffffffff-ffff-ffff-ffff-ffffffffff22");
+    public final static UUID BLE_GET_USER_SLEEP_DATA = UUID.fromString("ffffffff-ffff-ffff-ffff-ffffffffff31");
+    public final static UUID BLE_GET_PI_SETTING_UUID = UUID.fromString("ffffffff-ffff-ffff-ffff-ffffffffff41");
+    public final static UUID BLE_MODIFY_PI_SETTING_UUID = UUID.fromString("ffffffff-ffff-ffff-ffff-ffffffffff42");
+    public final static UUID BLE_SEND_REBOOT_UUID = UUID.fromString("ffffffff-ffff-ffff-ffff-ffffffffff43");
+    public final static UUID BLE_SET_DEFAULT_UUID = UUID.fromString("ffffffff-ffff-ffff-ffff-ffffffffff44");
+    public final static UUID BLE_USER_SERVICEID1 = UUID.fromString("ffffffff-ffff-ffff-ffff-ffffffffff10");
+    public final static UUID BLE_USER_SERVICEID2 = UUID.fromString("ffffffff-ffff-ffff-ffff-ffffffffff20");
+    public final static UUID BLE_USER_SERVICEID3 = UUID.fromString("ffffffff-ffff-ffff-ffff-ffffffffff30");
+    public final static UUID BLE_USER_SERVICEID4 = UUID.fromString("ffffffff-ffff-ffff-ffff-ffffffffff40");
     public final static ParcelUuid PARCEL_UUID_BLE_SERVICE =
             ParcelUuid.fromString("FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFF0");
 }

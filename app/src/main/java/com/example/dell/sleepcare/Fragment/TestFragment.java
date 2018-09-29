@@ -28,7 +28,7 @@ import com.example.dell.sleepcare.R;
 import com.example.dell.sleepcare.RESTAPI.PSQIService;
 import com.example.dell.sleepcare.RESTAPI.RESTResponse;
 import com.example.dell.sleepcare.RESTAPI.RetrofitClient;
-import com.example.dell.sleepcare.ShadowTransformer;
+import com.example.dell.sleepcare.Utils.ShadowTransformer;
 import com.example.dell.sleepcare.Utils.Constants;
 import com.example.dell.sleepcare.Utils.SharedPrefUtils;
 
