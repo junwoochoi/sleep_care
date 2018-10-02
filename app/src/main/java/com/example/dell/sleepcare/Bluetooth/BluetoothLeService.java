@@ -10,14 +10,16 @@ import android.os.Build;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.clj.fastble.BleManager;
-import com.clj.fastble.callback.BleReadCallback;
+import com.clj.fastble.callback.BleWriteCallback;
 import com.clj.fastble.data.BleDevice;
 import com.clj.fastble.exception.BleException;
 import com.example.dell.sleepcare.Activitity.MainActivity;
 import com.example.dell.sleepcare.R;
 import com.example.dell.sleepcare.Utils.Constants;
+import com.example.dell.sleepcare.Utils.SharedPrefUtils;
 
 public class BluetoothLeService extends Service {
 
@@ -31,6 +33,7 @@ public class BluetoothLeService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        String userEmail = SharedPrefUtils.getInstance(getApplicationContext()).getStringExtra("email");
         if(intent!=null){
         if (intent.getAction().equals(Constants.START_FOREGROUND_ACTION)) {
             Log.i(BLE_LOG, "Received Start Foreground Intent ");
@@ -39,7 +42,8 @@ public class BluetoothLeService extends Service {
             bleDevice= BleManager.getInstance().getAllConnectedDevice().get(0);
             Log.i(BLE_LOG, "macAddr : " + bleDevice.getName() + "로 연결 시도중...");
             if(bleDevice!=null) {
-                connectBle(bleDevice);
+
+                authorizeUser(bleDevice, userEmail);
 
             }
         } else if (intent.getAction().equals(Constants.STOP_FOREGROUND_ACTION)) {
@@ -55,25 +59,7 @@ public class BluetoothLeService extends Service {
         return START_STICKY;
     }
 
-    private void connectBle(BleDevice bleDevice) {
 
-        BleManager.getInstance().read(
-                bleDevice,
-                Constants.BLE_USER_SERVICEID3.toString(),
-                Constants.BLE_GET_USER_SLEEP_DATA.toString(),
-                new BleReadCallback() {
-                    @Override
-                    public void onReadSuccess(byte[] data) {
-                        Log.i("data불러와짐.:", new String(data));
-                    }
-
-                    @Override
-                    public void onReadFailure(BleException exception) {
-                        Log.i("BleException.:", exception.getDescription());
-
-                    }
-                });
-    }
 
     private void onStartForegroundService() {
         Intent stopIntent = new Intent(this, BluetoothLeService.class);
@@ -123,5 +109,27 @@ public class BluetoothLeService extends Service {
         BluetoothLeService getService() {
             return BluetoothLeService.this;
         }
+    }
+
+
+    private void authorizeUser(BleDevice bleDevice, String userEmail) {
+        BleManager.getInstance().write(
+                bleDevice,
+                Constants.BLE_USER_SERVICEID1.toString(),
+                Constants.BLE_SEND_USER_ID_UUID.toString(),
+                userEmail.getBytes()
+                , new BleWriteCallback() {
+                    @Override
+                    public void onWriteSuccess(int current, int total, byte[] justWrite) {
+                        Toast.makeText(getApplicationContext(), "사용자 인증에 성공하였습니다.", Toast.LENGTH_SHORT).show();
+                        Log.i(BLE_LOG, "사용자 인증 성공, 보낸 값:  "+new String(justWrite));
+                    }
+
+                    @Override
+                    public void onWriteFailure(BleException exception) {
+                        Log.e(BLE_LOG, exception.getCode()+exception.getDescription());
+                        Toast.makeText(getApplicationContext(), "사용자 인증에 실패하였습니다.", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 }

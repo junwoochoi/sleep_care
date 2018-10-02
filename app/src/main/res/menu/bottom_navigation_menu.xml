@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
+    <!-- 액션버튼  -->
+    <item android:id="@+id/action_env_btn"
+        android:icon="@drawable/ic_healing_white_36dp"
+        android:title="환경"
+        app:showAsAction="always|withText" />
+    <item android:id="@+id/action_sleep_btn"
+        android:icon="@drawable/ic_hotel_white_36dp"
+        android:title="수면"
+        app:showAsAction="always|withText" />
+</menu>
