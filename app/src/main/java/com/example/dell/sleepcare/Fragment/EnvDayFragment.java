@@ -9,20 +9,27 @@ import android.view.ViewGroup;
 
 import com.example.dell.sleepcare.R;
 
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
 
 public class EnvDayFragment extends Fragment {
 
-
+    Unbinder unbinder;
     public EnvDayFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_env_day, container, false);
+        View view = inflater.inflate(R.layout.fragment_env_day, container, false);
+        unbinder = ButterKnife.bind(view);
+
+
+        return view;
     }
+
 
 }
