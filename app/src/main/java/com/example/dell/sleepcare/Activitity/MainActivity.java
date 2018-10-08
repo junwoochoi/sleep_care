@@ -32,6 +32,7 @@ import com.example.dell.sleepcare.Bluetooth.BluetoothLeService;
 import com.example.dell.sleepcare.Dialog.BluetoothDialog;
 import com.example.dell.sleepcare.Fragment.MenuListFragment;
 import com.example.dell.sleepcare.Fragment.PSQIChartFragment;
+import com.example.dell.sleepcare.Fragment.SleepChartFragment;
 import com.example.dell.sleepcare.Fragment.TestFragment;
 import com.example.dell.sleepcare.R;
 import com.example.dell.sleepcare.RESTAPI.LoginResult;
@@ -222,14 +223,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @OnClick(R.id.test_result_btn)
-    void onGraphClicked(){
+    void onTestResultClicked(){
         FragmentManager fm = getSupportFragmentManager();
         android.support.v4.app.Fragment psqiChartFragment = new PSQIChartFragment();
         fm.beginTransaction().replace(R.id.main_container, psqiChartFragment).commit();
         mainContentLayout.setVisibility(View.GONE);
         mainFragmentContainer.setVisibility(View.VISIBLE);
-
     }
+
+    @OnClick(R.id.psqi_graph_test)
+    void onGraphClicked(){
+        FragmentManager fm = getSupportFragmentManager();
+        android.support.v4.app.Fragment sleepChartFragment = new SleepChartFragment();
+        fm.beginTransaction().replace(R.id.main_container, sleepChartFragment).commit();
+        mainContentLayout.setVisibility(View.GONE);
+        mainFragmentContainer.setVisibility(View.VISIBLE);
+    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

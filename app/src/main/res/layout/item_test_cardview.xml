@@ -12,26 +12,27 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:padding="24dp">
+        android:padding="12dp">
 
         <TextView
             android:id="@+id/titleTextView"
             style="@style/TextAppearance.MaterialComponents.Headline6"
             android:layout_width="wrap_content"
-            android:layout_height="120dp"
+            android:layout_height="60dp"
             android:layout_below="@id/text_number_question"
             android:layout_margin="16dp"
             android:gravity="center"
             android:textColor="@color/md_grey_700"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <RadioGroup
             android:id="@+id/radiogroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/titleTextView"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="32dp">
+            android:layout_marginBottom="8dp">
 
             <RadioButton
                 android:id="@+id/radiobutton_1"
@@ -43,10 +44,10 @@
                 android:button="@null"
                 android:clickable="true"
                 android:foreground="?android:attr/selectableItemBackground"
-                android:paddingBottom="16dp"
                 android:paddingLeft="24dp"
+                android:paddingTop="8dp"
                 android:paddingRight="24dp"
-                android:paddingTop="16dp"
+                android:paddingBottom="8dp"
                 android:textColor="@drawable/radio_button_text" />
 
             <RadioButton
@@ -59,10 +60,10 @@
                 android:button="@null"
                 android:clickable="true"
                 android:foreground="?android:attr/selectableItemBackground"
-                android:paddingBottom="16dp"
                 android:paddingLeft="24dp"
+                android:paddingTop="8dp"
                 android:paddingRight="24dp"
-                android:paddingTop="16dp"
+                android:paddingBottom="8dp"
                 android:textColor="@drawable/radio_button_text" />
 
             <RadioButton
@@ -75,10 +76,10 @@
                 android:button="@null"
                 android:clickable="true"
                 android:foreground="?android:attr/selectableItemBackground"
-                android:paddingBottom="16dp"
                 android:paddingLeft="24dp"
+                android:paddingTop="8dp"
                 android:paddingRight="24dp"
-                android:paddingTop="16dp"
+                android:paddingBottom="8dp"
                 android:textColor="@drawable/radio_button_text" />
 
             <RadioButton
@@ -91,10 +92,10 @@
                 android:button="@null"
                 android:clickable="true"
                 android:foreground="?android:attr/selectableItemBackground"
-                android:paddingBottom="16dp"
                 android:paddingLeft="24dp"
+                android:paddingTop="8dp"
                 android:paddingRight="24dp"
-                android:paddingTop="16dp"
+                android:paddingBottom="8dp"
                 android:textColor="@drawable/radio_button_text" />
         </RadioGroup>
 
@@ -102,14 +103,14 @@
             android:id="@+id/timepicker_test"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/titleTextView"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="90dp"
             android:layout_marginLeft="32dp"
+
+            android:layout_marginTop="16dp"
             android:layout_marginRight="32dp"
-            android:layout_marginTop="32dp"
-            android:timePickerMode="spinner">
-        </TimePicker>
+            android:timePickerMode="spinner"></TimePicker>
 
         <TextView
             android:id="@+id/text_number_question"
@@ -118,10 +119,10 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:background="@drawable/rounded_rect"
-            android:paddingBottom="8dp"
             android:paddingLeft="24dp"
-            android:paddingRight="24dp"
             android:paddingTop="8dp"
+            android:paddingRight="24dp"
+            android:paddingBottom="8dp"
             android:text="1번"
             android:textColor="@color/md_grey_700"
             android:textSize="16sp"

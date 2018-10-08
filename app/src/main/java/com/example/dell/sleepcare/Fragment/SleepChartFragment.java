@@ -95,11 +95,11 @@ public class SleepChartFragment extends android.support.v4.app.Fragment implemen
     }
 
     private void setupViewPager(ViewPager viewPager) {
-        SleepChartViewPagerAdapter adapter = new SleepChartViewPagerAdapter(getFragmentManager());
+        SleepChartViewPagerAdapter adapter = new SleepChartViewPagerAdapter(getChildFragmentManager());
         envDayFragment = new EnvDayFragment();
         envFragment = new EnvFragment();
-        adapter.addFragment(envDayFragment);
         adapter.addFragment(envFragment);
+        adapter.addFragment(envDayFragment);
         viewPager.setAdapter(adapter);
     }
 

@@ -181,8 +181,8 @@ public class TestFragment extends Fragment implements MainActivity.OnBackPressed
         switch (view.getId()) {
             case R.id.button_next_test:
                 if (viewPager.getCurrentItem() == 18) {
-                    if (onGetResult() != null) {
                         answerResults = onGetResult();
+                    if (answerResults.size()>17) {
                         PSQIScore psqiScore = new PSQIScore(answerResults);
 
                         AlertDialog.Builder dialog = new AlertDialog.Builder(Objects.requireNonNull(getContext()));

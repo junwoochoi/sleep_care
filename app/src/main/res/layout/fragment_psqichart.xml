@@ -4,16 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/mdtp_white"
     tools:context=".Fragment.PSQIChartFragment">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/fragment_toolbar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/mtrl_bottomappbar_height"
-        android:background="@color/colorPrimary"
+        android:background="@color/mdtp_white"
         android:theme="@style/ThemeOverlay.MaterialComponents.ActionBar"
         app:popupTheme="@style/ThemeOverlay.MaterialComponents.Light"
-        app:titleTextColor="@android:color/white">
+        app:titleTextColor="@color/md_grey_800">
 
         <ImageView
             android:id="@+id/chart_fragment_menu"
@@ -21,7 +22,7 @@
             android:layout_height="wrap_content"
             android:clickable="true"
             android:focusable="true"
-            android:src="@drawable/ic_menu_white_24dp" />
+            android:src="@drawable/ic_menu_grey_800_24dp" />
 
         <TextView
             android:id="@+id/toolbar_title"
@@ -31,8 +32,8 @@
             android:paddingTop="12dp"
             android:text="PSQI 점수 조회"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-            android:textColor="#fff"
-            android:textSize="20dp" />
+            android:textColor="@color/md_grey_800"
+            android:textSize="18dp" />
     </android.support.v7.widget.Toolbar>
 
     <android.support.design.card.MaterialCardView
