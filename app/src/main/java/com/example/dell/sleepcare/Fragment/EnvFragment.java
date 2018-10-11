@@ -19,6 +19,7 @@ import com.example.dell.sleepcare.R;
 import com.example.dell.sleepcare.RESTAPI.EnvService;
 import com.example.dell.sleepcare.RESTAPI.RetrofitClient;
 import com.example.dell.sleepcare.Utils.Constants;
+import com.example.dell.sleepcare.Utils.ProgressUtils;
 import com.example.dell.sleepcare.Utils.SharedPrefUtils;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
@@ -66,6 +67,7 @@ public class EnvFragment extends Fragment implements DatePickerDialog.OnDateSetL
     @BindView(R.id.env_light_chart)
     LineChart envLightChart;
 
+    List<LineChart> chartList;
 
     public EnvFragment() {
         // Required empty public constructor
@@ -86,21 +88,26 @@ public class EnvFragment extends Fragment implements DatePickerDialog.OnDateSetL
         Calendar yesterday = Calendar.getInstance();
         yesterday.add(Calendar.DATE, -1);
 
-        renderDefaultChart(email, envService, yesterday, 1);
+        chartList = new ArrayList<>();
+        chartList.add(envHumidChart);
+        chartList.add(envTempChart);
+        chartList.add(envLightChart);
+        chartList.add(envLoudChart);
+
+        for (LineChart chart : chartList) {
+            initializeChart(chart);
+        }
+
+        renderDefaultChart(email, envService, yesterday);
 
         return view;
     }
 
-    private void renderDefaultChart(String email, EnvService envService, Calendar yesterday, int mode) {
+
+    private void renderDefaultChart(String email, EnvService envService, Calendar yesterday) {
 
         //로딩바
-        final ProgressDialog progressDialog;
-        progressDialog = new ProgressDialog(getContext());
-        progressDialog.setMessage("데이터를 받아오는 중...");
-        progressDialog.setTitle("로딩");
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        // show it
-        progressDialog.show();
+        ProgressDialog progressDialog = ProgressUtils.showProgressDialog(getContext(), "데이터 불러오는 중...");
         int year = yesterday.get(Calendar.YEAR);
         int month = yesterday.get(Calendar.MONTH) + 1;
         int dateOfMonth = yesterday.get(Calendar.DATE);
@@ -132,7 +139,6 @@ public class EnvFragment extends Fragment implements DatePickerDialog.OnDateSetL
                         List<Entry> humidEntries = new ArrayList<>();
                         List<Entry> loudEntries = new ArrayList<>();
                         List<Entry> lightEntries = new ArrayList<>();
-                        float i = 1;
                         for (UserEnv userEnv : userEnvList) {
                             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX");
                             Date date = null;
@@ -141,19 +147,21 @@ public class EnvFragment extends Fragment implements DatePickerDialog.OnDateSetL
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }
-
-                            float timeFloat = (float) date.getTime() / 100 + date.getTime() % 100;
+                            Calendar cal = Calendar.getInstance();
+                            cal.setTime(date);
+                            int timeInt = cal.get(Calendar.HOUR_OF_DAY)*60 + cal.get(Calendar.MINUTE);
+                            float timeFloat = (float) timeInt;
                             humidEntries.add(new Entry(timeFloat, Float.parseFloat(userEnv.getEnvHumid())));
                             tempEntries.add(new Entry(timeFloat, Float.parseFloat(userEnv.getEnvTemp())));
                             loudEntries.add(new Entry(timeFloat, Float.parseFloat(userEnv.getEnvLoud())));
                             lightEntries.add(new Entry(timeFloat, Float.parseFloat(userEnv.getEnvLight())));
-                            i++;
+
                         }
 
-                            setLineChart(humidEntries, envHumidChart, 1);
-                            setLineChart(tempEntries, envTempChart, 2);
-                            setLineChart(loudEntries, envLoudChart, 3);
-                            setLineChart(lightEntries, envLightChart, 4);
+                        setLineChart(humidEntries, envHumidChart, 1);
+                        setLineChart(tempEntries, envTempChart, 2);
+                        setLineChart(loudEntries, envLoudChart, 3);
+                        setLineChart(lightEntries, envLightChart, 4);
 
                         progressDialog.dismiss();
 
@@ -179,48 +187,11 @@ public class EnvFragment extends Fragment implements DatePickerDialog.OnDateSetL
     }
 
     private void setLineChart(List<Entry> entries, LineChart envChart, int mode) {
-        envChart.setBackgroundColor(Color.WHITE);
-        envChart.getDescription().setEnabled(false);
-        envChart.setDrawGridBackground(false);
-        // enable scaling and dragging
-        envChart.setDragEnabled(true);
-        envChart.setScaleEnabled(true);
-        envChart.setDoubleTapToZoomEnabled(false);
-        envChart.setVisibleXRangeMaximum(30);
-        // if disabled, scaling can be done on x- and y-axis separately
-        envChart.setPinchZoom(false);
-        envChart.setTouchEnabled(true);
-        EnvMarkerView marker = new EnvMarkerView(getContext(), R.layout.markerview);
-        marker.setChartView(envChart);
-        envChart.setMarker(marker);
-        XAxis x = envChart.getXAxis();
-        x.setTextColor(Color.BLACK);
-        x.setDrawGridLines(false);
-        x.setValueFormatter(new IAxisValueFormatter() {
-            @Override
-            public String getFormattedValue(float value, AxisBase axis) {
-                Date date = new Date();
-                date.setTime((long) value * 100);
-                Calendar cal = Calendar.getInstance();
-                cal.setTime(date);
-                return cal.get(Calendar.HOUR) + "시 " + cal.get(Calendar.MINUTE) + "분";
-            }
-        });
 
-        YAxis y = envChart.getAxisLeft();
-
-        y.setLabelCount(6, false);
-        y.setTextColor(Color.BLACK);
-        y.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
-        y.setDrawGridLines(false);
-        y.setAxisLineColor(Color.BLACK);
-
-
-        envChart.getAxisRight().setEnabled(false);
         LineDataSet dataSet = new LineDataSet(entries, "hello");
         dataSet.setDrawFilled(true);
         dataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
-        dataSet.setCubicIntensity(0.2f);
+//        dataSet.setCubicIntensity(0.2f);
         dataSet.setDrawCircles(false);
         dataSet.setLineWidth(1.8f);
         dataSet.setCircleRadius(4f);
@@ -279,35 +250,55 @@ public class EnvFragment extends Fragment implements DatePickerDialog.OnDateSetL
         Calendar selectedDate = Calendar.getInstance();
         selectedDate.set(year, monthOfYear, dayOfMonth);
 
-        clearEnvChart(envHumidChart);
-        clearEnvChart(envTempChart);
-        clearEnvChart(envLightChart);
-        clearEnvChart(envLoudChart);
-        renderDefaultChart(email, envService, selectedDate, 2);
+//
+        renderDefaultChart(email, envService, selectedDate);
 
     }
 
-    private void clearEnvChart(LineChart envChart) {
-        try {
-            envChart.clearValues();
-        } catch (Exception e) {
-            Log.e(getClass().toString(), e.getMessage());
-        }
-        envChart.clear();
-        envChart.invalidate();
+    private void initializeChart(LineChart envChart) {
+        envChart.setBackgroundColor(Color.WHITE);
+        envChart.getDescription().setEnabled(false);
+        envChart.setDrawGridBackground(false);
+        // enable scaling and dragging
+        envChart.setDragEnabled(true);
+        envChart.setScaleEnabled(true);
+        envChart.setDoubleTapToZoomEnabled(false);
+        envChart.setVisibleXRangeMaximum(30);
+        // if disabled, scaling can be done on x- and y-axis separately
+        envChart.setPinchZoom(false);
+        envChart.setTouchEnabled(true);
+        EnvMarkerView marker = new EnvMarkerView(getContext(), R.layout.markerview);
+        marker.setChartView(envChart);
+        envChart.setMarker(marker);
+        XAxis x = envChart.getXAxis();
+        x.setTextColor(Color.BLACK);
+        x.setDrawGridLines(false);
+        x.setValueFormatter(new IAxisValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, AxisBase axis) {
+                Calendar cal = Calendar.getInstance();
+                cal.set(Calendar.MINUTE, (int) value);
+                return cal.get(Calendar.HOUR) + "시 " + cal.get(Calendar.MINUTE) + "분";
+            }
+        });
+
+        YAxis y = envChart.getAxisLeft();
+
+        y.setLabelCount(6, false);
+        y.setTextColor(Color.BLACK);
+        y.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
+        y.setDrawGridLines(false);
+        y.setAxisLineColor(Color.BLACK);
+
+
+        envChart.getAxisRight().setEnabled(false);
     }
 
 
     @Override
     public void onClick(View view) {
 
-        final ProgressDialog progressDialog;
-        progressDialog = new ProgressDialog(getContext());
-        progressDialog.setMessage("데이터를 받아오는 중...");
-        progressDialog.setTitle("로딩");
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        // show it
-        progressDialog.show();
+        ProgressDialog progressDialog = ProgressUtils.showProgressDialog(getContext(), "데이터 읽어오는 중..");
         Calendar now = Calendar.getInstance();
         DatePickerDialog dpd = DatePickerDialog.newInstance(
                 EnvFragment.this,
