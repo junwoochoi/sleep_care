@@ -1,19 +1,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:id="@+id/menu_home"
-        android:title="메인화면" />
-    <item
-        android:id="@+id/menu_connect"
-        android:title="블루투스 연결" />
+
+
     <item
         android:id="@+id/menu_test"
-        android:title="PSQI 설문" />
+        android:title="PSQI설문" />
     <item
         android:id="@+id/menu_score"
-        android:title="PSQI 점수 조회" />
+        android:title="PSQI점수조회" />
     <item
         android:id="@+id/menu_graph"
-        android:title="수면 통계 확인" />
+        android:title="수면통계확인" />
     <item
         android:id="@+id/menu_setting"
         android:title="환경설정" />

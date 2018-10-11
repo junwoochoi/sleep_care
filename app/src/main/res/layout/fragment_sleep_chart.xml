@@ -34,7 +34,7 @@
             android:textSize="18dp" />
     </android.support.v7.widget.Toolbar>
     <!-- Main content -->
-    <android.support.v4.view.ViewPager
+    <com.example.dell.sleepcare.ViewPager.NonSwipeableViewPager
         android:id="@+id/sleep_chart_view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

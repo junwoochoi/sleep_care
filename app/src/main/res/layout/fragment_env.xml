@@ -3,9 +3,170 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/mdtp_white"
-    tools:context=".Fragment.EnvFragment">
+    android:layout_height="wrap_content">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/mdtp_white"
+            android:orientation="vertical"
+            tools:context=".Fragment.EnvFragment">
+
+
+            <android.support.design.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:padding="4dp"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    tools:context=".Fragment.EnvFragment">
+
+                    <TextView
+                        style="@style/TextAppearance.AppCompat.Medium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginBottom="4dp"
+                        android:paddingStart="6dp"
+                        android:paddingTop="2dp"
+                        android:paddingEnd="6dp"
+                        android:paddingBottom="2dp"
+                        android:text="습도"
+                        android:textColor="@color/md_grey_800" />
+
+                    <com.github.mikephil.charting.charts.LineChart
+                        android:id="@+id/env_humid_chart"
+                        android:layout_width="match_parent"
+                        android:layout_height="220dp" />
+                </LinearLayout>
+
+
+            </android.support.design.card.MaterialCardView>
+
+            <android.support.design.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:padding="4dp"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    tools:context=".Fragment.EnvFragment">
+
+                    <TextView
+                        style="@style/TextAppearance.AppCompat.Medium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginBottom="4dp"
+                        android:paddingStart="6dp"
+                        android:paddingTop="2dp"
+                        android:paddingEnd="6dp"
+                        android:paddingBottom="2dp"
+                        android:text="온도"
+                        android:textColor="@color/md_grey_800" />
+
+                    <com.github.mikephil.charting.charts.LineChart
+                        android:id="@+id/env_temp_chart"
+                        android:layout_width="match_parent"
+                        android:layout_height="220dp" />
+                </LinearLayout>
+
+            </android.support.design.card.MaterialCardView>
+
+            <android.support.design.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:padding="4dp"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    tools:context=".Fragment.EnvFragment">
+
+                    <TextView
+                        style="@style/TextAppearance.AppCompat.Medium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginBottom="4dp"
+                        android:paddingStart="6dp"
+                        android:paddingTop="2dp"
+                        android:paddingEnd="6dp"
+                        android:paddingBottom="2dp"
+                        android:text="주변 소음"
+                        android:textColor="@color/md_grey_800" />
+
+                    <com.github.mikephil.charting.charts.LineChart
+                        android:id="@+id/env_loud_chart"
+                        android:layout_width="match_parent"
+                        android:layout_height="220dp" />
+                </LinearLayout>
+
+            </android.support.design.card.MaterialCardView>
+
+            <android.support.design.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:padding="4dp"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    tools:context=".Fragment.EnvFragment">
+
+                    <TextView
+                        style="@style/TextAppearance.AppCompat.Medium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginBottom="4dp"
+                        android:paddingStart="6dp"
+                        android:paddingTop="2dp"
+                        android:paddingEnd="6dp"
+                        android:paddingBottom="2dp"
+                        android:text="주변 밝기"
+                        android:textColor="@color/md_grey_800" />
+
+                    <com.github.mikephil.charting.charts.LineChart
+                        android:id="@+id/env_light_chart"
+                        android:layout_width="match_parent"
+                        android:layout_height="220dp" />
+                </LinearLayout>
+            </android.support.design.card.MaterialCardView>
+
+        </LinearLayout>
+    </ScrollView>
 
     <!-- TODO: Update blank fragment layout -->
     <android.support.design.widget.FloatingActionButton
@@ -17,5 +178,4 @@
         android:layout_margin="16dp"
         app:backgroundTint="@color/colorAccent"
         app:srcCompat="@drawable/ic_today_grey_700_24dp" />
-
 </android.support.design.widget.CoordinatorLayout>

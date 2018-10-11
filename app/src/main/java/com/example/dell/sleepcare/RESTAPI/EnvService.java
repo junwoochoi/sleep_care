@@ -13,8 +13,11 @@ import retrofit2.http.Path;
 import static com.example.dell.sleepcare.Utils.Constants.API_URL;
 
 public interface EnvService {
-    @GET(API_URL + "env/{user_email}")
-    Call<EnvResult> getEnvList(@Path("user_email") String email);
+    @GET(API_URL + "env/time/{user_email}/{date}")
+    Call<EnvResult> getEnvList(@Path("user_email") String email, @Path("date") String date);
+
+    @GET(API_URL + "env/date/{user_email}/")
+    Call<EnvResult> getSelectableDays(@Path("user_email") String email);
 
     @FormUrlEncoded
     @POST(API_URL + "psqiresult/")

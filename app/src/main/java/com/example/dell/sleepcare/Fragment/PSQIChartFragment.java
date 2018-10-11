@@ -21,6 +21,7 @@ import com.example.dell.sleepcare.Model.PSQIResult;
 import com.example.dell.sleepcare.R;
 import com.example.dell.sleepcare.RESTAPI.PSQIService;
 import com.example.dell.sleepcare.RESTAPI.RetrofitClient;
+import com.example.dell.sleepcare.Utils.ProgressUtils;
 import com.example.dell.sleepcare.Utils.SharedPrefUtils;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.AxisBase;
@@ -102,14 +103,7 @@ public class PSQIChartFragment extends android.support.v4.app.Fragment implement
         sp = SharedPrefUtils.getInstance(getActivity().getApplicationContext()).getPrefs();
 
         // ProgressDialog 초기화
-        final ProgressDialog progressDialog;
-        progressDialog = new ProgressDialog(getContext());
-        progressDialog.setMax(100);
-        progressDialog.setMessage("데이터를 받아오는 중...");
-        progressDialog.setTitle("로딩");
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        // show it
-        progressDialog.show();
+        ProgressDialog progressDialog = ProgressUtils.showProgressDialog(getContext(), "데이터를 읽어오는 중..");
 
         psqiCall = apiService.getPSQIList(sp.getString("email", ""));
 

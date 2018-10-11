@@ -27,6 +27,7 @@ import com.example.dell.sleepcare.Bluetooth.BeaconAdapter;
 import com.example.dell.sleepcare.Bluetooth.BluetoothLeService;
 import com.example.dell.sleepcare.R;
 import com.example.dell.sleepcare.Utils.Constants;
+import com.example.dell.sleepcare.Utils.ProgressUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -93,17 +94,11 @@ public class BluetoothDialog extends Dialog {
     @OnClick(R.id.btn_bt_dialog_connect)
     void onConnect() {
         Intent intent = new Intent(context.getApplicationContext(), BluetoothLeService.class);
-        progressDialog = new ProgressDialog(getContext());
         BleManager.getInstance().connect(selectedDevice, new BleGattCallback() {
             @Override
             public void onStartConnect() {
                 Log.i(BLE_SCAN_LOG, "onStartConnect");
-                progressDialog.setMax(100);
-                progressDialog.setMessage("디바이스와 연결 중...");
-                progressDialog.setTitle("로딩");
-                progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                // show it
-                progressDialog.show();
+                progressDialog = ProgressUtils.showProgressDialog(getContext(), "블루투스 연결중...");
             }
 
             @Override

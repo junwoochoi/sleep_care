@@ -25,6 +25,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.clj.fastble.BleManager;
@@ -73,7 +74,8 @@ public class MainActivity extends AppCompatActivity {
     public FrameLayout mainFragmentContainer;
     @BindView(R.id.my_toolbar)
     Toolbar myToolbar;
-    @BindView(R.id.drawerlayout) public FlowingDrawer mDrawer;
+    @BindView(R.id.drawerlayout)
+    public FlowingDrawer mDrawer;
     @BindView(R.id.button_bluetooth_on_off)
     MaterialButton btnBluetooth;
 
@@ -99,6 +101,18 @@ public class MainActivity extends AppCompatActivity {
         editor = sp.edit();
 
         checkLogin();
+
+        if(getIntent()!=null){
+            Intent intent = getIntent();
+            Bundle bundle = intent.getExtras();
+
+            if(bundle!=null){
+                String action = bundle.getString("action");
+                if("logout".equals(action)){
+                    onLogOut();
+                }
+            }
+        }
 
         BleManager.getInstance().init(getApplication());
         BleManager.getInstance()
@@ -141,13 +155,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDrawerSlide(float openRatio, int offsetPixels) {
                 Log.i("MainActivity", "openRatio=" + openRatio + " ,offsetPixels=" + offsetPixels);
+                TextView userNmTextView = findViewById(R.id.textview_navigation_username);
+                userNmTextView.setText(SharedPrefUtils.getInstance(getApplicationContext()).getStringExtra("name"));
             }
         });
 
         //블루투스 켜지도록 요청
         mBluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
         mBluetoothAdapter = mBluetoothManager.getAdapter();
-        if(mBluetoothAdapter == null || !mBluetoothAdapter.isEnabled()) {
+        if (mBluetoothAdapter == null || !mBluetoothAdapter.isEnabled()) {
             Intent enableBTIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBTIntent, REQUEST_ENABLE_BT);
         }
@@ -194,6 +210,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+
     public void setLoginSetting() {
         //로그인 세팅 초기화
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder
@@ -213,8 +230,9 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
     }
+
     @OnClick(R.id.psqi_test_btn)
-    void onTestClicked(){
+    public void onTestClicked() {
         FragmentManager fm = getSupportFragmentManager();
         TestFragment testFragment = new TestFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.main_container, testFragment).commit();
@@ -223,7 +241,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @OnClick(R.id.test_result_btn)
-    void onTestResultClicked(){
+    public void onTestResultClicked() {
         FragmentManager fm = getSupportFragmentManager();
         android.support.v4.app.Fragment psqiChartFragment = new PSQIChartFragment();
         fm.beginTransaction().replace(R.id.main_container, psqiChartFragment).commit();
@@ -232,7 +250,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @OnClick(R.id.psqi_graph_test)
-    void onGraphClicked(){
+    public void onGraphClicked() {
         FragmentManager fm = getSupportFragmentManager();
         android.support.v4.app.Fragment sleepChartFragment = new SleepChartFragment();
         fm.beginTransaction().replace(R.id.main_container, sleepChartFragment).commit();
@@ -249,7 +267,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             }
             case R.id.action_bt1: {
-                Intent intent = new Intent(getApplicationContext(),SettingsActivity.class);
+                Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
                 startActivity(intent);
                 break;
             }
@@ -272,20 +290,22 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void onLogOut() {
+    public void onLogOut() {
         mOAuthLoginModule.logout(getApplicationContext());
         LoginManager.getInstance().logOut();
         FirebaseAuth.getInstance().signOut();
-        Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
-                new ResultCallback<Status>() {
-                    @Override
-                    public void onResult(@NonNull Status status) {
-                        editor.clear();
-                        editor.apply();
-                        Log.d("SharedPreference:", sp.getAll().values().toString());
-                        startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-                    }
-                });
+        if(mGoogleApiClient.isConnected())  {
+            Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+                    new ResultCallback<Status>() {
+                        @Override
+                        public void onResult(@NonNull Status status) {
+                            editor.clear();
+                            editor.apply();
+
+                            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                        }
+                    });
+        }
         editor.clear();
         editor.apply();
         Log.d("SharedPreference:", sp.getAll().values().toString());
@@ -303,10 +323,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         updateUI();
         super.onPause();
-        if(bluetoothDialog!=null){
-        bluetoothDialog.dismiss();
+        if (bluetoothDialog != null) {
+            bluetoothDialog.dismiss();
         }
     }
+
     private boolean isMyServiceRunning(Class<?> serviceClass) {
         ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
@@ -318,76 +339,78 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //REQUEST FOR PERMISSSION
-        public void requestPermission() {
-            if (Build.VERSION.SDK_INT  >= Build.VERSION_CODES.M) {
-                int permissionResult = checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
-                if (permissionResult == PackageManager.PERMISSION_DENIED) {
-                    /*
-                     * 거부한 이력이 한번이라도 있다면, true를 리턴한다.
-                     */
-                    if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_COARSE_LOCATION)) {
-                        AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
-                        dialog.setTitle("권한이 필요합니다.")
-                                .setMessage("이 기능을 사용하기 위해서는 단말기의 \"전화걸기\" 권한이 필요합니다. 계속하시겠습니까?")
-                                .setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                            requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1000);
-                                        }
+    public void requestPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            int permissionResult = checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
+            if (permissionResult == PackageManager.PERMISSION_DENIED) {
+                /*
+                 * 거부한 이력이 한번이라도 있다면, true를 리턴한다.
+                 */
+                if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_COARSE_LOCATION)) {
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
+                    dialog.setTitle("권한이 필요합니다.")
+                            .setMessage("이 기능을 사용하기 위해서는 단말기의 \"전화걸기\" 권한이 필요합니다. 계속하시겠습니까?")
+                            .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                        requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1000);
                                     }
-                                })
-                                .setNegativeButton("취소", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        Toast.makeText(MainActivity.this, "기능을 취소했습니다. 블루투스 기능을 이용할 수 없습니다.\n 이용을 원하실 시 설정에서 권한을 재설정해주십시오.", Toast.LENGTH_SHORT).show();
-                                    }
-                                })
-                                .create().show();
-                    }
-                    //최초로 권한을 요청할 때
-                    else {
-                        requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1000);
-                    }
+                                }
+                            })
+                            .setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Toast.makeText(MainActivity.this, "기능을 취소했습니다. 블루투스 기능을 이용할 수 없습니다.\n 이용을 원하실 시 설정에서 권한을 재설정해주십시오.", Toast.LENGTH_SHORT).show();
+                                }
+                            })
+                            .create().show();
+                }
+                //최초로 권한을 요청할 때
+                else {
+                    requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1000);
                 }
             }
         }
-        public void updateUI(){
-            Log.e("isServiceRunning?", String.valueOf(isMyServiceRunning(BluetoothLeService.class)));
-            if (isMyServiceRunning(BluetoothLeService.class)) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                btnBluetooth.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        Intent stopIntent = new Intent(MainActivity.this, BluetoothLeService.class);
-                                        stopIntent.setAction(Constants.STOP_FOREGROUND_ACTION);
-                                        startService(stopIntent);
-                                        btnBluetooth.setText("연결하기");
-                                        Toast.makeText(getApplicationContext(), "서비스가 종료되었습니다.", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                                btnBluetooth.setText("연결취소");
-                            }
-                        });
-                    }
-                }).start();
-            } else {
-                btnBluetooth.setClickable(true);
-                btnBluetooth.setText("연결하기");
-                btnBluetooth.setOnClickListener(new View.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(View view) {
+    }
 
-                                                        bluetoothDialog = new BluetoothDialog(MainActivity.this);
-                                                        bluetoothDialog.show();
-                                                    }
+    public void updateUI() {
+        Log.e("isServiceRunning?", String.valueOf(isMyServiceRunning(BluetoothLeService.class)));
+        if (isMyServiceRunning(BluetoothLeService.class)) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            btnBluetooth.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Intent stopIntent = new Intent(MainActivity.this, BluetoothLeService.class);
+                                    stopIntent.setAction(Constants.STOP_FOREGROUND_ACTION);
+                                    startService(stopIntent);
+                                    btnBluetooth.setText("연결하기");
+                                    Toast.makeText(getApplicationContext(), "서비스가 종료되었습니다.", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                            btnBluetooth.setText("연결취소");
+                        }
+                    });
+                }
+            }).start();
+        } else {
+            btnBluetooth.setClickable(true);
+            btnBluetooth.setText("연결하기");
+            btnBluetooth.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    bluetoothDialog = new BluetoothDialog(MainActivity.this);
+                    bluetoothDialog.show();
+                }
             });
-        }}
+        }
+    }
 
     // 뒤로가기 버튼 입력시간이 담길 long 객체
     private long pressedTime = 0;
@@ -411,37 +434,35 @@ public class MainActivity extends AppCompatActivity {
         if (mDrawer.isMenuVisible()) {
             mDrawer.closeMenu();
         } else {
-        // 다른 Fragment 에서 리스너를 설정했을 때 처리됩니다.
-        if(mBackListener != null) {
-            mBackListener.onBack();
-            Log.e("!!!", "Listener is not null");
-            // 리스너가 설정되지 않은 상태(예를들어 메인Fragment)라면
-            // 뒤로가기 버튼을 연속적으로 두번 눌렀을 때 앱이 종료됩니다.
-        } else {
-            Log.e("!!!", "Listener is null");
-            if ( pressedTime == 0 ) {
-                Snackbar.make(findViewById(R.id.main_container),
-                        " 한 번 더 누르면 종료됩니다." , Snackbar.LENGTH_LONG).show();
-                pressedTime = System.currentTimeMillis();
-            }
-            else {
-                int seconds = (int) (System.currentTimeMillis() - pressedTime);
-
-                if ( seconds > 2000 ) {
+            // 다른 Fragment 에서 리스너를 설정했을 때 처리됩니다.
+            if (mBackListener != null) {
+                mBackListener.onBack();
+                Log.e("!!!", "Listener is not null");
+                // 리스너가 설정되지 않은 상태(예를들어 메인Fragment)라면
+                // 뒤로가기 버튼을 연속적으로 두번 눌렀을 때 앱이 종료됩니다.
+            } else {
+                Log.e("!!!", "Listener is null");
+                if (pressedTime == 0) {
                     Snackbar.make(findViewById(R.id.main_container),
-                            " 한 번 더 누르면 종료됩니다." , Snackbar.LENGTH_LONG).show();
-                    pressedTime = 0 ;
-                }
-                else {
-                    super.onBackPressed();
-                    Log.e("!!!", "onBackPressed : finish, killProcess");
-                    finish();
-                    android.os.Process.killProcess(android.os.Process.myPid());
+                            " 한 번 더 누르면 종료됩니다.", Snackbar.LENGTH_LONG).show();
+                    pressedTime = System.currentTimeMillis();
+                } else {
+                    int seconds = (int) (System.currentTimeMillis() - pressedTime);
+
+                    if (seconds > 2000) {
+                        Snackbar.make(findViewById(R.id.main_container),
+                                " 한 번 더 누르면 종료됩니다.", Snackbar.LENGTH_LONG).show();
+                        pressedTime = 0;
+                    } else {
+                        super.onBackPressed();
+                        Log.e("!!!", "onBackPressed : finish, killProcess");
+                        finish();
+                        android.os.Process.killProcess(android.os.Process.myPid());
                     }
                 }
             }
         }
     }
-    }
+}
 
 

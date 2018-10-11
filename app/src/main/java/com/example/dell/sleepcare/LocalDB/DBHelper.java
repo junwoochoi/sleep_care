@@ -52,7 +52,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return envList;
     }
 
-    public void add(UserEnv env){
+    public void insert(UserEnv env){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("USER_EMAIL", env.getUserEmail());

@@ -234,6 +234,7 @@ public class EnvFragment extends Fragment implements DatePickerDialog.OnDateSetL
         envChart.setMaxVisibleValueCount(30);
         envChart.notifyDataSetChanged();
         envChart.invalidate();
+        envChart.zoom(4,1, 0, 0);
     }
 
 

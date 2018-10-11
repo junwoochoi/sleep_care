@@ -13,7 +13,7 @@
         android:layout_gravity="start"
         android:clickable="true"
         android:focusable="true"
-        android:background="#fff"
+        android:background="@color/md_blue_grey_100"
         app:headerLayout="@layout/view_global_menu_header"
         app:itemIconTint="#8b8b8b"
         app:itemTextColor="#666666"
