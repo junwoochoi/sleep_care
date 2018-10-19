@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Binder;
 import android.os.Build;
+import android.os.Handler;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
@@ -22,6 +23,7 @@ import com.clj.fastble.callback.BleWriteCallback;
 import com.clj.fastble.data.BleDevice;
 import com.clj.fastble.exception.BleException;
 import com.example.dell.sleepcare.Activitity.MainActivity;
+import com.example.dell.sleepcare.LocalDB.DBHelper;
 import com.example.dell.sleepcare.R;
 import com.example.dell.sleepcare.Utils.Constants;
 import com.example.dell.sleepcare.Utils.SharedPrefUtils;
@@ -29,6 +31,16 @@ import com.example.dell.sleepcare.Utils.SharedPrefUtils;
 public class BluetoothLeService extends Service {
 
     final String BLE_LOG = "BLE_SERVICE_LOG:";
+    final DBHelper dbHelper = new DBHelper(getApplicationContext(), Constants.DB_NAME, null, 1);
+    private Handler mHandler = new Handler();
+    private Runnable mRunnable = new Runnable(){
+        @Override
+        public void run(){
+            getEnvDayData();
+            mHandler.postDelayed(this, Constants.ENV_DATA_DELAY);
+        }
+    };
+
 
 
     BleDevice bleDevice;
@@ -188,8 +200,8 @@ public class BluetoothLeService extends Service {
                 } else {
 
                 }
-                    Log.i(getClass().toString(), new String(justWrite) + "method execute");
-                }
+                Log.i(getClass().toString(), new String(justWrite) + "method execute");
+            }
 
             @Override
             public void onWriteFailure(BleException exception) {
@@ -218,14 +230,20 @@ public class BluetoothLeService extends Service {
         BleManager.getInstance().read(bleDevice, Constants.BLE_USER_SERVICEID3.toString(), Constants.BLE_GET_USER_ENV_DAY_DATA.toString(), new BleReadCallback() {
             @Override
             public void onReadSuccess(byte[] data) {
-                Log.e(getClass().toString(), "data >>>>" + new String(data));
+                Log.i(getClass().toString(), "data >>>>" + new String(data));
+                insertEnvDataToDB(new String(data));
             }
 
             @Override
             public void onReadFailure(BleException exception) {
-                Log.e(getClass().toString(), "READ FAILED!!!! CHECK 32 UUID"+ exception.getDescription());
+                Log.i(getClass().toString(), "READ FAILED!!!! CHECK 32 UUID"+ exception.getDescription());
             }
         });
+    }
+
+    private int insertEnvDataToDB(String data){
+        //data를 POJO형식의 UserEnv 로 매칭해주고, 그값을 dbHelper.insertEnv()함수에 인자로 던져준다. 결과값은 return 해준다.
+        return 0;
     }
 
 

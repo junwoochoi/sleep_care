@@ -31,6 +31,7 @@ import android.widget.Toast;
 import com.clj.fastble.BleManager;
 import com.example.dell.sleepcare.Bluetooth.BluetoothLeService;
 import com.example.dell.sleepcare.Dialog.BluetoothDialog;
+import com.example.dell.sleepcare.Dialog.RemoteDialog;
 import com.example.dell.sleepcare.Fragment.MenuListFragment;
 import com.example.dell.sleepcare.Fragment.PSQIChartFragment;
 import com.example.dell.sleepcare.Fragment.SleepChartFragment;
@@ -267,9 +268,12 @@ public class MainActivity extends AppCompatActivity {
                 break;
             }
             case R.id.action_bt1: {
-                Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
-                startActivity(intent);
-                break;
+                if(isMyServiceRunning(BluetoothLeService.class)) {
+                    RemoteDialog remoteDialog = new RemoteDialog(this);
+                    remoteDialog.show();
+                } else {
+                    Toast.makeText(this, "블루투스가 연결되지 않았습니다. 연결 후 다시 시도하세요.", Toast.LENGTH_LONG).show();
+                }
             }
         }
         return super.onOptionsItemSelected(item);

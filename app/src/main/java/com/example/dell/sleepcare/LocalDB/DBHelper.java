@@ -21,12 +21,19 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String createEnvDb = "CREATE TABLE ENV_TB(" +
-                "USER_EMAIL VARCHAR(40)," +
-                "ENV_TIME DATETIME," +
+                "USER_EMAIL VARCHAR(40) PRIMARY KEY," +
+                "ENV_TIME DATETIME PRIMARY KEY," +
                 "ENV_HUMID VARCHAR(20)," +
                 "ENV_TEMP VARCHAR(20)," +
                 "ENV_LIGHT VARCHAR(20)," +
                 "ENV_LOUD VARCHAR(20))";
+        String createEnvDayDb = "CREATE TABLE ENV_DAY_TB(" +
+                "USER_EMAIL VARCHAR(40) PRIMARY KEY," +
+                "ENV_DAY_TIME DATETIME PRIMARY KEY," +
+                "ENV_DAY_MOVE VARCHAR(20)," +
+                "ENV_DAY_SNORE VARCHAR(20)," +
+                "ENV_DAY_SLEEPTIME VARCHAR(20))";
+        db.execSQL(createEnvDayDb);
         db.execSQL(createEnvDb);
     }
 
@@ -52,7 +59,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return envList;
     }
 
-    public void insert(UserEnv env){
+    public int insertEnv(UserEnv env){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("USER_EMAIL", env.getUserEmail());
@@ -62,9 +69,9 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put("ENV_LIGHT", env.getEnvLight());
         values.put("ENV_LOUD", env.getEnvLoud());
 
-        db.insert("ENV_TB", null, values);
+        int result = (int) db.insert("ENV_TB", null, values);
         db.close();
-
+        return result;
     }
 
     @Override

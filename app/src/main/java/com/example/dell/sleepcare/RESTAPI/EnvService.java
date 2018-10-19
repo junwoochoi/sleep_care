@@ -3,6 +3,9 @@ package com.example.dell.sleepcare.RESTAPI;
 import com.example.dell.sleepcare.Model.EnvResult;
 import com.example.dell.sleepcare.Model.UserEnv;
 
+import java.util.List;
+import java.util.Map;
+
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -18,6 +21,9 @@ public interface EnvService {
 
     @GET(API_URL + "env/date/{user_email}/")
     Call<EnvResult> getSelectableDays(@Path("user_email") String email);
+
+    @GET(API_URL + "envday/date/{user_email}/")
+    Call<List<Map<String, String>>> getSelectableDaysFromDay(@Path("user_email") String email);
 
     @FormUrlEncoded
     @POST(API_URL + "psqiresult/")
