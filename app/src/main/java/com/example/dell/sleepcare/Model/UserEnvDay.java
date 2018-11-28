@@ -2,7 +2,7 @@ package com.example.dell.sleepcare.Model;
 
 import com.google.gson.annotations.SerializedName;
 
-public abstract class UserEnvDay {
+public class UserEnvDay {
 
     @SerializedName("ENV_DAY_SLEEPTIME")
     private String envDaySleeptime;

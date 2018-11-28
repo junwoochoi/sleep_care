@@ -1,13 +1,14 @@
 package com.example.dell.sleepcare.Utils;
 
 
+
 import android.os.ParcelUuid;
 
 import java.util.UUID;
 
 
 public class Constants {
-    public static final int ENV_DATA_DELAY = 6000;
+    public static final int ENV_DATA_DELAY = 30000;
     public static final String DB_NAME = "TEST_DB";
     public static final String API_URL = "http://210.102.181.158:62006/mobile/"; /* "http://192.9.20.62:62006/mobile/";*/
     public static final String NAVER_CLIENT_ID = "YzvnGn3BFQswtRux5ooh";

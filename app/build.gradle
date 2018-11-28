@@ -74,6 +74,8 @@ dependencies {
     implementation 'com.wdullaer:materialdatetimepicker:3.6.0'
     implementation 'com.clj.fastble:FastBleLib:2.3.2'
 
+
+
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
 }
 apply plugin: 'com.google.gms.google-services'

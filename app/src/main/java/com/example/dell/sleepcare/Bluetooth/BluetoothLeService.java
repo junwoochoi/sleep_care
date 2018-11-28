@@ -27,16 +27,22 @@ import com.example.dell.sleepcare.LocalDB.DBHelper;
 import com.example.dell.sleepcare.R;
 import com.example.dell.sleepcare.Utils.Constants;
 import com.example.dell.sleepcare.Utils.SharedPrefUtils;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.nio.charset.Charset;
+import java.util.Map;
 
 public class BluetoothLeService extends Service {
 
     final String BLE_LOG = "BLE_SERVICE_LOG:";
-    final DBHelper dbHelper = new DBHelper(getApplicationContext(), Constants.DB_NAME, null, 1);
+    final DBHelper dbHelper = new DBHelper(getBaseContext(), Constants.DB_NAME, null, 1);
     private Handler mHandler = new Handler();
     private Runnable mRunnable = new Runnable(){
         @Override
         public void run(){
-            getEnvDayData();
+            getEnvData();
             mHandler.postDelayed(this, Constants.ENV_DATA_DELAY);
         }
     };
@@ -51,12 +57,15 @@ public class BluetoothLeService extends Service {
                 switch (intent.getStringExtra("method")) {
                     case "start":
                         startOrStopMeasure(true);
+                        Toast.makeText(getApplicationContext(), "start", Toast.LENGTH_SHORT).show();
                         break;
                     case "stop":
                         startOrStopMeasure(false);
+                        Toast.makeText(getApplicationContext(), "stop", Toast.LENGTH_SHORT).show();
                         break;
                     case "disconnectDevice":
                         disconnectDevice();
+                        Toast.makeText(getApplicationContext(), "disconnect", Toast.LENGTH_SHORT).show();
                         break;
                     default:
                         Log.e(getClass().toString(), "this is not allowed >>" + intent.getStringExtra("method"));
@@ -75,6 +84,8 @@ public class BluetoothLeService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
+
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, new IntentFilter(Constants.EVENT_TO_BLE_SERVICE));
         String userEmail = SharedPrefUtils.getInstance(getApplicationContext()).getStringExtra("email");
         if (intent != null) {
@@ -173,8 +184,7 @@ public class BluetoothLeService extends Service {
                     public void onWriteSuccess(int current, int total, byte[] justWrite) {
 
                         Toast.makeText(getApplicationContext(), "사용자 인증에 성공하였습니다.", Toast.LENGTH_SHORT).show();
-                        Log.i(BLE_LOG, "사용자 인증 성공, 보낸 값:  " + new String(justWrite)
-                        );
+                        Log.i("BLE_RESULT_LOG :", "사용자 인증 성공, 보낸 값:  " + new String(justWrite));
                     }
 
                     @Override
@@ -196,18 +206,25 @@ public class BluetoothLeService extends Service {
             @Override
             public void onWriteSuccess(int current, int total, byte[] justWrite) {
                 if(isStart) {
-                    getEnvData();
+                    Log.i("BLE_RESULT_LOG :", "onWriteSuccess(StartOrStopMeasure) : >>" +new String(justWrite));
+                    Toast.makeText(getApplicationContext(), new String(justWrite, Charset.forName("UTF-8")), Toast.LENGTH_SHORT).show();
+                    mRunnable.run();
                 } else {
-
+                    stopRecordData();
                 }
-                Log.i(getClass().toString(), new String(justWrite) + "method execute");
+                Log.i(getClass().toString(), new String(justWrite, Charset.forName("UTF-8")) + "method execute");
             }
 
             @Override
             public void onWriteFailure(BleException exception) {
-
+                Log.e("BLE_RESULT_LOG", exception.getDescription());
             }
         });
+    }
+
+    private void stopRecordData() {
+        mHandler.removeCallbacks(mRunnable);
+        getEnvDayData();
     }
 
 
@@ -216,7 +233,27 @@ public class BluetoothLeService extends Service {
         BleManager.getInstance().read(bleDevice, Constants.BLE_USER_SERVICEID3.toString(), Constants.BLE_GET_USER_ENV_DATA.toString(), new BleReadCallback() {
             @Override
             public void onReadSuccess(byte[] data) {
-                Log.e(getClass().toString(), "data >>>>" + new String(data));
+                Log.i("BLE_RESULT_LOG :", "onReadSuccess(getEnvData): >>>>" +new String(data));
+                String dataStr = new String(data);
+                dataStr = dataStr.substring(1, dataStr.length()-1);
+                Map<String, String> map = jsonToMap(dataStr);
+                String time = map.get("MEASURE_TIME");
+                String temperature = map.get("TEMPERATURE");
+                String light = map.get("LIGHT");
+                String sound = map.get("SOUND");
+                String humidity = map.get("HUMIDITY");
+                StringBuffer sb = new StringBuffer();
+                sb.append("측정시간 : ")
+                        .append(time)
+                        .append(" 온도: ")
+                        .append(temperature)
+                        .append(" 습도: ")
+                        .append(humidity)
+                        .append(" 소음: ")
+                        .append(sound)
+                        .append(" 밝기: ")
+                        .append(light);
+                Toast.makeText(getApplicationContext(), sb.toString()  , Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -230,7 +267,7 @@ public class BluetoothLeService extends Service {
         BleManager.getInstance().read(bleDevice, Constants.BLE_USER_SERVICEID3.toString(), Constants.BLE_GET_USER_ENV_DAY_DATA.toString(), new BleReadCallback() {
             @Override
             public void onReadSuccess(byte[] data) {
-                Log.i(getClass().toString(), "data >>>>" + new String(data));
+                Log.i("BLE_RESULT_LOG :", "onReadSuccess(getEnvDayData) : >>>>" +new String(data));
                 insertEnvDataToDB(new String(data));
             }
 
@@ -243,8 +280,13 @@ public class BluetoothLeService extends Service {
 
     private int insertEnvDataToDB(String data){
         //data를 POJO형식의 UserEnv 로 매칭해주고, 그값을 dbHelper.insertEnv()함수에 인자로 던져준다. 결과값은 return 해준다.
+        Log.i("측정중......", "측정 데이터 >>> "+ data);
         return 0;
     }
 
-
+    public  Map<String, String> jsonToMap(String jsonString) {
+        Type type = new TypeToken<Map<String, String>>(){}.getType();
+        Gson gson = new Gson();
+        return gson.fromJson(jsonString, type);
+    }
 }

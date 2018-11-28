@@ -259,6 +259,12 @@ public class MainActivity extends AppCompatActivity {
         mainFragmentContainer.setVisibility(View.VISIBLE);
     }
 
+    @OnClick(R.id.main_setting_btn)
+    public void onSettingClicked(){
+        Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+        startActivity(intent);
+    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

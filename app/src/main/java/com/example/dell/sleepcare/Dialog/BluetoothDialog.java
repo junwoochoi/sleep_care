@@ -125,6 +125,7 @@ public class BluetoothDialog extends Dialog {
                 Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "수면 매트에 연결되었습니다. ", Snackbar.LENGTH_LONG);
                 snackbar.getView().setBackgroundColor(context.getResources().getColor(R.color.colorSecondary));
                 snackbar.show();
+                Toast.makeText(context, "연결 및 사용자 인증 완료",  Toast.LENGTH_SHORT).show();
                 dismiss();
             }
 

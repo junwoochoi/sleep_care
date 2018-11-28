@@ -13,7 +13,10 @@ import java.util.List;
 
 public class DBHelper extends SQLiteOpenHelper {
 
-    private Context context; public DBHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
+
+    private Context context;
+
+    public DBHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
         this.context = context;
     }

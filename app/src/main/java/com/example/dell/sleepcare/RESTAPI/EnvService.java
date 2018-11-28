@@ -1,5 +1,6 @@
 package com.example.dell.sleepcare.RESTAPI;
 
+import com.example.dell.sleepcare.Model.EnvDayResult;
 import com.example.dell.sleepcare.Model.EnvResult;
 import com.example.dell.sleepcare.Model.UserEnv;
 
@@ -24,6 +25,9 @@ public interface EnvService {
 
     @GET(API_URL + "envday/date/{user_email}/")
     Call<List<Map<String, String>>> getSelectableDaysFromDay(@Path("user_email") String email);
+
+    @GET(API_URL + "envday/{user_email}/{date}")
+    Call<EnvDayResult> getEnvDayList(@Path("user_email") String email, @Path("date") String date);
 
     @FormUrlEncoded
     @POST(API_URL + "psqiresult/")

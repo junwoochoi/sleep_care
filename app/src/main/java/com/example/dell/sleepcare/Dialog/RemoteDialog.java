@@ -25,8 +25,7 @@ public class RemoteDialog extends Dialog {
     TextView sendStopSign;
     @BindView(R.id.send_disconnect_sign)
     TextView sendDisconnectSign;
-    @BindView(R.id.send_blabla_sign)
-    TextView sendBlablaSign;
+
 
     public RemoteDialog(@NonNull Context context) {
         super(context);
@@ -40,7 +39,7 @@ public class RemoteDialog extends Dialog {
 
     }
 
-    @OnClick({R.id.send_start_sign, R.id.send_stop_sign, R.id.send_disconnect_sign, R.id.send_blabla_sign})
+    @OnClick({R.id.send_start_sign, R.id.send_stop_sign, R.id.send_disconnect_sign})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.send_start_sign:
@@ -60,9 +59,8 @@ public class RemoteDialog extends Dialog {
                 disconnectIntent.putExtra("method", "disconnectDevice");
                 LocalBroadcastManager.getInstance(getContext()).sendBroadcast(disconnectIntent);
                 break;
-            case R.id.send_blabla_sign:
-                break;
-
+                default:
+                    dismiss();
         }
     }
 }
