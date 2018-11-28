@@ -211,7 +211,7 @@ public class EnvDayFragment extends Fragment implements View.OnClickListener, Da
 
                     BarDataSet dataSet = new BarDataSet(entries, "");
                     dataSet.setColor(getResources().getColor(R.color.colorAccent));
-                    
+
                     BarData barData = new BarData(dataSet);
                     barChart.setData(barData);
                     barChart.invalidate();
