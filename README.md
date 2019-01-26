@@ -12,7 +12,7 @@
 
 #### 시스템 구성도
 
-![시스템 구성도](.\images\image.png)
+![시스템 구성도](https://github.com/junwoochoi/sleep_care/blob/master/images/image.png?raw=true)
 
 
 
